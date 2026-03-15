@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schlaf-Dashboard – Björn</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card2: #22263a;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --accent: #5b8dee;
+    --deep: #3d63dd;
+    --light: #63b3ed;
+    --rem: #9f7aea;
+    --awake: #fc8181;
+    --spo2: #48bb78;
+    --pulse: #ed8936;
+    --border: #2d3148;
+    --tab-active: #5b8dee;
+  }
+  [data-theme="light"] {
+    --bg: #f0f2f8;
+    --card: #ffffff;
+    --card2: #f7f9ff;
+    --text: #1a1d27;
+    --muted: #5a6478;
+    --border: #d0d7e8;
+    --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: var(--text); }
+  header .subtitle { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+
+  .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .theme-toggle { background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+  .theme-toggle:hover { background: var(--border); }
+
+  .filter-group { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); }
+  .filter-group select, .filter-group input { background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 5px 10px; border-radius: 8px; font-size: 0.82rem; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 20px 24px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .kpi-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .kpi-value { font-size: 1.4rem; font-weight: 700; color: var(--text); }
+  .kpi-sub { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+  .kpi-accent { border-top: 3px solid var(--accent); }
+  .kpi-deep { border-top: 3px solid var(--deep); }
+  .kpi-rem { border-top: 3px solid var(--rem); }
+  .kpi-spo2 { border-top: 3px solid var(--spo2); }
+  .kpi-pulse { border-top: 3px solid var(--pulse); }
+  .kpi-longest { border-top: 3px solid #48bb78; }
+  .kpi-shortest { border-top: 3px solid #fc8181; }
+
+  .tabs { display: flex; gap: 0; padding: 0 24px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab { padding: 12px 18px; cursor: pointer; font-size: 0.88rem; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--tab-active); border-bottom-color: var(--tab-active); font-weight: 600; }
+
+  .tab-content { display: none; padding: 20px 24px; }
+  .tab-content.active { display: block; }
+
+  .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+  .charts-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .charts-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) {
+    .charts-grid, .charts-grid-2, .charts-grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .chart-card h3 { font-size: 0.88rem; color: var(--muted); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .chart-wrapper { position: relative; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 12px; }
+  th { text-align: left; padding: 8px 12px; color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: var(--card2); }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; }
+  .badge-good { background: rgba(72,187,120,0.2); color: #48bb78; }
+  .badge-warn { background: rgba(252,129,74,0.2); color: #ed8936; }
+  .badge-bad { background: rgba(252,129,129,0.2); color: #fc8181; }
+
+  .update-note { text-align: right; color: var(--muted); font-size: 0.75rem; padding: 8px 24px 16px; }
+
+  .no-data { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 40px; }
+</style>
+</head>
+<body data-theme="dark">
+
+<header>
+  <div>
+    <h1>🌙 Schlaf-Dashboard</h1>
+    <div class="subtitle">Björn · 122 Nächte · 2025-02-19 bis 2026-03-14</div>
+  </div>
+  <div class="header-right">
+    <div class="filter-group">
+      <label>Monat:</label>
+      <select id="monthFilter">
+        <option value="all">Alle</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Min. Schlaf:</label>
+      <select id="minSleepFilter">
+        <option value="180">3 Std.</option>
+        <option value="240">4 Std.</option>
+        <option value="300" selected>5 Std.</option>
+        <option value="360">6 Std.</option>
+      </select>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">☀️ Hell</button>
+  </div>
+</header>
+
+<div class="kpis">
+  <div class="kpi kpi-rem">
+    <div class="kpi-label">Beste REM-Nacht</div>
+    <div class="kpi-value">2h 44m</div>
+    <div class="kpi-sub">2025-06-08</div>
+  </div>
+  <div class="kpi kpi-longest">
+    <div class="kpi-label">Längste Nacht</div>
+    <div class="kpi-value">9h 49m</div>
+    <div class="kpi-sub">2025-08-25</div>
+  </div>
+  <div class="kpi kpi-shortest">
+    <div class="kpi-label">Kürzeste Nacht</div>
+    <div class="kpi-value">3h 36m</div>
+    <div class="kpi-sub">2026-01-30</div>
+  </div>
+  <div class="kpi kpi-accent">
+    <div class="kpi-label">Ø Effizienz</div>
+    <div class="kpi-value">94.6%</div>
+    <div class="kpi-sub">Schlafeffizienz</div>
+  </div>
+  <div class="kpi kpi-deep">
+    <div class="kpi-label">Ø Tiefschlaf</div>
+    <div class="kpi-value">1h 26m</div>
+    <div class="kpi-sub">pro Nacht</div>
+  </div>
+  <div class="kpi kpi-rem">
+    <div class="kpi-label">Ø REM-Schlaf</div>
+    <div class="kpi-value">1h 21m</div>
+    <div class="kpi-sub">pro Nacht</div>
+  </div>
+  <div class="kpi kpi-pulse">
+    <div class="kpi-label">Ø Ruhepuls</div>
+    <div class="kpi-value">57.2 bpm</div>
+    <div class="kpi-sub">Nachts (10. Pztl.)</div>
+  </div>
+  <div class="kpi kpi-spo2">
+    <div class="kpi-label">Ø SpO₂</div>
+    <div class="kpi-value">92.7%</div>
+    <div class="kpi-sub">Sauerstoffsättigung</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="schlafphasen">Schlafphasen</div>
+  <div class="tab" data-tab="trends">Trends</div>
+  <div class="tab" data-tab="regelmaessigkeit">Regelmäßigkeit</div>
+  <div class="tab" data-tab="spo2puls">SpO₂ & Puls</div>
+  <div class="tab" data-tab="korrelation">Korrelation</div>
+  <div class="tab" data-tab="monatsvergleich">Monatsvergleich</div>
+</div>
+
+<!-- TAB 1: Schlafphasen -->
+<div class="tab-content active" id="tab-schlafphasen">
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Schlafphasen pro Nacht (gestapelt)</h3>
+      <div class="chart-wrapper" style="height:320px"><canvas id="chartPhasenBar"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Durchschn. Schlafphasen-Verteilung</h3>
+      <div class="chart-wrapper" style="height:320px"><canvas id="chartPhasenDonut"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: Trends -->
+<div class="tab-content" id="tab-trends">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="chart-card">
+      <h3>Schlafdauer & Effizienz (7-Tage gleitender Ø)</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartTrendDauer"></canvas></div>
+    </div>
+    <div class="charts-grid-2">
+      <div class="chart-card">
+        <h3>REM-Schlaf (min) mit 7T-Ø</h3>
+        <div class="chart-wrapper" style="height:220px"><canvas id="chartTrendREM"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Tiefschlaf (min) mit 7T-Ø</h3>
+        <div class="chart-wrapper" style="height:220px"><canvas id="chartTrendDeep"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: Regelmäßigkeit -->
+<div class="tab-content" id="tab-regelmaessigkeit">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="chart-card">
+      <h3>Einschlaf- & Aufwachzeiten</h3>
+      <div class="chart-wrapper" style="height:280px"><canvas id="chartZeiten"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Wach-Episoden pro Nacht</h3>
+      <div class="chart-wrapper" style="height:200px"><canvas id="chartWachEpisoden"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 4: SpO2 & Puls -->
+<div class="tab-content" id="tab-spo2puls">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="chart-card">
+      <h3>SpO₂ (Ø & Min) pro Nacht</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartSpo2"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Puls (Ø, Min, Ruhepuls) pro Nacht</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartPuls"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5: Korrelation -->
+<div class="tab-content" id="tab-korrelation">
+  <div class="charts-grid-3">
+    <div class="chart-card">
+      <h3>Effizienz ↔ SpO₂</h3>
+      <div id="r_eff_spo2_label" style="font-size:0.8rem;color:var(--muted);margin-bottom:8px"></div>
+      <div class="chart-wrapper" style="height:250px"><canvas id="chartCorrEffSpo2"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>REM (min) ↔ SpO₂</h3>
+      <div id="r_rem_spo2_label" style="font-size:0.8rem;color:var(--muted);margin-bottom:8px"></div>
+      <div class="chart-wrapper" style="height:250px"><canvas id="chartCorrRemSpo2"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Tiefschlaf ↔ Ruhepuls</h3>
+      <div id="r_deep_pulse_label" style="font-size:0.8rem;color:var(--muted);margin-bottom:8px"></div>
+      <div class="chart-wrapper" style="height:250px"><canvas id="chartCorrDeepPulse"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 6: Monatsvergleich -->
+<div class="tab-content" id="tab-monatsvergleich">
+  <div class="charts-grid-2">
+    <div class="chart-card">
+      <h3>Ø Schlafdauer pro Monat</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartMonthBar"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Ø Schlafphasen pro Monat</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartMonthPhases"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-card" style="margin-top:16px">
+    <h3>Monatsübersicht</h3>
+    <table id="monthTable">
+      <thead>
+        <tr>
+          <th>Monat</th><th>Nächte</th><th>Ø Schlaf</th><th>Ø Tiefschlaf</th>
+          <th>Ø REM</th><th>Ø Effizienz</th><th>Ø SpO₂</th><th>Ø Ruhepuls</th>
+        </tr>
+      </thead>
+      <tbody id="monthTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="update-note">Zuletzt aktualisiert: 15.03.2026 21:35</div>
+
+<script>
+const SLEEP_DATA = [{"date": "2025-02-19", "date_obj": "2025-02-19", "total_sleep_min": 388.0, "deep_min": 122.0, "light_min": 140.0, "rem_min": 126.0, "awake_min": 0.0, "deep_pct": 31.4, "light_pct": 36.1, "rem_pct": 32.5, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "02:20", "wake_time": "08:48", "wake_episodes": 0, "sleep_start_hour": 2.3333333333333335, "wake_hour": 8.8}, {"date": "2025-02-20", "date_obj": "2025-02-20", "total_sleep_min": 458.0, "deep_min": 103.0, "light_min": 317.0, "rem_min": 38.0, "awake_min": 30.0, "deep_pct": 22.5, "light_pct": 69.2, "rem_pct": 8.3, "awake_pct": 6.1, "efficiency": 93.9, "sleep_start": "01:08", "wake_time": "09:16", "wake_episodes": 4, "sleep_start_hour": 1.1333333333333333, "wake_hour": 9.266666666666667}, {"date": "2025-02-21", "date_obj": "2025-02-21", "total_sleep_min": 405.0, "deep_min": 126.0, "light_min": 232.0, "rem_min": 47.0, "awake_min": 42.0, "deep_pct": 31.1, "light_pct": 57.3, "rem_pct": 11.6, "awake_pct": 9.4, "efficiency": 90.6, "sleep_start": "04:03", "wake_time": "11:30", "wake_episodes": 7, "sleep_start_hour": 4.05, "wake_hour": 11.5}, {"date": "2025-02-22", "date_obj": "2025-02-22", "total_sleep_min": 473.0, "deep_min": 84.0, "light_min": 279.0, "rem_min": 110.0, "awake_min": 21.0, "deep_pct": 17.8, "light_pct": 59.0, "rem_pct": 23.3, "awake_pct": 4.3, "efficiency": 95.7, "sleep_start": "02:52", "wake_time": "11:06", "wake_episodes": 3, "sleep_start_hour": 2.8666666666666667, "wake_hour": 11.1}, {"date": "2025-02-23", "date_obj": "2025-02-23", "total_sleep_min": 565.0, "deep_min": 80.0, "light_min": 407.0, "rem_min": 78.0, "awake_min": 2.0, "deep_pct": 14.2, "light_pct": 72.0, "rem_pct": 13.8, "awake_pct": 0.4, "efficiency": 99.6, "sleep_start": "00:01", "wake_time": "09:28", "wake_episodes": 2, "sleep_start_hour": 0.016666666666666666, "wake_hour": 9.466666666666667}, {"date": "2025-02-24", "date_obj": "2025-02-24", "total_sleep_min": 471.0, "deep_min": 109.0, "light_min": 269.0, "rem_min": 93.0, "awake_min": 55.0, "deep_pct": 23.1, "light_pct": 57.1, "rem_pct": 19.7, "awake_pct": 10.5, "efficiency": 89.5, "sleep_start": "01:00", "wake_time": "09:46", "wake_episodes": 7, "sleep_start_hour": 1.0, "wake_hour": 9.766666666666667}, {"date": "2025-02-25", "date_obj": "2025-02-25", "total_sleep_min": 396.0, "deep_min": 77.0, "light_min": 203.0, "rem_min": 116.0, "awake_min": 79.0, "deep_pct": 19.4, "light_pct": 51.3, "rem_pct": 29.3, "awake_pct": 16.6, "efficiency": 83.4, "sleep_start": "01:38", "wake_time": "09:33", "wake_episodes": 4, "sleep_start_hour": 1.6333333333333333, "wake_hour": 9.55}, {"date": "2025-02-27", "date_obj": "2025-02-27", "total_sleep_min": 364.0, "deep_min": 70.0, "light_min": 294.0, "rem_min": 0.0, "awake_min": 53.0, "deep_pct": 19.2, "light_pct": 80.8, "rem_pct": 0.0, "awake_pct": 12.7, "efficiency": 87.3, "sleep_start": "01:19", "wake_time": "08:16", "wake_episodes": 6, "sleep_start_hour": 1.3166666666666667, "wake_hour": 8.266666666666667}, {"date": "2025-02-28", "date_obj": "2025-02-28", "total_sleep_min": 387.0, "deep_min": 123.0, "light_min": 224.0, "rem_min": 40.0, "awake_min": 54.0, "deep_pct": 31.8, "light_pct": 57.9, "rem_pct": 10.3, "awake_pct": 12.2, "efficiency": 87.8, "sleep_start": "05:03", "wake_time": "12:24", "wake_episodes": 4, "sleep_start_hour": 5.05, "wake_hour": 12.4}, {"date": "2025-03-01", "date_obj": "2025-03-01", "total_sleep_min": 412.0, "deep_min": 79.0, "light_min": 282.0, "rem_min": 51.0, "awake_min": 1.0, "deep_pct": 19.2, "light_pct": 68.4, "rem_pct": 12.4, "awake_pct": 0.2, "efficiency": 99.8, "sleep_start": "12:24", "wake_time": "12:16", "wake_episodes": 1, "sleep_start_hour": 12.4, "wake_hour": 12.266666666666667}, {"date": "2025-03-03", "date_obj": "2025-03-03", "total_sleep_min": 439.0, "deep_min": 82.0, "light_min": 253.0, "rem_min": 104.0, "awake_min": 0.0, "deep_pct": 18.7, "light_pct": 57.6, "rem_pct": 23.7, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "00:57", "wake_time": "08:16", "wake_episodes": 0, "sleep_start_hour": 0.95, "wake_hour": 8.266666666666667}, {"date": "2025-03-04", "date_obj": "2025-03-04", "total_sleep_min": 476.0, "deep_min": 53.0, "light_min": 292.0, "rem_min": 131.0, "awake_min": 32.0, "deep_pct": 11.1, "light_pct": 61.3, "rem_pct": 27.5, "awake_pct": 6.3, "efficiency": 93.7, "sleep_start": "22:25", "wake_time": "06:53", "wake_episodes": 3, "sleep_start_hour": 22.416666666666668, "wake_hour": 6.883333333333333}, {"date": "2025-03-06", "date_obj": "2025-03-06", "total_sleep_min": 390.0, "deep_min": 44.0, "light_min": 316.0, "rem_min": 30.0, "awake_min": 52.0, "deep_pct": 11.3, "light_pct": 81.0, "rem_pct": 7.7, "awake_pct": 11.8, "efficiency": 88.2, "sleep_start": "00:19", "wake_time": "07:41", "wake_episodes": 5, "sleep_start_hour": 0.31666666666666665, "wake_hour": 7.683333333333334}, {"date": "2025-03-07", "date_obj": "2025-03-07", "total_sleep_min": 453.0, "deep_min": 68.0, "light_min": 273.0, "rem_min": 112.0, "awake_min": 24.0, "deep_pct": 15.0, "light_pct": 60.3, "rem_pct": 24.7, "awake_pct": 5.0, "efficiency": 95.0, "sleep_start": "02:26", "wake_time": "10:23", "wake_episodes": 3, "sleep_start_hour": 2.4333333333333336, "wake_hour": 10.383333333333333}, {"date": "2025-03-08", "date_obj": "2025-03-08", "total_sleep_min": 380.0, "deep_min": 102.0, "light_min": 220.0, "rem_min": 58.0, "awake_min": 21.0, "deep_pct": 26.8, "light_pct": 57.9, "rem_pct": 15.3, "awake_pct": 5.2, "efficiency": 94.8, "sleep_start": "01:56", "wake_time": "08:37", "wake_episodes": 4, "sleep_start_hour": 1.9333333333333333, "wake_hour": 8.616666666666667}, {"date": "2025-03-09", "date_obj": "2025-03-09", "total_sleep_min": 463.0, "deep_min": 53.0, "light_min": 297.0, "rem_min": 113.0, "awake_min": 6.0, "deep_pct": 11.4, "light_pct": 64.1, "rem_pct": 24.4, "awake_pct": 1.3, "efficiency": 98.7, "sleep_start": "01:59", "wake_time": "09:48", "wake_episodes": 2, "sleep_start_hour": 1.9833333333333334, "wake_hour": 9.8}, {"date": "2025-03-10", "date_obj": "2025-03-10", "total_sleep_min": 472.0, "deep_min": 125.0, "light_min": 207.0, "rem_min": 140.0, "awake_min": 18.0, "deep_pct": 26.5, "light_pct": 43.9, "rem_pct": 29.7, "awake_pct": 3.7, "efficiency": 96.3, "sleep_start": "01:07", "wake_time": "09:17", "wake_episodes": 1, "sleep_start_hour": 1.1166666666666667, "wake_hour": 9.283333333333333}, {"date": "2025-06-02", "date_obj": "2025-06-02", "total_sleep_min": 554.0, "deep_min": 115.0, "light_min": 299.0, "rem_min": 140.0, "awake_min": 6.0, "deep_pct": 20.8, "light_pct": 54.0, "rem_pct": 25.3, "awake_pct": 1.1, "efficiency": 98.9, "sleep_start": "00:10", "wake_time": "09:30", "wake_episodes": 2, "sleep_start_hour": 0.16666666666666666, "wake_hour": 9.5}, {"date": "2025-06-03", "date_obj": "2025-06-03", "total_sleep_min": 298.0, "deep_min": 66.0, "light_min": 201.0, "rem_min": 31.0, "awake_min": 18.0, "deep_pct": 22.1, "light_pct": 67.4, "rem_pct": 10.4, "awake_pct": 5.7, "efficiency": 94.3, "sleep_start": "01:50", "wake_time": "07:06", "wake_episodes": 3, "sleep_start_hour": 1.8333333333333335, "wake_hour": 7.1}, {"date": "2025-06-04", "date_obj": "2025-06-04", "total_sleep_min": 408.0, "deep_min": 113.0, "light_min": 215.0, "rem_min": 80.0, "awake_min": 26.0, "deep_pct": 27.7, "light_pct": 52.7, "rem_pct": 19.6, "awake_pct": 6.0, "efficiency": 94.0, "sleep_start": "00:34", "wake_time": "07:48", "wake_episodes": 4, "sleep_start_hour": 0.5666666666666667, "wake_hour": 7.8}, {"date": "2025-06-05", "date_obj": "2025-06-05", "total_sleep_min": 493.0, "deep_min": 106.0, "light_min": 270.0, "rem_min": 117.0, "awake_min": 17.0, "deep_pct": 21.5, "light_pct": 54.8, "rem_pct": 23.7, "awake_pct": 3.3, "efficiency": 96.7, "sleep_start": "01:54", "wake_time": "10:24", "wake_episodes": 2, "sleep_start_hour": 1.9, "wake_hour": 10.4}, {"date": "2025-06-06", "date_obj": "2025-06-06", "total_sleep_min": 452.0, "deep_min": 86.0, "light_min": 277.0, "rem_min": 89.0, "awake_min": 13.0, "deep_pct": 19.0, "light_pct": 61.3, "rem_pct": 19.7, "awake_pct": 2.8, "efficiency": 97.2, "sleep_start": "04:17", "wake_time": "12:02", "wake_episodes": 2, "sleep_start_hour": 4.283333333333333, "wake_hour": 12.033333333333333}, {"date": "2025-06-07", "date_obj": "2025-06-07", "total_sleep_min": 530.0, "deep_min": 132.0, "light_min": 269.0, "rem_min": 129.0, "awake_min": 28.0, "deep_pct": 24.9, "light_pct": 50.8, "rem_pct": 24.3, "awake_pct": 5.0, "efficiency": 95.0, "sleep_start": "02:43", "wake_time": "12:01", "wake_episodes": 3, "sleep_start_hour": 2.716666666666667, "wake_hour": 12.016666666666667}, {"date": "2025-06-08", "date_obj": "2025-06-08", "total_sleep_min": 540.0, "deep_min": 110.0, "light_min": 266.0, "rem_min": 164.0, "awake_min": 21.0, "deep_pct": 20.4, "light_pct": 49.3, "rem_pct": 30.4, "awake_pct": 3.7, "efficiency": 96.3, "sleep_start": "01:57", "wake_time": "11:18", "wake_episodes": 3, "sleep_start_hour": 1.95, "wake_hour": 11.3}, {"date": "2025-06-09", "date_obj": "2025-06-09", "total_sleep_min": 400.0, "deep_min": 126.0, "light_min": 172.0, "rem_min": 102.0, "awake_min": 0.0, "deep_pct": 31.5, "light_pct": 43.0, "rem_pct": 25.5, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "03:10", "wake_time": "09:50", "wake_episodes": 0, "sleep_start_hour": 3.1666666666666665, "wake_hour": 9.833333333333334}, {"date": "2025-06-10", "date_obj": "2025-06-10", "total_sleep_min": 545.0, "deep_min": 75.0, "light_min": 348.0, "rem_min": 122.0, "awake_min": 29.0, "deep_pct": 13.8, "light_pct": 63.9, "rem_pct": 22.4, "awake_pct": 5.1, "efficiency": 94.9, "sleep_start": "22:57", "wake_time": "08:31", "wake_episodes": 5, "sleep_start_hour": 22.95, "wake_hour": 8.516666666666667}, {"date": "2025-06-11", "date_obj": "2025-06-11", "total_sleep_min": 423.0, "deep_min": 74.0, "light_min": 271.0, "rem_min": 78.0, "awake_min": 22.0, "deep_pct": 17.5, "light_pct": 64.1, "rem_pct": 18.4, "awake_pct": 4.9, "efficiency": 95.1, "sleep_start": "01:42", "wake_time": "09:07", "wake_episodes": 4, "sleep_start_hour": 1.7, "wake_hour": 9.116666666666667}, {"date": "2025-06-12", "date_obj": "2025-06-12", "total_sleep_min": 441.0, "deep_min": 104.0, "light_min": 221.0, "rem_min": 116.0, "awake_min": 1.0, "deep_pct": 23.6, "light_pct": 50.1, "rem_pct": 26.3, "awake_pct": 0.2, "efficiency": 99.8, "sleep_start": "01:39", "wake_time": "09:01", "wake_episodes": 1, "sleep_start_hour": 1.65, "wake_hour": 9.016666666666667}, {"date": "2025-06-13", "date_obj": "2025-06-13", "total_sleep_min": 429.0, "deep_min": 123.0, "light_min": 300.0, "rem_min": 6.0, "awake_min": 95.0, "deep_pct": 28.7, "light_pct": 69.9, "rem_pct": 1.4, "awake_pct": 18.1, "efficiency": 81.9, "sleep_start": "01:36", "wake_time": "10:20", "wake_episodes": 5, "sleep_start_hour": 1.6, "wake_hour": 10.333333333333334}, {"date": "2025-06-14", "date_obj": "2025-06-14", "total_sleep_min": 387.0, "deep_min": 89.0, "light_min": 267.0, "rem_min": 31.0, "awake_min": 15.0, "deep_pct": 23.0, "light_pct": 69.0, "rem_pct": 8.0, "awake_pct": 3.7, "efficiency": 96.3, "sleep_start": "06:00", "wake_time": "12:42", "wake_episodes": 2, "sleep_start_hour": 6.0, "wake_hour": 12.7}, {"date": "2025-08-21", "date_obj": "2025-08-21", "total_sleep_min": 422.0, "deep_min": 79.0, "light_min": 239.0, "rem_min": 104.0, "awake_min": 5.0, "deep_pct": 18.7, "light_pct": 56.6, "rem_pct": 24.6, "awake_pct": 1.2, "efficiency": 98.8, "sleep_start": "02:25", "wake_time": "09:32", "wake_episodes": 1, "sleep_start_hour": 2.4166666666666665, "wake_hour": 9.533333333333333}, {"date": "2025-08-22", "date_obj": "2025-08-22", "total_sleep_min": 536.0, "deep_min": 101.0, "light_min": 301.0, "rem_min": 134.0, "awake_min": 44.0, "deep_pct": 18.8, "light_pct": 56.2, "rem_pct": 25.0, "awake_pct": 7.6, "efficiency": 92.4, "sleep_start": "01:33", "wake_time": "11:13", "wake_episodes": 5, "sleep_start_hour": 1.55, "wake_hour": 11.216666666666667}, {"date": "2025-08-23", "date_obj": "2025-08-23", "total_sleep_min": 409.0, "deep_min": 157.0, "light_min": 196.0, "rem_min": 56.0, "awake_min": 17.0, "deep_pct": 38.4, "light_pct": 47.9, "rem_pct": 13.7, "awake_pct": 4.0, "efficiency": 96.0, "sleep_start": "05:23", "wake_time": "12:29", "wake_episodes": 1, "sleep_start_hour": 5.383333333333334, "wake_hour": 12.483333333333333}, {"date": "2025-08-24", "date_obj": "2025-08-24", "total_sleep_min": 459.0, "deep_min": 66.0, "light_min": 334.0, "rem_min": 59.0, "awake_min": 7.0, "deep_pct": 14.4, "light_pct": 72.8, "rem_pct": 12.9, "awake_pct": 1.5, "efficiency": 98.5, "sleep_start": "02:44", "wake_time": "10:30", "wake_episodes": 2, "sleep_start_hour": 2.7333333333333334, "wake_hour": 10.5}, {"date": "2025-08-25", "date_obj": "2025-08-25", "total_sleep_min": 589.0, "deep_min": 40.0, "light_min": 394.0, "rem_min": 155.0, "awake_min": 43.0, "deep_pct": 6.8, "light_pct": 66.9, "rem_pct": 26.3, "awake_pct": 6.8, "efficiency": 93.2, "sleep_start": "23:26", "wake_time": "09:58", "wake_episodes": 6, "sleep_start_hour": 23.433333333333334, "wake_hour": 9.966666666666667}, {"date": "2025-08-26", "date_obj": "2025-08-26", "total_sleep_min": 411.0, "deep_min": 88.0, "light_min": 241.0, "rem_min": 82.0, "awake_min": 3.0, "deep_pct": 21.4, "light_pct": 58.6, "rem_pct": 20.0, "awake_pct": 0.7, "efficiency": 99.3, "sleep_start": "22:59", "wake_time": "05:53", "wake_episodes": 1, "sleep_start_hour": 22.983333333333334, "wake_hour": 5.883333333333333}, {"date": "2025-08-28", "date_obj": "2025-08-28", "total_sleep_min": 282.0, "deep_min": 130.0, "light_min": 78.0, "rem_min": 74.0, "awake_min": 41.0, "deep_pct": 46.1, "light_pct": 27.7, "rem_pct": 26.2, "awake_pct": 12.7, "efficiency": 87.3, "sleep_start": "01:51", "wake_time": "07:14", "wake_episodes": 1, "sleep_start_hour": 1.85, "wake_hour": 7.233333333333333}, {"date": "2025-08-29", "date_obj": "2025-08-29", "total_sleep_min": 407.0, "deep_min": 51.0, "light_min": 254.0, "rem_min": 102.0, "awake_min": 2.0, "deep_pct": 12.5, "light_pct": 62.4, "rem_pct": 25.1, "awake_pct": 0.5, "efficiency": 99.5, "sleep_start": "03:13", "wake_time": "10:02", "wake_episodes": 1, "sleep_start_hour": 3.216666666666667, "wake_hour": 10.033333333333333}, {"date": "2025-08-30", "date_obj": "2025-08-30", "total_sleep_min": 266.0, "deep_min": 118.0, "light_min": 135.0, "rem_min": 13.0, "awake_min": 17.0, "deep_pct": 44.4, "light_pct": 50.8, "rem_pct": 4.9, "awake_pct": 6.0, "efficiency": 94.0, "sleep_start": "07:40", "wake_time": "12:23", "wake_episodes": 4, "sleep_start_hour": 7.666666666666667, "wake_hour": 12.383333333333333}, {"date": "2025-08-31", "date_obj": "2025-08-31", "total_sleep_min": 519.0, "deep_min": 87.0, "light_min": 310.0, "rem_min": 122.0, "awake_min": 12.0, "deep_pct": 16.8, "light_pct": 59.7, "rem_pct": 23.5, "awake_pct": 2.3, "efficiency": 97.7, "sleep_start": "12:23", "wake_time": "09:38", "wake_episodes": 4, "sleep_start_hour": 12.383333333333333, "wake_hour": 9.633333333333333}, {"date": "2025-09-01", "date_obj": "2025-09-01", "total_sleep_min": 498.0, "deep_min": 72.0, "light_min": 341.0, "rem_min": 85.0, "awake_min": 16.0, "deep_pct": 14.5, "light_pct": 68.5, "rem_pct": 17.1, "awake_pct": 3.1, "efficiency": 96.9, "sleep_start": "01:00", "wake_time": "09:34", "wake_episodes": 1, "sleep_start_hour": 1.0, "wake_hour": 9.566666666666666}, {"date": "2025-09-02", "date_obj": "2025-09-02", "total_sleep_min": 410.0, "deep_min": 107.0, "light_min": 229.0, "rem_min": 74.0, "awake_min": 14.0, "deep_pct": 26.1, "light_pct": 55.9, "rem_pct": 18.0, "awake_pct": 3.3, "efficiency": 96.7, "sleep_start": "23:29", "wake_time": "06:33", "wake_episodes": 2, "sleep_start_hour": 23.483333333333334, "wake_hour": 6.55}, {"date": "2025-09-03", "date_obj": "2025-09-03", "total_sleep_min": 439.0, "deep_min": 53.0, "light_min": 286.0, "rem_min": 100.0, "awake_min": 15.0, "deep_pct": 12.1, "light_pct": 65.1, "rem_pct": 22.8, "awake_pct": 3.3, "efficiency": 96.7, "sleep_start": "01:42", "wake_time": "09:16", "wake_episodes": 4, "sleep_start_hour": 1.7, "wake_hour": 9.266666666666667}, {"date": "2025-09-04", "date_obj": "2025-09-04", "total_sleep_min": 478.0, "deep_min": 103.0, "light_min": 286.0, "rem_min": 89.0, "awake_min": 36.0, "deep_pct": 21.5, "light_pct": 59.8, "rem_pct": 18.6, "awake_pct": 7.0, "efficiency": 93.0, "sleep_start": "23:26", "wake_time": "08:00", "wake_episodes": 5, "sleep_start_hour": 23.433333333333334, "wake_hour": 8.0}, {"date": "2025-09-05", "date_obj": "2025-09-05", "total_sleep_min": 292.0, "deep_min": 96.0, "light_min": 196.0, "rem_min": 0.0, "awake_min": 46.0, "deep_pct": 32.9, "light_pct": 67.1, "rem_pct": 0.0, "awake_pct": 13.6, "efficiency": 86.4, "sleep_start": "02:36", "wake_time": "08:14", "wake_episodes": 4, "sleep_start_hour": 2.6, "wake_hour": 8.233333333333333}, {"date": "2025-09-06", "date_obj": "2025-09-06", "total_sleep_min": 276.0, "deep_min": 123.0, "light_min": 128.0, "rem_min": 25.0, "awake_min": 38.0, "deep_pct": 44.6, "light_pct": 46.4, "rem_pct": 9.1, "awake_pct": 12.1, "efficiency": 87.9, "sleep_start": "00:54", "wake_time": "06:08", "wake_episodes": 2, "sleep_start_hour": 0.9, "wake_hour": 6.133333333333334}, {"date": "2025-09-10", "date_obj": "2025-09-10", "total_sleep_min": 314.0, "deep_min": 80.0, "light_min": 178.0, "rem_min": 56.0, "awake_min": 23.0, "deep_pct": 25.5, "light_pct": 56.7, "rem_pct": 17.8, "awake_pct": 6.8, "efficiency": 93.2, "sleep_start": "05:23", "wake_time": "11:00", "wake_episodes": 3, "sleep_start_hour": 5.383333333333334, "wake_hour": 11.0}, {"date": "2025-09-11", "date_obj": "2025-09-11", "total_sleep_min": 334.0, "deep_min": 79.0, "light_min": 202.0, "rem_min": 53.0, "awake_min": 44.0, "deep_pct": 23.7, "light_pct": 60.5, "rem_pct": 15.9, "awake_pct": 11.6, "efficiency": 88.4, "sleep_start": "05:30", "wake_time": "11:48", "wake_episodes": 5, "sleep_start_hour": 5.5, "wake_hour": 11.8}, {"date": "2025-09-23", "date_obj": "2025-09-23", "total_sleep_min": 495.0, "deep_min": 103.0, "light_min": 266.0, "rem_min": 126.0, "awake_min": 15.0, "deep_pct": 20.8, "light_pct": 53.7, "rem_pct": 25.5, "awake_pct": 2.9, "efficiency": 97.1, "sleep_start": "00:16", "wake_time": "08:46", "wake_episodes": 1, "sleep_start_hour": 0.26666666666666666, "wake_hour": 8.766666666666667}, {"date": "2025-10-09", "date_obj": "2025-10-09", "total_sleep_min": 393.0, "deep_min": 66.0, "light_min": 200.0, "rem_min": 127.0, "awake_min": 9.0, "deep_pct": 16.8, "light_pct": 50.9, "rem_pct": 32.3, "awake_pct": 2.2, "efficiency": 97.8, "sleep_start": "02:07", "wake_time": "08:49", "wake_episodes": 2, "sleep_start_hour": 2.1166666666666667, "wake_hour": 8.816666666666666}, {"date": "2025-10-10", "date_obj": "2025-10-10", "total_sleep_min": 410.0, "deep_min": 96.0, "light_min": 207.0, "rem_min": 107.0, "awake_min": 0.0, "deep_pct": 23.4, "light_pct": 50.5, "rem_pct": 26.1, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "03:33", "wake_time": "10:23", "wake_episodes": 0, "sleep_start_hour": 3.55, "wake_hour": 10.383333333333333}, {"date": "2025-10-11", "date_obj": "2025-10-11", "total_sleep_min": 380.0, "deep_min": 130.0, "light_min": 218.0, "rem_min": 32.0, "awake_min": 29.0, "deep_pct": 34.2, "light_pct": 57.4, "rem_pct": 8.4, "awake_pct": 7.1, "efficiency": 92.9, "sleep_start": "05:26", "wake_time": "12:15", "wake_episodes": 3, "sleep_start_hour": 5.433333333333334, "wake_hour": 12.25}, {"date": "2025-10-30", "date_obj": "2025-10-30", "total_sleep_min": 517.0, "deep_min": 66.0, "light_min": 335.0, "rem_min": 116.0, "awake_min": 17.0, "deep_pct": 12.8, "light_pct": 64.8, "rem_pct": 22.4, "awake_pct": 3.2, "efficiency": 96.8, "sleep_start": "23:57", "wake_time": "08:51", "wake_episodes": 4, "sleep_start_hour": 23.95, "wake_hour": 8.85}, {"date": "2025-10-31", "date_obj": "2025-10-31", "total_sleep_min": 430.0, "deep_min": 144.0, "light_min": 221.0, "rem_min": 65.0, "awake_min": 27.0, "deep_pct": 33.5, "light_pct": 51.4, "rem_pct": 15.1, "awake_pct": 5.9, "efficiency": 94.1, "sleep_start": "02:58", "wake_time": "10:35", "wake_episodes": 2, "sleep_start_hour": 2.966666666666667, "wake_hour": 10.583333333333334}, {"date": "2025-11-01", "date_obj": "2025-11-01", "total_sleep_min": 396.0, "deep_min": 93.0, "light_min": 195.0, "rem_min": 108.0, "awake_min": 5.0, "deep_pct": 23.5, "light_pct": 49.2, "rem_pct": 27.3, "awake_pct": 1.2, "efficiency": 98.8, "sleep_start": "04:05", "wake_time": "10:46", "wake_episodes": 2, "sleep_start_hour": 4.083333333333333, "wake_hour": 10.766666666666667}, {"date": "2025-11-03", "date_obj": "2025-11-03", "total_sleep_min": 561.0, "deep_min": 43.0, "light_min": 412.0, "rem_min": 106.0, "awake_min": 11.0, "deep_pct": 7.7, "light_pct": 73.4, "rem_pct": 18.9, "awake_pct": 1.9, "efficiency": 98.1, "sleep_start": "00:24", "wake_time": "09:56", "wake_episodes": 3, "sleep_start_hour": 0.4, "wake_hour": 9.933333333333334}, {"date": "2025-11-14", "date_obj": "2025-11-14", "total_sleep_min": 444.0, "deep_min": 64.0, "light_min": 342.0, "rem_min": 38.0, "awake_min": 59.0, "deep_pct": 14.4, "light_pct": 77.0, "rem_pct": 8.6, "awake_pct": 11.7, "efficiency": 88.3, "sleep_start": "01:27", "wake_time": "09:50", "wake_episodes": 6, "sleep_start_hour": 1.45, "wake_hour": 9.833333333333334}, {"date": "2025-11-17", "date_obj": "2025-11-17", "total_sleep_min": 468.0, "deep_min": 92.0, "light_min": 284.0, "rem_min": 92.0, "awake_min": 17.0, "deep_pct": 19.7, "light_pct": 60.7, "rem_pct": 19.7, "awake_pct": 3.5, "efficiency": 96.5, "sleep_start": "00:23", "wake_time": "08:28", "wake_episodes": 2, "sleep_start_hour": 0.38333333333333336, "wake_hour": 8.466666666666667}, {"date": "2025-11-18", "date_obj": "2025-11-18", "total_sleep_min": 441.0, "deep_min": 98.0, "light_min": 277.0, "rem_min": 66.0, "awake_min": 46.0, "deep_pct": 22.2, "light_pct": 62.8, "rem_pct": 15.0, "awake_pct": 9.4, "efficiency": 90.6, "sleep_start": "01:08", "wake_time": "09:15", "wake_episodes": 3, "sleep_start_hour": 1.1333333333333333, "wake_hour": 9.25}, {"date": "2025-12-09", "date_obj": "2025-12-09", "total_sleep_min": 392.0, "deep_min": 92.0, "light_min": 244.0, "rem_min": 56.0, "awake_min": 11.0, "deep_pct": 23.5, "light_pct": 62.2, "rem_pct": 14.3, "awake_pct": 2.7, "efficiency": 97.3, "sleep_start": "01:02", "wake_time": "07:45", "wake_episodes": 3, "sleep_start_hour": 1.0333333333333334, "wake_hour": 7.75}, {"date": "2025-12-10", "date_obj": "2025-12-10", "total_sleep_min": 391.0, "deep_min": 62.0, "light_min": 246.0, "rem_min": 83.0, "awake_min": 16.0, "deep_pct": 15.9, "light_pct": 62.9, "rem_pct": 21.2, "awake_pct": 3.9, "efficiency": 96.1, "sleep_start": "01:39", "wake_time": "08:26", "wake_episodes": 4, "sleep_start_hour": 1.65, "wake_hour": 8.433333333333334}, {"date": "2025-12-11", "date_obj": "2025-12-11", "total_sleep_min": 463.0, "deep_min": 108.0, "light_min": 212.0, "rem_min": 143.0, "awake_min": 20.0, "deep_pct": 23.3, "light_pct": 45.8, "rem_pct": 30.9, "awake_pct": 4.1, "efficiency": 95.9, "sleep_start": "00:23", "wake_time": "08:26", "wake_episodes": 4, "sleep_start_hour": 0.38333333333333336, "wake_hour": 8.433333333333334}, {"date": "2025-12-12", "date_obj": "2025-12-12", "total_sleep_min": 457.0, "deep_min": 74.0, "light_min": 243.0, "rem_min": 140.0, "awake_min": 45.0, "deep_pct": 16.2, "light_pct": 53.2, "rem_pct": 30.6, "awake_pct": 9.0, "efficiency": 91.0, "sleep_start": "03:00", "wake_time": "11:22", "wake_episodes": 5, "sleep_start_hour": 3.0, "wake_hour": 11.366666666666667}, {"date": "2025-12-13", "date_obj": "2025-12-13", "total_sleep_min": 414.0, "deep_min": 97.0, "light_min": 274.0, "rem_min": 43.0, "awake_min": 30.0, "deep_pct": 23.4, "light_pct": 66.2, "rem_pct": 10.4, "awake_pct": 6.8, "efficiency": 93.2, "sleep_start": "03:41", "wake_time": "11:05", "wake_episodes": 7, "sleep_start_hour": 3.6833333333333336, "wake_hour": 11.083333333333334}, {"date": "2025-12-16", "date_obj": "2025-12-16", "total_sleep_min": 433.0, "deep_min": 67.0, "light_min": 277.0, "rem_min": 89.0, "awake_min": 42.0, "deep_pct": 15.5, "light_pct": 64.0, "rem_pct": 20.6, "awake_pct": 8.8, "efficiency": 91.2, "sleep_start": "00:02", "wake_time": "07:57", "wake_episodes": 5, "sleep_start_hour": 0.03333333333333333, "wake_hour": 7.95}, {"date": "2025-12-17", "date_obj": "2025-12-17", "total_sleep_min": 429.0, "deep_min": 64.0, "light_min": 258.0, "rem_min": 107.0, "awake_min": 12.0, "deep_pct": 14.9, "light_pct": 60.1, "rem_pct": 24.9, "awake_pct": 2.7, "efficiency": 97.3, "sleep_start": "02:40", "wake_time": "10:01", "wake_episodes": 2, "sleep_start_hour": 2.6666666666666665, "wake_hour": 10.016666666666667}, {"date": "2025-12-18", "date_obj": "2025-12-18", "total_sleep_min": 372.0, "deep_min": 87.0, "light_min": 218.0, "rem_min": 67.0, "awake_min": 30.0, "deep_pct": 23.4, "light_pct": 58.6, "rem_pct": 18.0, "awake_pct": 7.5, "efficiency": 92.5, "sleep_start": "02:42", "wake_time": "09:24", "wake_episodes": 3, "sleep_start_hour": 2.7, "wake_hour": 9.4}, {"date": "2025-12-19", "date_obj": "2025-12-19", "total_sleep_min": 344.0, "deep_min": 68.0, "light_min": 235.0, "rem_min": 41.0, "awake_min": 41.0, "deep_pct": 19.8, "light_pct": 68.3, "rem_pct": 11.9, "awake_pct": 10.6, "efficiency": 89.4, "sleep_start": "03:26", "wake_time": "09:51", "wake_episodes": 6, "sleep_start_hour": 3.4333333333333336, "wake_hour": 9.85}, {"date": "2025-12-20", "date_obj": "2025-12-20", "total_sleep_min": 488.0, "deep_min": 97.0, "light_min": 317.0, "rem_min": 74.0, "awake_min": 19.0, "deep_pct": 19.9, "light_pct": 65.0, "rem_pct": 15.2, "awake_pct": 3.7, "efficiency": 96.3, "sleep_start": "01:00", "wake_time": "09:27", "wake_episodes": 2, "sleep_start_hour": 1.0, "wake_hour": 9.45}, {"date": "2025-12-23", "date_obj": "2025-12-23", "total_sleep_min": 380.0, "deep_min": 55.0, "light_min": 284.0, "rem_min": 41.0, "awake_min": 138.0, "deep_pct": 14.5, "light_pct": 74.7, "rem_pct": 10.8, "awake_pct": 26.6, "efficiency": 73.4, "sleep_start": "00:50", "wake_time": "09:28", "wake_episodes": 6, "sleep_start_hour": 0.8333333333333334, "wake_hour": 9.466666666666667}, {"date": "2026-01-16", "date_obj": "2026-01-16", "total_sleep_min": 479.0, "deep_min": 66.0, "light_min": 332.0, "rem_min": 81.0, "awake_min": 39.0, "deep_pct": 13.8, "light_pct": 69.3, "rem_pct": 16.9, "awake_pct": 7.5, "efficiency": 92.5, "sleep_start": "01:22", "wake_time": "10:00", "wake_episodes": 4, "sleep_start_hour": 1.3666666666666667, "wake_hour": 10.0}, {"date": "2026-01-17", "date_obj": "2026-01-17", "total_sleep_min": 252.0, "deep_min": 115.0, "light_min": 98.0, "rem_min": 39.0, "awake_min": 110.0, "deep_pct": 45.6, "light_pct": 38.9, "rem_pct": 15.5, "awake_pct": 30.4, "efficiency": 69.6, "sleep_start": "06:39", "wake_time": "12:41", "wake_episodes": 4, "sleep_start_hour": 6.65, "wake_hour": 12.683333333333334}, {"date": "2026-01-18", "date_obj": "2026-01-18", "total_sleep_min": 393.0, "deep_min": 65.0, "light_min": 269.0, "rem_min": 59.0, "awake_min": 16.0, "deep_pct": 16.5, "light_pct": 68.4, "rem_pct": 15.0, "awake_pct": 3.9, "efficiency": 96.1, "sleep_start": "12:41", "wake_time": "08:45", "wake_episodes": 3, "sleep_start_hour": 12.683333333333334, "wake_hour": 8.75}, {"date": "2026-01-19", "date_obj": "2026-01-19", "total_sleep_min": 485.0, "deep_min": 59.0, "light_min": 333.0, "rem_min": 93.0, "awake_min": 95.0, "deep_pct": 12.2, "light_pct": 68.7, "rem_pct": 19.2, "awake_pct": 16.4, "efficiency": 83.6, "sleep_start": "00:50", "wake_time": "10:30", "wake_episodes": 3, "sleep_start_hour": 0.8333333333333334, "wake_hour": 10.5}, {"date": "2026-01-20", "date_obj": "2026-01-20", "total_sleep_min": 474.0, "deep_min": 91.0, "light_min": 263.0, "rem_min": 120.0, "awake_min": 19.0, "deep_pct": 19.2, "light_pct": 55.5, "rem_pct": 25.3, "awake_pct": 3.9, "efficiency": 96.1, "sleep_start": "00:03", "wake_time": "08:16", "wake_episodes": 3, "sleep_start_hour": 0.05, "wake_hour": 8.266666666666667}, {"date": "2026-01-21", "date_obj": "2026-01-21", "total_sleep_min": 338.0, "deep_min": 93.0, "light_min": 162.0, "rem_min": 83.0, "awake_min": 42.0, "deep_pct": 27.5, "light_pct": 47.9, "rem_pct": 24.6, "awake_pct": 11.1, "efficiency": 88.9, "sleep_start": "01:23", "wake_time": "07:43", "wake_episodes": 4, "sleep_start_hour": 1.3833333333333333, "wake_hour": 7.716666666666667}, {"date": "2026-01-22", "date_obj": "2026-01-22", "total_sleep_min": 309.0, "deep_min": 85.0, "light_min": 165.0, "rem_min": 59.0, "awake_min": 2.0, "deep_pct": 27.5, "light_pct": 53.4, "rem_pct": 19.1, "awake_pct": 0.6, "efficiency": 99.4, "sleep_start": "02:19", "wake_time": "07:30", "wake_episodes": 2, "sleep_start_hour": 2.3166666666666664, "wake_hour": 7.5}, {"date": "2026-01-23", "date_obj": "2026-01-23", "total_sleep_min": 410.0, "deep_min": 77.0, "light_min": 239.0, "rem_min": 94.0, "awake_min": 16.0, "deep_pct": 18.8, "light_pct": 58.3, "rem_pct": 22.9, "awake_pct": 3.8, "efficiency": 96.2, "sleep_start": "02:46", "wake_time": "09:52", "wake_episodes": 3, "sleep_start_hour": 2.7666666666666666, "wake_hour": 9.866666666666667}, {"date": "2026-01-24", "date_obj": "2026-01-24", "total_sleep_min": 429.0, "deep_min": 120.0, "light_min": 226.0, "rem_min": 83.0, "awake_min": 15.0, "deep_pct": 28.0, "light_pct": 52.7, "rem_pct": 19.3, "awake_pct": 3.4, "efficiency": 96.6, "sleep_start": "04:19", "wake_time": "11:43", "wake_episodes": 4, "sleep_start_hour": 4.316666666666666, "wake_hour": 11.716666666666667}, {"date": "2026-01-26", "date_obj": "2026-01-26", "total_sleep_min": 476.0, "deep_min": 76.0, "light_min": 271.0, "rem_min": 129.0, "awake_min": 3.0, "deep_pct": 16.0, "light_pct": 56.9, "rem_pct": 27.1, "awake_pct": 0.6, "efficiency": 99.4, "sleep_start": "01:13", "wake_time": "09:12", "wake_episodes": 3, "sleep_start_hour": 1.2166666666666668, "wake_hour": 9.2}, {"date": "2026-01-27", "date_obj": "2026-01-27", "total_sleep_min": 388.0, "deep_min": 102.0, "light_min": 216.0, "rem_min": 70.0, "awake_min": 9.0, "deep_pct": 26.3, "light_pct": 55.7, "rem_pct": 18.0, "awake_pct": 2.3, "efficiency": 97.7, "sleep_start": "01:59", "wake_time": "08:36", "wake_episodes": 2, "sleep_start_hour": 1.9833333333333334, "wake_hour": 8.6}, {"date": "2026-01-29", "date_obj": "2026-01-29", "total_sleep_min": 358.0, "deep_min": 49.0, "light_min": 250.0, "rem_min": 59.0, "awake_min": 14.0, "deep_pct": 13.7, "light_pct": 69.8, "rem_pct": 16.5, "awake_pct": 3.8, "efficiency": 96.2, "sleep_start": "02:19", "wake_time": "08:31", "wake_episodes": 2, "sleep_start_hour": 2.3166666666666664, "wake_hour": 8.516666666666667}, {"date": "2026-01-30", "date_obj": "2026-01-30", "total_sleep_min": 216.0, "deep_min": 89.0, "light_min": 127.0, "rem_min": 0.0, "awake_min": 25.0, "deep_pct": 41.2, "light_pct": 58.8, "rem_pct": 0.0, "awake_pct": 10.4, "efficiency": 89.6, "sleep_start": "05:18", "wake_time": "09:19", "wake_episodes": 2, "sleep_start_hour": 5.3, "wake_hour": 9.316666666666666}, {"date": "2026-01-31", "date_obj": "2026-01-31", "total_sleep_min": 447.0, "deep_min": 100.0, "light_min": 263.0, "rem_min": 84.0, "awake_min": 11.0, "deep_pct": 22.4, "light_pct": 58.8, "rem_pct": 18.8, "awake_pct": 2.4, "efficiency": 97.6, "sleep_start": "03:23", "wake_time": "11:01", "wake_episodes": 3, "sleep_start_hour": 3.3833333333333333, "wake_hour": 11.016666666666667}, {"date": "2026-02-01", "date_obj": "2026-02-01", "total_sleep_min": 435.0, "deep_min": 61.0, "light_min": 250.0, "rem_min": 124.0, "awake_min": 0.0, "deep_pct": 14.0, "light_pct": 57.5, "rem_pct": 28.5, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "00:47", "wake_time": "08:02", "wake_episodes": 0, "sleep_start_hour": 0.7833333333333333, "wake_hour": 8.033333333333333}, {"date": "2026-02-03", "date_obj": "2026-02-03", "total_sleep_min": 474.0, "deep_min": 96.0, "light_min": 216.0, "rem_min": 162.0, "awake_min": 14.0, "deep_pct": 20.3, "light_pct": 45.6, "rem_pct": 34.2, "awake_pct": 2.9, "efficiency": 97.1, "sleep_start": "00:55", "wake_time": "09:03", "wake_episodes": 1, "sleep_start_hour": 0.9166666666666666, "wake_hour": 9.05}, {"date": "2026-02-04", "date_obj": "2026-02-04", "total_sleep_min": 461.0, "deep_min": 94.0, "light_min": 249.0, "rem_min": 118.0, "awake_min": 8.0, "deep_pct": 20.4, "light_pct": 54.0, "rem_pct": 25.6, "awake_pct": 1.7, "efficiency": 98.3, "sleep_start": "00:48", "wake_time": "08:37", "wake_episodes": 2, "sleep_start_hour": 0.8, "wake_hour": 8.616666666666667}, {"date": "2026-02-05", "date_obj": "2026-02-05", "total_sleep_min": 338.0, "deep_min": 91.0, "light_min": 151.0, "rem_min": 96.0, "awake_min": 25.0, "deep_pct": 26.9, "light_pct": 44.7, "rem_pct": 28.4, "awake_pct": 6.9, "efficiency": 93.1, "sleep_start": "01:25", "wake_time": "07:28", "wake_episodes": 3, "sleep_start_hour": 1.4166666666666667, "wake_hour": 7.466666666666667}, {"date": "2026-02-06", "date_obj": "2026-02-06", "total_sleep_min": 317.0, "deep_min": 72.0, "light_min": 173.0, "rem_min": 72.0, "awake_min": 21.0, "deep_pct": 22.7, "light_pct": 54.6, "rem_pct": 22.7, "awake_pct": 6.2, "efficiency": 93.8, "sleep_start": "04:06", "wake_time": "09:44", "wake_episodes": 4, "sleep_start_hour": 4.1, "wake_hour": 9.733333333333333}, {"date": "2026-02-07", "date_obj": "2026-02-07", "total_sleep_min": 424.0, "deep_min": 48.0, "light_min": 275.0, "rem_min": 101.0, "awake_min": 8.0, "deep_pct": 11.3, "light_pct": 64.9, "rem_pct": 23.8, "awake_pct": 1.9, "efficiency": 98.1, "sleep_start": "03:32", "wake_time": "10:44", "wake_episodes": 2, "sleep_start_hour": 3.533333333333333, "wake_hour": 10.733333333333333}, {"date": "2026-02-08", "date_obj": "2026-02-08", "total_sleep_min": 430.0, "deep_min": 71.0, "light_min": 258.0, "rem_min": 101.0, "awake_min": 8.0, "deep_pct": 16.5, "light_pct": 60.0, "rem_pct": 23.5, "awake_pct": 1.8, "efficiency": 98.2, "sleep_start": "01:30", "wake_time": "08:48", "wake_episodes": 3, "sleep_start_hour": 1.5, "wake_hour": 8.8}, {"date": "2026-02-09", "date_obj": "2026-02-09", "total_sleep_min": 494.0, "deep_min": 87.0, "light_min": 291.0, "rem_min": 116.0, "awake_min": 45.0, "deep_pct": 17.6, "light_pct": 58.9, "rem_pct": 23.5, "awake_pct": 8.3, "efficiency": 91.7, "sleep_start": "23:37", "wake_time": "08:36", "wake_episodes": 5, "sleep_start_hour": 23.616666666666667, "wake_hour": 8.6}, {"date": "2026-02-10", "date_obj": "2026-02-10", "total_sleep_min": 261.0, "deep_min": 105.0, "light_min": 96.0, "rem_min": 60.0, "awake_min": 24.0, "deep_pct": 40.2, "light_pct": 36.8, "rem_pct": 23.0, "awake_pct": 8.4, "efficiency": 91.6, "sleep_start": "02:44", "wake_time": "07:29", "wake_episodes": 3, "sleep_start_hour": 2.7333333333333334, "wake_hour": 7.483333333333333}, {"date": "2026-02-11", "date_obj": "2026-02-11", "total_sleep_min": 284.0, "deep_min": 62.0, "light_min": 187.0, "rem_min": 35.0, "awake_min": 10.0, "deep_pct": 21.8, "light_pct": 65.8, "rem_pct": 12.3, "awake_pct": 3.4, "efficiency": 96.6, "sleep_start": "03:30", "wake_time": "08:24", "wake_episodes": 2, "sleep_start_hour": 3.5, "wake_hour": 8.4}, {"date": "2026-02-12", "date_obj": "2026-02-12", "total_sleep_min": 355.0, "deep_min": 49.0, "light_min": 262.0, "rem_min": 44.0, "awake_min": 0.0, "deep_pct": 13.8, "light_pct": 73.8, "rem_pct": 12.4, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "02:34", "wake_time": "08:29", "wake_episodes": 0, "sleep_start_hour": 2.5666666666666664, "wake_hour": 8.483333333333333}, {"date": "2026-02-13", "date_obj": "2026-02-13", "total_sleep_min": 364.0, "deep_min": 81.0, "light_min": 205.0, "rem_min": 78.0, "awake_min": 33.0, "deep_pct": 22.3, "light_pct": 56.3, "rem_pct": 21.4, "awake_pct": 8.3, "efficiency": 91.7, "sleep_start": "04:24", "wake_time": "11:01", "wake_episodes": 2, "sleep_start_hour": 4.4, "wake_hour": 11.016666666666667}, {"date": "2026-02-14", "date_obj": "2026-02-14", "total_sleep_min": 389.0, "deep_min": 137.0, "light_min": 205.0, "rem_min": 47.0, "awake_min": 5.0, "deep_pct": 35.2, "light_pct": 52.7, "rem_pct": 12.1, "awake_pct": 1.3, "efficiency": 98.7, "sleep_start": "06:08", "wake_time": "12:42", "wake_episodes": 2, "sleep_start_hour": 6.133333333333334, "wake_hour": 12.7}, {"date": "2026-02-15", "date_obj": "2026-02-15", "total_sleep_min": 475.0, "deep_min": 58.0, "light_min": 321.0, "rem_min": 96.0, "awake_min": 6.0, "deep_pct": 12.2, "light_pct": 67.6, "rem_pct": 20.2, "awake_pct": 1.2, "efficiency": 98.8, "sleep_start": "02:46", "wake_time": "10:47", "wake_episodes": 2, "sleep_start_hour": 2.7666666666666666, "wake_hour": 10.783333333333333}, {"date": "2026-02-17", "date_obj": "2026-02-17", "total_sleep_min": 499.0, "deep_min": 97.0, "light_min": 302.0, "rem_min": 100.0, "awake_min": 12.0, "deep_pct": 19.4, "light_pct": 60.5, "rem_pct": 20.0, "awake_pct": 2.3, "efficiency": 97.7, "sleep_start": "23:37", "wake_time": "08:08", "wake_episodes": 2, "sleep_start_hour": 23.616666666666667, "wake_hour": 8.133333333333333}, {"date": "2026-02-18", "date_obj": "2026-02-18", "total_sleep_min": 385.0, "deep_min": 71.0, "light_min": 215.0, "rem_min": 99.0, "awake_min": 18.0, "deep_pct": 18.4, "light_pct": 55.8, "rem_pct": 25.7, "awake_pct": 4.5, "efficiency": 95.5, "sleep_start": "01:39", "wake_time": "08:22", "wake_episodes": 2, "sleep_start_hour": 1.65, "wake_hour": 8.366666666666667}, {"date": "2026-02-19", "date_obj": "2026-02-19", "total_sleep_min": 371.0, "deep_min": 54.0, "light_min": 243.0, "rem_min": 74.0, "awake_min": 7.0, "deep_pct": 14.6, "light_pct": 65.5, "rem_pct": 19.9, "awake_pct": 1.9, "efficiency": 98.1, "sleep_start": "02:28", "wake_time": "08:46", "wake_episodes": 1, "sleep_start_hour": 2.466666666666667, "wake_hour": 8.766666666666667}, {"date": "2026-02-20", "date_obj": "2026-02-20", "total_sleep_min": 455.0, "deep_min": 111.0, "light_min": 281.0, "rem_min": 63.0, "awake_min": 15.0, "deep_pct": 24.4, "light_pct": 61.8, "rem_pct": 13.8, "awake_pct": 3.2, "efficiency": 96.8, "sleep_start": "04:10", "wake_time": "12:00", "wake_episodes": 3, "sleep_start_hour": 4.166666666666667, "wake_hour": 12.0}, {"date": "2026-02-21", "date_obj": "2026-02-21", "total_sleep_min": 403.0, "deep_min": 76.0, "light_min": 244.0, "rem_min": 83.0, "awake_min": 20.0, "deep_pct": 18.9, "light_pct": 60.5, "rem_pct": 20.6, "awake_pct": 4.7, "efficiency": 95.3, "sleep_start": "12:00", "wake_time": "11:24", "wake_episodes": 6, "sleep_start_hour": 12.0, "wake_hour": 11.4}, {"date": "2026-02-22", "date_obj": "2026-02-22", "total_sleep_min": 429.0, "deep_min": 101.0, "light_min": 254.0, "rem_min": 74.0, "awake_min": 18.0, "deep_pct": 23.5, "light_pct": 59.2, "rem_pct": 17.2, "awake_pct": 4.0, "efficiency": 96.0, "sleep_start": "01:20", "wake_time": "08:47", "wake_episodes": 8, "sleep_start_hour": 1.3333333333333333, "wake_hour": 8.783333333333333}, {"date": "2026-02-23", "date_obj": "2026-02-23", "total_sleep_min": 377.0, "deep_min": 97.0, "light_min": 193.0, "rem_min": 87.0, "awake_min": 12.0, "deep_pct": 25.7, "light_pct": 51.2, "rem_pct": 23.1, "awake_pct": 3.1, "efficiency": 96.9, "sleep_start": "02:17", "wake_time": "08:46", "wake_episodes": 10, "sleep_start_hour": 2.283333333333333, "wake_hour": 8.766666666666667}, {"date": "2026-02-24", "date_obj": "2026-02-24", "total_sleep_min": 355.0, "deep_min": 50.0, "light_min": 226.0, "rem_min": 79.0, "awake_min": 16.0, "deep_pct": 14.1, "light_pct": 63.7, "rem_pct": 22.3, "awake_pct": 4.3, "efficiency": 95.7, "sleep_start": "01:12", "wake_time": "07:23", "wake_episodes": 4, "sleep_start_hour": 1.2, "wake_hour": 7.383333333333334}, {"date": "2026-02-25", "date_obj": "2026-02-25", "total_sleep_min": 366.0, "deep_min": 139.0, "light_min": 150.0, "rem_min": 77.0, "awake_min": 54.0, "deep_pct": 38.0, "light_pct": 41.0, "rem_pct": 21.0, "awake_pct": 12.9, "efficiency": 87.1, "sleep_start": "00:52", "wake_time": "07:52", "wake_episodes": 8, "sleep_start_hour": 0.8666666666666667, "wake_hour": 7.866666666666667}, {"date": "2026-02-26", "date_obj": "2026-02-26", "total_sleep_min": 420.0, "deep_min": 78.0, "light_min": 287.0, "rem_min": 55.0, "awake_min": 5.0, "deep_pct": 18.6, "light_pct": 68.3, "rem_pct": 13.1, "awake_pct": 1.2, "efficiency": 98.8, "sleep_start": "01:38", "wake_time": "08:43", "wake_episodes": 2, "sleep_start_hour": 1.6333333333333333, "wake_hour": 8.716666666666667}, {"date": "2026-02-27", "date_obj": "2026-02-27", "total_sleep_min": 290.0, "deep_min": 134.0, "light_min": 126.0, "rem_min": 30.0, "awake_min": 4.0, "deep_pct": 46.2, "light_pct": 43.4, "rem_pct": 10.3, "awake_pct": 1.4, "efficiency": 98.6, "sleep_start": "03:58", "wake_time": "08:52", "wake_episodes": 2, "sleep_start_hour": 3.966666666666667, "wake_hour": 8.866666666666667}, {"date": "2026-02-28", "date_obj": "2026-02-28", "total_sleep_min": 385.0, "deep_min": 86.0, "light_min": 267.0, "rem_min": 32.0, "awake_min": 37.0, "deep_pct": 22.3, "light_pct": 69.4, "rem_pct": 8.3, "awake_pct": 8.8, "efficiency": 91.2, "sleep_start": "03:25", "wake_time": "10:27", "wake_episodes": 12, "sleep_start_hour": 3.4166666666666665, "wake_hour": 10.45}, {"date": "2026-03-02", "date_obj": "2026-03-02", "total_sleep_min": 537.0, "deep_min": 88.0, "light_min": 345.0, "rem_min": 104.0, "awake_min": 10.0, "deep_pct": 16.4, "light_pct": 64.2, "rem_pct": 19.4, "awake_pct": 1.8, "efficiency": 98.2, "sleep_start": "23:53", "wake_time": "09:00", "wake_episodes": 6, "sleep_start_hour": 23.883333333333333, "wake_hour": 9.0}, {"date": "2026-03-03", "date_obj": "2026-03-03", "total_sleep_min": 383.0, "deep_min": 58.0, "light_min": 241.0, "rem_min": 84.0, "awake_min": 9.0, "deep_pct": 15.1, "light_pct": 62.9, "rem_pct": 21.9, "awake_pct": 2.3, "efficiency": 97.7, "sleep_start": "02:41", "wake_time": "09:13", "wake_episodes": 2, "sleep_start_hour": 2.6833333333333336, "wake_hour": 9.216666666666667}, {"date": "2026-03-04", "date_obj": "2026-03-04", "total_sleep_min": 457.0, "deep_min": 52.0, "light_min": 278.0, "rem_min": 127.0, "awake_min": 19.0, "deep_pct": 11.4, "light_pct": 60.8, "rem_pct": 27.8, "awake_pct": 4.0, "efficiency": 96.0, "sleep_start": "00:50", "wake_time": "08:46", "wake_episodes": 6, "sleep_start_hour": 0.8333333333333334, "wake_hour": 8.766666666666667}, {"date": "2026-03-05", "date_obj": "2026-03-05", "total_sleep_min": 377.0, "deep_min": 105.0, "light_min": 182.0, "rem_min": 90.0, "awake_min": 7.0, "deep_pct": 27.9, "light_pct": 48.3, "rem_pct": 23.9, "awake_pct": 1.8, "efficiency": 98.2, "sleep_start": "02:21", "wake_time": "08:45", "wake_episodes": 4, "sleep_start_hour": 2.35, "wake_hour": 8.75}, {"date": "2026-03-06", "date_obj": "2026-03-06", "total_sleep_min": 312.0, "deep_min": 51.0, "light_min": 205.0, "rem_min": 56.0, "awake_min": 1.0, "deep_pct": 16.3, "light_pct": 65.7, "rem_pct": 17.9, "awake_pct": 0.3, "efficiency": 99.7, "sleep_start": "04:39", "wake_time": "09:52", "wake_episodes": 2, "sleep_start_hour": 4.65, "wake_hour": 9.866666666666667}, {"date": "2026-03-07", "date_obj": "2026-03-07", "total_sleep_min": 348.0, "deep_min": 80.0, "light_min": 210.0, "rem_min": 58.0, "awake_min": 19.0, "deep_pct": 23.0, "light_pct": 60.3, "rem_pct": 16.7, "awake_pct": 5.2, "efficiency": 94.8, "sleep_start": "02:57", "wake_time": "09:04", "wake_episodes": 6, "sleep_start_hour": 2.95, "wake_hour": 9.066666666666666}, {"date": "2026-03-08", "date_obj": "2026-03-08", "total_sleep_min": 427.0, "deep_min": 63.0, "light_min": 263.0, "rem_min": 101.0, "awake_min": 3.0, "deep_pct": 14.8, "light_pct": 61.6, "rem_pct": 23.7, "awake_pct": 0.7, "efficiency": 99.3, "sleep_start": "02:07", "wake_time": "09:17", "wake_episodes": 4, "sleep_start_hour": 2.1166666666666667, "wake_hour": 9.283333333333333}, {"date": "2026-03-10", "date_obj": "2026-03-10", "total_sleep_min": 494.0, "deep_min": 55.0, "light_min": 305.0, "rem_min": 134.0, "awake_min": 16.0, "deep_pct": 11.1, "light_pct": 61.7, "rem_pct": 27.1, "awake_pct": 3.1, "efficiency": 96.9, "sleep_start": "00:31", "wake_time": "09:01", "wake_episodes": 6, "sleep_start_hour": 0.5166666666666667, "wake_hour": 9.016666666666667}, {"date": "2026-03-11", "date_obj": "2026-03-11", "total_sleep_min": 360.0, "deep_min": 55.0, "light_min": 266.0, "rem_min": 39.0, "awake_min": 42.0, "deep_pct": 15.3, "light_pct": 73.9, "rem_pct": 10.8, "awake_pct": 10.4, "efficiency": 89.6, "sleep_start": "02:05", "wake_time": "08:47", "wake_episodes": 5, "sleep_start_hour": 2.0833333333333335, "wake_hour": 8.783333333333333}, {"date": "2026-03-12", "date_obj": "2026-03-12", "total_sleep_min": 341.0, "deep_min": 101.0, "light_min": 160.0, "rem_min": 80.0, "awake_min": 7.0, "deep_pct": 29.6, "light_pct": 46.9, "rem_pct": 23.5, "awake_pct": 2.0, "efficiency": 98.0, "sleep_start": "01:36", "wake_time": "07:24", "wake_episodes": 1, "sleep_start_hour": 1.6, "wake_hour": 7.4}, {"date": "2026-03-13", "date_obj": "2026-03-13", "total_sleep_min": 497.0, "deep_min": 68.0, "light_min": 339.0, "rem_min": 90.0, "awake_min": 43.0, "deep_pct": 13.7, "light_pct": 68.2, "rem_pct": 18.1, "awake_pct": 8.0, "efficiency": 92.0, "sleep_start": "02:25", "wake_time": "11:25", "wake_episodes": 4, "sleep_start_hour": 2.4166666666666665, "wake_hour": 11.416666666666666}, {"date": "2026-03-14", "date_obj": "2026-03-14", "total_sleep_min": 222.0, "deep_min": 80.0, "light_min": 142.0, "rem_min": 0.0, "awake_min": 19.0, "deep_pct": 36.0, "light_pct": 64.0, "rem_pct": 0.0, "awake_pct": 7.9, "efficiency": 92.1, "sleep_start": "04:17", "wake_time": "08:18", "wake_episodes": 3, "sleep_start_hour": 4.283333333333333, "wake_hour": 8.3}];
+const SPO2_DATA = {"2026-01-30": {"avg": 92.9, "min": 81.0, "max": 99.0, "std": 4.15}, "2026-01-31": {"avg": 92.2, "min": 81.0, "max": 98.0, "std": 2.73}, "2026-02-01": {"avg": 90.8, "min": 81.0, "max": 100.0, "std": 3.66}, "2026-02-02": {"avg": 94.3, "min": 93.0, "max": 97.0, "std": 1.36}, "2026-02-03": {"avg": 92.2, "min": 80.0, "max": 98.0, "std": 4.08}, "2026-02-04": {"avg": 91.0, "min": 80.0, "max": 98.0, "std": 3.4}, "2026-02-05": {"avg": 91.8, "min": 73.0, "max": 100.0, "std": 4.62}, "2026-02-06": {"avg": 92.4, "min": 84.0, "max": 100.0, "std": 3.99}, "2026-02-07": {"avg": 91.9, "min": 83.0, "max": 98.0, "std": 3.3}, "2026-02-08": {"avg": 90.2, "min": 80.0, "max": 98.0, "std": 3.69}, "2026-02-09": {"avg": 91.1, "min": 75.0, "max": 100.0, "std": 4.86}, "2026-02-10": {"avg": 93.0, "min": 86.0, "max": 97.0, "std": 1.86}, "2026-02-11": {"avg": 93.6, "min": 89.0, "max": 98.0, "std": 2.32}, "2026-02-12": {"avg": 93.0, "min": 84.0, "max": 100.0, "std": 2.92}, "2026-02-13": {"avg": 91.2, "min": 71.0, "max": 100.0, "std": 5.83}, "2026-02-14": {"avg": 92.7, "min": 86.0, "max": 99.0, "std": 2.28}, "2026-02-15": {"avg": 92.6, "min": 86.0, "max": 100.0, "std": 2.84}, "2026-02-16": {"avg": 94.8, "min": 94.0, "max": 95.0, "std": 0.37}, "2026-02-17": {"avg": 92.8, "min": 82.0, "max": 100.0, "std": 4.45}, "2026-02-18": {"avg": 92.1, "min": 81.0, "max": 98.0, "std": 3.64}, "2026-02-19": {"avg": 92.2, "min": 81.0, "max": 100.0, "std": 3.37}, "2026-02-20": {"avg": 92.4, "min": 83.0, "max": 99.0, "std": 3.91}, "2026-02-21": {"avg": 93.2, "min": 86.0, "max": 100.0, "std": 2.04}, "2026-02-22": {"avg": 94.4, "min": 86.0, "max": 100.0, "std": 2.58}, "2026-01-23": {"avg": 91.5, "min": 76.0, "max": 100.0, "std": 3.82}, "2026-01-24": {"avg": 89.2, "min": 79.0, "max": 97.0, "std": 3.82}, "2026-01-26": {"avg": 92.6, "min": 84.0, "max": 100.0, "std": 3.34}, "2026-01-27": {"avg": 93.3, "min": 83.0, "max": 100.0, "std": 2.65}, "2026-01-28": {"avg": 95.1, "min": 92.0, "max": 98.0, "std": 1.56}, "2026-01-29": {"avg": 93.2, "min": 85.0, "max": 100.0, "std": 2.27}, "2026-02-23": {"avg": 94.0, "min": 86.0, "max": 99.0, "std": 2.8}, "2026-02-24": {"avg": 93.3, "min": 81.0, "max": 100.0, "std": 3.72}, "2026-02-25": {"avg": 91.7, "min": 80.0, "max": 100.0, "std": 3.31}, "2026-02-26": {"avg": 95.0, "min": 88.0, "max": 100.0, "std": 2.46}, "2026-02-27": {"avg": 91.5, "min": 84.0, "max": 100.0, "std": 3.11}, "2026-02-28": {"avg": 94.1, "min": 89.0, "max": 100.0, "std": 2.49}, "2026-03-01": {"avg": 94.7, "min": 93.0, "max": 96.0, "std": 1.0}, "2026-03-02": {"avg": 92.3, "min": 80.0, "max": 100.0, "std": 4.28}, "2026-03-03": {"avg": 93.5, "min": 83.0, "max": 100.0, "std": 2.84}, "2026-03-04": {"avg": 93.2, "min": 75.0, "max": 100.0, "std": 3.21}, "2026-03-05": {"avg": 92.1, "min": 83.0, "max": 100.0, "std": 3.37}, "2026-03-06": {"avg": 94.2, "min": 85.0, "max": 98.0, "std": 2.23}, "2026-03-07": {"avg": 93.8, "min": 84.0, "max": 100.0, "std": 2.53}, "2026-03-08": {"avg": 96.8, "min": 93.0, "max": 99.0, "std": 1.38}, "2026-03-10": {"avg": 91.7, "min": 79.0, "max": 100.0, "std": 3.94}, "2026-03-11": {"avg": 94.0, "min": 84.0, "max": 100.0, "std": 3.97}, "2026-03-12": {"avg": 95.2, "min": 89.0, "max": 100.0, "std": 2.38}, "2026-03-14": {"avg": 94.0, "min": 85.0, "max": 100.0, "std": 3.61}, "2026-03-15": {"avg": 94.9, "min": 91.0, "max": 96.0, "std": 1.63}};
+const PULSE_DATA = {"2026-03-02": {"avg": 55.7, "min": 50, "max": 96, "resting": 52}, "2026-03-03": {"avg": 61.4, "min": 50, "max": 103, "resting": 53}, "2026-03-04": {"avg": 56.0, "min": 49, "max": 89, "resting": 52}, "2026-03-05": {"avg": 67.1, "min": 55, "max": 99, "resting": 56}, "2026-03-06": {"avg": 69.7, "min": 55, "max": 115, "resting": 60}, "2026-03-07": {"avg": 74.8, "min": 64, "max": 102, "resting": 69}, "2026-03-08": {"avg": 64.8, "min": 48, "max": 106, "resting": 52}, "2026-02-18": {"avg": 58.4, "min": 50, "max": 96, "resting": 52}, "2026-02-19": {"avg": 60.8, "min": 50, "max": 101, "resting": 53}, "2026-02-20": {"avg": 66.0, "min": 51, "max": 99, "resting": 58}, "2026-02-21": {"avg": 70.7, "min": 53, "max": 106, "resting": 56}, "2026-02-22": {"avg": 62.1, "min": 49, "max": 107, "resting": 52}, "2026-01-26": {"avg": 55.0, "min": 49, "max": 92, "resting": 51}, "2026-01-27": {"avg": 60.9, "min": 49, "max": 119, "resting": 52}, "2026-01-28": {"avg": 66.2, "min": 55, "max": 95, "resting": 59}, "2026-01-29": {"avg": 64.6, "min": 51, "max": 111, "resting": 54}, "2026-01-30": {"avg": 90.9, "min": 71, "max": 130, "resting": 77}, "2026-01-31": {"avg": 64.4, "min": 51, "max": 115, "resting": 52}, "2026-02-01": {"avg": 55.1, "min": 45, "max": 98, "resting": 49}, "2026-02-03": {"avg": 58.4, "min": 50, "max": 90, "resting": 53}, "2026-02-04": {"avg": 55.1, "min": 48, "max": 94, "resting": 51}, "2026-02-05": {"avg": 59.7, "min": 52, "max": 96, "resting": 53}, "2026-02-06": {"avg": 67.1, "min": 53, "max": 121, "resting": 57}, "2026-02-07": {"avg": 62.5, "min": 48, "max": 103, "resting": 51}, "2026-02-08": {"avg": 56.7, "min": 48, "max": 108, "resting": 49}, "2026-02-09": {"avg": 53.1, "min": 46, "max": 86, "resting": 48}, "2026-02-10": {"avg": 60.5, "min": 50, "max": 91, "resting": 52}, "2026-02-11": {"avg": 82.3, "min": 71, "max": 124, "resting": 74}, "2026-02-12": {"avg": 60.2, "min": 50, "max": 84, "resting": 56}, "2026-02-13": {"avg": 74.9, "min": 60, "max": 106, "resting": 67}, "2026-02-14": {"avg": 86.2, "min": 64, "max": 114, "resting": 71}, "2026-02-15": {"avg": 71.8, "min": 51, "max": 119, "resting": 58}, "2026-02-17": {"avg": 55.2, "min": 48, "max": 93, "resting": 50}, "2026-02-23": {"avg": 59.9, "min": 53, "max": 88, "resting": 55}, "2026-02-24": {"avg": 59.9, "min": 51, "max": 94, "resting": 53}, "2026-02-25": {"avg": 62.1, "min": 51, "max": 94, "resting": 55}, "2026-02-26": {"avg": 65.2, "min": 49, "max": 109, "resting": 53}, "2026-02-27": {"avg": 81.1, "min": 63, "max": 119, "resting": 70}, "2026-02-28": {"avg": 76.2, "min": 60, "max": 111, "resting": 69}, "2026-03-10": {"avg": 53.7, "min": 50, "max": 83, "resting": 52}, "2026-03-11": {"avg": 58.1, "min": 52, "max": 102, "resting": 54}, "2026-03-12": {"avg": 83.9, "min": 76, "max": 114, "resting": 79}, "2026-03-13": {"avg": 58.7, "min": 51, "max": 78, "resting": 53}, "2026-03-14": {"avg": 83.8, "min": 57, "max": 104, "resting": 75}};
+const MONTHLY_DATA = [{"month": "2025-02", "nights": 9, "avg_sleep": 434.1, "avg_deep": 99.3, "avg_rem": 72.0, "avg_efficiency": 92.0, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-03", "nights": 8, "avg_sleep": 435.6, "avg_deep": 75.8, "avg_rem": 92.4, "avg_efficiency": 95.8, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-06", "nights": 13, "avg_sleep": 453.8, "avg_deep": 101.5, "avg_rem": 92.7, "avg_efficiency": 95.4, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-08", "nights": 10, "avg_sleep": 430.0, "avg_deep": 91.7, "avg_rem": 90.1, "avg_efficiency": 95.7, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-09", "nights": 9, "avg_sleep": 392.9, "avg_deep": 90.7, "avg_rem": 67.6, "avg_efficiency": 92.9, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-10", "nights": 5, "avg_sleep": 426.0, "avg_deep": 100.4, "avg_rem": 89.4, "avg_efficiency": 96.3, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-11", "nights": 5, "avg_sleep": 462.0, "avg_deep": 78.0, "avg_rem": 82.0, "avg_efficiency": 94.5, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-12", "nights": 11, "avg_sleep": 414.8, "avg_deep": 79.2, "avg_rem": 80.4, "avg_efficiency": 92.1, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2026-01", "nights": 14, "avg_sleep": 389.6, "avg_deep": 84.8, "avg_rem": 75.2, "avg_efficiency": 92.8, "avg_spo2": 92.1, "avg_resting_pulse": 57.2}, {"month": "2026-02", "nights": 26, "avg_sleep": 393.7, "avg_deep": 84.8, "avg_rem": 80.9, "avg_efficiency": 96.0, "avg_spo2": 92.5, "avg_resting_pulse": 56.3}, {"month": "2026-03", "nights": 12, "avg_sleep": 396.2, "avg_deep": 71.3, "avg_rem": 80.2, "avg_efficiency": 96.0, "avg_spo2": 93.7, "avg_resting_pulse": 58.9}];
+const MA_DATA = {"total": [388.0, 423.0, 417.0, 431.0, 457.8, 460.0, 450.9, 447.4, 437.3, 438.3, 433.4, 420.7, 409.1, 417.3, 419.6, 430.4, 439.0, 455.4, 430.0, 432.6, 438.3, 448.6, 458.1, 467.9, 445.9, 481.1, 483.3, 475.9, 472.6, 452.1, 435.3, 454.7, 435.3, 440.4, 461.6, 459.0, 444.0, 441.9, 403.3, 419.0, 424.6, 399.0, 403.0, 431.0, 414.6, 416.0, 386.7, 363.3, 375.4, 368.9, 359.1, 371.7, 406.1, 422.7, 431.6, 441.0, 448.3, 456.6, 465.3, 447.4, 441.9, 451.4, 436.6, 432.3, 427.3, 425.6, 422.7, 416.0, 419.6, 408.6, 417.9, 392.0, 386.9, 403.0, 421.6, 400.1, 390.0, 380.1, 405.4, 417.3, 403.4, 386.9, 369.4, 389.1, 392.7, 399.1, 397.0, 389.9, 384.0, 413.7, 411.3, 419.7, 389.3, 364.0, 366.4, 373.1, 368.1, 374.6, 375.3, 393.0, 405.4, 419.7, 425.3, 431.0, 417.0, 396.4, 393.7, 400.7, 377.1, 374.6, 390.0, 390.9, 405.4, 407.0, 391.6, 399.9, 405.9, 399.7, 396.4, 379.9, 397.0, 384.1], "efficiency": [100.0, 97.0, 94.8, 95.0, 96.0, 94.9, 93.2, 91.4, 90.6, 91.9, 92.5, 91.6, 91.5, 93.1, 94.2, 95.7, 95.2, 95.1, 95.2, 96.0, 96.2, 96.6, 96.1, 96.1, 96.2, 96.3, 96.5, 96.9, 94.7, 94.9, 95.3, 94.2, 94.3, 94.8, 93.9, 96.4, 95.1, 95.2, 95.4, 95.6, 95.4, 95.9, 95.5, 96.4, 94.5, 93.6, 93.0, 91.8, 91.8, 92.0, 93.0, 93.9, 95.2, 95.3, 96.8, 96.9, 95.6, 95.1, 94.7, 94.8, 95.1, 94.7, 93.7, 94.4, 93.6, 94.6, 93.9, 92.9, 93.0, 90.5, 90.4, 87.3, 87.1, 85.8, 86.8, 85.7, 89.5, 90.0, 93.8, 94.3, 96.3, 96.3, 96.4, 96.2, 96.7, 96.8, 96.6, 96.0, 95.6, 96.9, 96.9, 95.8, 95.0, 94.7, 95.7, 95.4, 95.5, 95.6, 96.4, 97.0, 97.2, 96.8, 97.3, 96.9, 96.6, 96.3, 95.1, 95.2, 95.5, 94.9, 95.2, 95.3, 95.4, 97.0, 97.1, 96.5, 97.7, 97.5, 96.4, 96.6, 95.8, 94.7], "rem": [126.0, 82.0, 70.3, 80.2, 79.8, 82.0, 86.9, 68.9, 69.1, 69.7, 68.9, 76.4, 67.4, 66.9, 75.1, 85.6, 98.3, 103.4, 89.1, 96.3, 97.0, 101.4, 103.7, 107.1, 101.7, 114.7, 114.4, 114.3, 102.4, 88.4, 79.9, 84.4, 75.0, 72.3, 77.9, 88.7, 94.9, 94.6, 77.3, 86.7, 90.4, 78.9, 81.4, 83.6, 69.0, 70.7, 61.3, 56.7, 64.1, 68.0, 70.6, 75.1, 88.1, 89.4, 97.3, 94.4, 81.7, 79.6, 84.4, 75.9, 78.4, 83.4, 88.3, 89.0, 88.6, 94.4, 96.0, 90.0, 80.1, 66.0, 71.4, 64.3, 57.4, 61.1, 72.4, 73.7, 76.3, 78.1, 84.4, 94.4, 91.1, 82.4, 70.6, 74.1, 78.4, 89.7, 88.1, 91.9, 93.7, 108.1, 110.6, 109.4, 94.9, 83.0, 75.6, 76.4, 68.7, 68.0, 65.7, 71.3, 76.9, 79.6, 80.3, 84.1, 82.9, 79.9, 76.7, 74.0, 69.3, 62.0, 66.3, 65.9, 72.7, 74.6, 74.7, 78.7, 88.6, 92.9, 86.4, 79.7, 79.7, 71.7], "deep": [122.0, 112.5, 117.0, 108.8, 103.0, 104.0, 100.1, 92.7, 95.6, 88.9, 88.6, 84.7, 75.4, 74.1, 78.7, 68.7, 75.3, 80.0, 81.9, 91.7, 97.1, 94.9, 106.1, 104.0, 105.6, 106.9, 101.3, 101.0, 106.3, 100.1, 95.7, 92.1, 103.9, 102.7, 93.6, 88.6, 94.4, 90.4, 92.9, 82.9, 83.7, 93.3, 88.3, 84.4, 90.9, 91.6, 90.6, 91.6, 91.0, 92.9, 91.9, 96.7, 88.6, 97.7, 99.7, 91.1, 90.9, 90.3, 85.7, 89.4, 77.7, 79.9, 84.3, 89.0, 85.4, 80.6, 79.9, 80.7, 79.1, 76.4, 72.0, 78.9, 79.0, 75.0, 78.3, 77.7, 82.0, 83.6, 84.3, 85.9, 92.0, 86.0, 85.4, 87.6, 85.3, 81.9, 84.4, 82.9, 86.1, 80.3, 76.1, 79.9, 81.1, 76.6, 70.6, 71.9, 84.6, 82.7, 84.1, 79.3, 78.1, 87.0, 86.3, 81.1, 86.7, 80.0, 89.7, 93.1, 96.4, 97.9, 96.0, 90.4, 90.7, 85.9, 82.0, 74.3, 71.0, 66.3, 65.9, 72.9, 67.6, 71.7]};
+const CORR_DATA = {"eff_spo2": [{"x": 96.2, "y": 91.5}, {"x": 96.6, "y": 89.2}, {"x": 99.4, "y": 92.6}, {"x": 97.7, "y": 93.3}, {"x": 96.2, "y": 93.2}, {"x": 89.6, "y": 92.9}, {"x": 97.6, "y": 92.2}, {"x": 100.0, "y": 90.8}, {"x": 97.1, "y": 92.2}, {"x": 98.3, "y": 91.0}, {"x": 93.1, "y": 91.8}, {"x": 93.8, "y": 92.4}, {"x": 98.1, "y": 91.9}, {"x": 98.2, "y": 90.2}, {"x": 91.7, "y": 91.1}, {"x": 91.6, "y": 93.0}, {"x": 96.6, "y": 93.6}, {"x": 100.0, "y": 93.0}, {"x": 91.7, "y": 91.2}, {"x": 98.7, "y": 92.7}, {"x": 98.8, "y": 92.6}, {"x": 97.7, "y": 92.8}, {"x": 95.5, "y": 92.1}, {"x": 98.1, "y": 92.2}, {"x": 96.8, "y": 92.4}, {"x": 95.3, "y": 93.2}, {"x": 96.0, "y": 94.4}, {"x": 96.9, "y": 94.0}, {"x": 95.7, "y": 93.3}, {"x": 87.1, "y": 91.7}, {"x": 98.8, "y": 95.0}, {"x": 98.6, "y": 91.5}, {"x": 91.2, "y": 94.1}, {"x": 98.2, "y": 92.3}, {"x": 97.7, "y": 93.5}, {"x": 96.0, "y": 93.2}, {"x": 98.2, "y": 92.1}, {"x": 99.7, "y": 94.2}, {"x": 94.8, "y": 93.8}, {"x": 99.3, "y": 96.8}, {"x": 96.9, "y": 91.7}, {"x": 89.6, "y": 94.0}, {"x": 98.0, "y": 95.2}, {"x": 92.1, "y": 94.0}], "rem_spo2": [{"x": 94.0, "y": 91.5}, {"x": 83.0, "y": 89.2}, {"x": 129.0, "y": 92.6}, {"x": 70.0, "y": 93.3}, {"x": 59.0, "y": 93.2}, {"x": 84.0, "y": 92.2}, {"x": 124.0, "y": 90.8}, {"x": 162.0, "y": 92.2}, {"x": 118.0, "y": 91.0}, {"x": 96.0, "y": 91.8}, {"x": 72.0, "y": 92.4}, {"x": 101.0, "y": 91.9}, {"x": 101.0, "y": 90.2}, {"x": 116.0, "y": 91.1}, {"x": 60.0, "y": 93.0}, {"x": 35.0, "y": 93.6}, {"x": 44.0, "y": 93.0}, {"x": 78.0, "y": 91.2}, {"x": 47.0, "y": 92.7}, {"x": 96.0, "y": 92.6}, {"x": 100.0, "y": 92.8}, {"x": 99.0, "y": 92.1}, {"x": 74.0, "y": 92.2}, {"x": 63.0, "y": 92.4}, {"x": 83.0, "y": 93.2}, {"x": 74.0, "y": 94.4}, {"x": 87.0, "y": 94.0}, {"x": 79.0, "y": 93.3}, {"x": 77.0, "y": 91.7}, {"x": 55.0, "y": 95.0}, {"x": 30.0, "y": 91.5}, {"x": 32.0, "y": 94.1}, {"x": 104.0, "y": 92.3}, {"x": 84.0, "y": 93.5}, {"x": 127.0, "y": 93.2}, {"x": 90.0, "y": 92.1}, {"x": 56.0, "y": 94.2}, {"x": 58.0, "y": 93.8}, {"x": 101.0, "y": 96.8}, {"x": 134.0, "y": 91.7}, {"x": 39.0, "y": 94.0}, {"x": 80.0, "y": 95.2}], "deep_pulse": [{"x": 76.0, "y": 51}, {"x": 102.0, "y": 52}, {"x": 49.0, "y": 54}, {"x": 89.0, "y": 77}, {"x": 100.0, "y": 52}, {"x": 61.0, "y": 49}, {"x": 96.0, "y": 53}, {"x": 94.0, "y": 51}, {"x": 91.0, "y": 53}, {"x": 72.0, "y": 57}, {"x": 48.0, "y": 51}, {"x": 71.0, "y": 49}, {"x": 87.0, "y": 48}, {"x": 105.0, "y": 52}, {"x": 62.0, "y": 74}, {"x": 49.0, "y": 56}, {"x": 81.0, "y": 67}, {"x": 137.0, "y": 71}, {"x": 58.0, "y": 58}, {"x": 97.0, "y": 50}, {"x": 71.0, "y": 52}, {"x": 54.0, "y": 53}, {"x": 111.0, "y": 58}, {"x": 76.0, "y": 56}, {"x": 101.0, "y": 52}, {"x": 97.0, "y": 55}, {"x": 50.0, "y": 53}, {"x": 139.0, "y": 55}, {"x": 78.0, "y": 53}, {"x": 134.0, "y": 70}, {"x": 86.0, "y": 69}, {"x": 88.0, "y": 52}, {"x": 58.0, "y": 53}, {"x": 52.0, "y": 52}, {"x": 105.0, "y": 56}, {"x": 51.0, "y": 60}, {"x": 80.0, "y": 69}, {"x": 63.0, "y": 52}, {"x": 55.0, "y": 52}, {"x": 55.0, "y": 54}, {"x": 101.0, "y": 79}, {"x": 68.0, "y": 53}, {"x": 80.0, "y": 75}], "r_eff_spo2": 0.036, "r_rem_spo2": -0.332, "r_deep_pulse": 0.257};
+const ALL_MONTHS = ["2025-02", "2025-03", "2025-06", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03"];
+
+const COLORS = {
+  deep: '#3d63dd',
+  light: '#63b3ed',
+  rem: '#9f7aea',
+  awake: '#fc8181',
+  spo2: '#48bb78',
+  pulse: '#ed8936',
+  accent: '#5b8dee',
+};
+
+let activeCharts = {};
+let currentFilter = { month: 'all', minSleep: 300 };
+
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.querySelector('.theme-toggle');
+  if (body.dataset.theme === 'dark') {
+    body.dataset.theme = 'light';
+    btn.textContent = '🌙 Dunkel';
+  } else {
+    body.dataset.theme = 'dark';
+    btn.textContent = '☀️ Hell';
+  }
+  redrawAll();
+}
+
+// Populate month filter
+const monthSel = document.getElementById('monthFilter');
+ALL_MONTHS.forEach(m => {
+  const opt = document.createElement('option');
+  opt.value = m;
+  opt.textContent = formatMonth(m);
+  monthSel.appendChild(opt);
+});
+
+monthSel.addEventListener('change', e => { currentFilter.month = e.target.value; redrawAll(); });
+document.getElementById('minSleepFilter').addEventListener('change', e => {
+  currentFilter.minSleep = parseInt(e.target.value);
+  redrawAll();
+});
+
+function formatMonth(m) {
+  const [y, mo] = m.split('-');
+  const names = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  return names[parseInt(mo)-1] + ' ' + y;
+}
+
+function fmtH(min) {
+  const h = Math.floor(min/60), m = Math.round(min%60);
+  return h + 'h ' + String(m).padStart(2,'0') + 'm';
+}
+
+function getFilteredData() {
+  return SLEEP_DATA.filter(s => {
+    if (currentFilter.month !== 'all' && !s.date.startsWith(currentFilter.month)) return false;
+    if (s.total_sleep_min < currentFilter.minSleep) return false;
+    return true;
+  });
+}
+
+function destroyChart(id) {
+  if (activeCharts[id]) { activeCharts[id].destroy(); delete activeCharts[id]; }
+}
+
+function getGridColor() {
+  return document.body.dataset.theme === 'light' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
+}
+function getTextColor() {
+  return document.body.dataset.theme === 'light' ? '#5a6478' : '#8892a4';
+}
+
+function chartDefaults() {
+  return {
+    plugins: { legend: { labels: { color: getTextColor(), boxWidth: 12, font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: getTextColor(), maxTicksLimit: 8, font:{size:10} }, grid: { color: getGridColor() } },
+      y: { ticks: { color: getTextColor(), font:{size:10} }, grid: { color: getGridColor() } }
+    }
+  };
+}
+
+function drawPhasenBar(data) {
+  destroyChart('chartPhasenBar');
+  const ctx = document.getElementById('chartPhasenBar').getContext('2d');
+  const labels = data.map(d => d.date.slice(5));
+  const defs = chartDefaults();
+  activeCharts['chartPhasenBar'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Tiefschlaf', data: data.map(d=>d.deep_min), backgroundColor: COLORS.deep, stack:'s' },
+        { label: 'Leichtschlaf', data: data.map(d=>d.light_min), backgroundColor: COLORS.light, stack:'s' },
+        { label: 'REM', data: data.map(d=>d.rem_min), backgroundColor: COLORS.rem, stack:'s' },
+        { label: 'Wach', data: data.map(d=>d.awake_min), backgroundColor: COLORS.awake, stack:'s' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: defs.plugins,
+      scales: {
+        x: { stacked: true, ...defs.scales.x },
+        y: { stacked: true, ...defs.scales.y, title: { display: true, text: 'Minuten', color: getTextColor() } }
+      }
+    }
+  });
+}
+
+function drawPhasenDonut(data) {
+  destroyChart('chartPhasenDonut');
+  const ctx = document.getElementById('chartPhasenDonut').getContext('2d');
+  const avgDeep = data.reduce((s,d)=>s+d.deep_min,0)/data.length;
+  const avgLight = data.reduce((s,d)=>s+d.light_min,0)/data.length;
+  const avgRem = data.reduce((s,d)=>s+d.rem_min,0)/data.length;
+  const avgAwake = data.reduce((s,d)=>s+d.awake_min,0)/data.length;
+  activeCharts['chartPhasenDonut'] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Tiefschlaf','Leichtschlaf','REM','Wach'],
+      datasets: [{ data: [avgDeep,avgLight,avgRem,avgAwake],
+        backgroundColor: [COLORS.deep, COLORS.light, COLORS.rem, COLORS.awake],
+        borderWidth: 2, borderColor: 'transparent'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: getTextColor(), font:{size:11} } },
+        tooltip: { callbacks: { label: ctx => ' ' + fmtH(ctx.raw) + ' (' + Math.round(ctx.raw/(avgDeep+avgLight+avgRem+avgAwake)*100) + '%)' } }
+      }
+    }
+  });
+}
+
+function drawTrendDauer(data) {
+  destroyChart('chartTrendDauer');
+  const ctx = document.getElementById('chartTrendDauer').getContext('2d');
+  const labels = data.map(d=>d.date.slice(5));
+  const maT = computeMA(data.map(d=>d.total_sleep_min), 7);
+  const defs = chartDefaults();
+  activeCharts['chartTrendDauer'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Schlafdauer (min)', data: data.map(d=>d.total_sleep_min), backgroundColor: COLORS.accent+'88', yAxisID:'y' },
+        { label: '7T-Ø Dauer', data: maT, type: 'line', borderColor: COLORS.accent, borderWidth: 2, pointRadius: 0, yAxisID:'y', tension:0.4 },
+        { label: 'Effizienz (%)', data: data.map(d=>d.efficiency), type: 'line', borderColor: COLORS.rem, borderWidth: 2, pointRadius: 0, yAxisID:'y2', tension:0.4, borderDash:[5,3] },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: defs.plugins,
+      scales: {
+        x: defs.scales.x,
+        y: { ...defs.scales.y, position:'left', title: { display:true, text:'Minuten', color: getTextColor() } },
+        y2: { ...defs.scales.y, position:'right', min:0, max:100, grid:{drawOnChartArea:false}, title:{ display:true, text:'%', color: getTextColor() } }
+      }
+    }
+  });
+}
+
+function computeMA(arr, w) {
+  return arr.map((_, i) => {
+    const chunk = arr.slice(Math.max(0,i-w+1), i+1).filter(v=>v!=null);
+    return chunk.length ? Math.round(chunk.reduce((a,b)=>a+b,0)/chunk.length*10)/10 : null;
+  });
+}
+
+function drawTrendLine(canvasId, label, values, dates, color) {
+  destroyChart(canvasId);
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  const ma = computeMA(values, 7);
+  const defs = chartDefaults();
+  activeCharts[canvasId] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: dates.map(d=>d.slice(5)),
+      datasets: [
+        { label, data: values, backgroundColor: color+'88', yAxisID:'y' },
+        { label: '7T-Ø', data: ma, type:'line', borderColor: color, borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.4 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: defs.plugins,
+      scales: { x: defs.scales.x, y: { ...defs.scales.y, title: { display:true, text:'Minuten', color:getTextColor() } } }
+    }
+  });
+}
+
+function drawZeiten(data) {
+  destroyChart('chartZeiten');
+  const ctx = document.getElementById('chartZeiten').getContext('2d');
+  const labels = data.map(d=>d.date.slice(5));
+  function toDecimalHour(t) {
+    if (!t) return null;
+    const [h,m] = t.split(':').map(Number);
+    let v = h + m/60;
+    // Normalize: sleep times after 18:00 should be shifted for display
+    if (v >= 18) v -= 24; // -6 to 0 range for late nights
+    return Math.round(v*100)/100;
+  }
+  const sleepH = data.map(d => toDecimalHour(d.sleep_start));
+  const wakeH = data.map(d => {
+    if (!d.wake_time) return null;
+    const [h,m] = d.wake_time.split(':').map(Number);
+    return h + m/60;
+  });
+  const defs = chartDefaults();
+  activeCharts['chartZeiten'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Einschlafzeit', data: sleepH, borderColor: COLORS.rem, backgroundColor: COLORS.rem+'33', tension:0.3, pointRadius:3, fill:false },
+        { label: 'Aufwachzeit', data: wakeH, borderColor: COLORS.spo2, backgroundColor: COLORS.spo2+'33', tension:0.3, pointRadius:3, fill:false },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        ...defs.plugins,
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.raw < 0 ? (24+ctx.raw).toFixed(1) : ctx.raw.toFixed(1)) + ' Uhr' } }
+      },
+      scales: {
+        x: defs.scales.x,
+        y: { ...defs.scales.y, ticks: { color: getTextColor(), callback: v => (v<0?24+v:v).toFixed(0)+':00' } }
+      }
+    }
+  });
+}
+
+function drawWachEpisoden(data) {
+  destroyChart('chartWachEpisoden');
+  const ctx = document.getElementById('chartWachEpisoden').getContext('2d');
+  const defs = chartDefaults();
+  activeCharts['chartWachEpisoden'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d=>d.date.slice(5)),
+      datasets: [{ label: 'Wach-Episoden', data: data.map(d=>d.wake_episodes), backgroundColor: COLORS.awake+'aa' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: defs.plugins,
+      scales: { x: defs.scales.x, y: { ...defs.scales.y, ticks: { stepSize:1, color: getTextColor() } } }
+    }
+  });
+}
+
+function drawSpo2(data) {
+  destroyChart('chartSpo2');
+  const ctx = document.getElementById('chartSpo2').getContext('2d');
+  const labels = data.map(d=>d.date.slice(5));
+  const avgVals = data.map(d => SPO2_DATA[d.date]?.avg ?? null);
+  const minVals = data.map(d => SPO2_DATA[d.date]?.min ?? null);
+  const defs = chartDefaults();
+  activeCharts['chartSpo2'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Ø SpO₂', data: avgVals, borderColor: COLORS.spo2, backgroundColor: COLORS.spo2+'33', tension:0.3, fill:true, pointRadius:3 },
+        { label: 'Min SpO₂', data: minVals, borderColor: COLORS.awake, borderDash:[4,3], tension:0.3, pointRadius:2 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: defs.plugins,
+      scales: {
+        x: defs.scales.x,
+        y: { ...defs.scales.y, min: 80, max: 100, title: { display:true, text:'%', color:getTextColor() } }
+      }
+    }
+  });
+}
+
+function drawPuls(data) {
+  destroyChart('chartPuls');
+  const ctx = document.getElementById('chartPuls').getContext('2d');
+  const labels = data.map(d=>d.date.slice(5));
+  const avgVals = data.map(d => PULSE_DATA[d.date]?.avg ?? null);
+  const minVals = data.map(d => PULSE_DATA[d.date]?.min ?? null);
+  const restVals = data.map(d => PULSE_DATA[d.date]?.resting ?? null);
+  const defs = chartDefaults();
+  activeCharts['chartPuls'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Ø Puls', data: avgVals, borderColor: COLORS.pulse, backgroundColor: COLORS.pulse+'33', tension:0.3, fill:true, pointRadius:2 },
+        { label: 'Min Puls', data: minVals, borderColor: COLORS.accent, borderDash:[4,3], tension:0.3, pointRadius:2 },
+        { label: 'Ruhepuls (10. Pztl.)', data: restVals, borderColor: '#e53e3e', borderWidth:2, tension:0.3, pointRadius:3, borderDash:[2,2] },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: defs.plugins,
+      scales: {
+        x: defs.scales.x,
+        y: { ...defs.scales.y, title: { display:true, text:'bpm', color:getTextColor() } }
+      }
+    }
+  });
+}
+
+function drawCorrelation(canvasId, corrData, xLabel, yLabel) {
+  destroyChart(canvasId);
+  if (!corrData || corrData.length === 0) {
+    document.getElementById(canvasId).closest('.chart-card').querySelector('h3').insertAdjacentHTML('afterend','<p class="no-data">Keine Daten verfügbar</p>');
+    return;
+  }
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  const defs = chartDefaults();
+  activeCharts[canvasId] = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: [{ label: '', data: corrData, backgroundColor: COLORS.accent+'99', pointRadius: 5 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ...defs.scales.x, title: { display:true, text:xLabel, color:getTextColor() } },
+        y: { ...defs.scales.y, title: { display:true, text:yLabel, color:getTextColor() } }
+      }
+    }
+  });
+}
+
+function drawMonthBar() {
+  destroyChart('chartMonthBar');
+  const ctx = document.getElementById('chartMonthBar').getContext('2d');
+  const labels = MONTHLY_DATA.map(m=>formatMonth(m.month));
+  const defs = chartDefaults();
+  activeCharts['chartMonthBar'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ label: 'Ø Schlafdauer (min)', data: MONTHLY_DATA.map(m=>m.avg_sleep), backgroundColor: COLORS.accent }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: defs.plugins,
+      scales: {
+        x: defs.scales.x,
+        y: { ...defs.scales.y, title:{display:true,text:'Minuten',color:getTextColor()} }
+      }
+    }
+  });
+}
+
+function drawMonthPhases() {
+  destroyChart('chartMonthPhases');
+  const ctx = document.getElementById('chartMonthPhases').getContext('2d');
+  const labels = MONTHLY_DATA.map(m=>formatMonth(m.month));
+  const defs = chartDefaults();
+  activeCharts['chartMonthPhases'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Tiefschlaf', data: MONTHLY_DATA.map(m=>m.avg_deep), backgroundColor: COLORS.deep, stack:'s' },
+        { label: 'REM', data: MONTHLY_DATA.map(m=>m.avg_rem), backgroundColor: COLORS.rem, stack:'s' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: defs.plugins,
+      scales: {
+        x: { stacked:true, ...defs.scales.x },
+        y: { stacked:true, ...defs.scales.y, title:{display:true,text:'Minuten',color:getTextColor()} }
+      }
+    }
+  });
+}
+
+function buildMonthTable() {
+  const tbody = document.getElementById('monthTableBody');
+  tbody.innerHTML = '';
+  MONTHLY_DATA.forEach(m => {
+    const eff = m.avg_efficiency;
+    const effClass = eff >= 85 ? 'badge-good' : eff >= 75 ? 'badge-warn' : 'badge-bad';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${formatMonth(m.month)}</strong></td>
+      <td>${m.nights}</td>
+      <td>${fmtH(m.avg_sleep)}</td>
+      <td>${fmtH(m.avg_deep)}</td>
+      <td>${fmtH(m.avg_rem)}</td>
+      <td><span class="badge ${effClass}">${eff}%</span></td>
+      <td>${m.avg_spo2 ? m.avg_spo2 + '%' : '–'}</td>
+      <td>${m.avg_resting_pulse ? m.avg_resting_pulse + ' bpm' : '–'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function redrawAll() {
+  const data = getFilteredData();
+  if (!data.length) return;
+
+  const activeTab = document.querySelector('.tab.active')?.dataset.tab;
+
+  // Always redraw active tab
+  drawForTab(activeTab, data);
+}
+
+function drawForTab(tabName, data) {
+  if (!data) data = getFilteredData();
+  if (!data.length) return;
+  const dates = data.map(d=>d.date);
+
+  switch(tabName) {
+    case 'schlafphasen':
+      drawPhasenBar(data);
+      drawPhasenDonut(data);
+      break;
+    case 'trends':
+      drawTrendDauer(data);
+      drawTrendLine('chartTrendREM','REM (min)', data.map(d=>d.rem_min), dates, COLORS.rem);
+      drawTrendLine('chartTrendDeep','Tiefschlaf (min)', data.map(d=>d.deep_min), dates, COLORS.deep);
+      break;
+    case 'regelmaessigkeit':
+      drawZeiten(data);
+      drawWachEpisoden(data);
+      break;
+    case 'spo2puls':
+      drawSpo2(data);
+      drawPuls(data);
+      break;
+    case 'korrelation':
+      // Correlation uses global data (no filter)
+      drawCorrelation('chartCorrEffSpo2', CORR_DATA.eff_spo2, 'Effizienz (%)', 'SpO₂ (%)');
+      drawCorrelation('chartCorrRemSpo2', CORR_DATA.rem_spo2, 'REM (min)', 'SpO₂ (%)');
+      drawCorrelation('chartCorrDeepPulse', CORR_DATA.deep_pulse, 'Tiefschlaf (min)', 'Ruhepuls (bpm)');
+      const r1 = CORR_DATA.r_eff_spo2;
+      const r2 = CORR_DATA.r_rem_spo2;
+      const r3 = CORR_DATA.r_deep_pulse;
+      document.getElementById('r_eff_spo2_label').textContent = r1 != null ? 'Pearson r = ' + r1 : '';
+      document.getElementById('r_rem_spo2_label').textContent = r2 != null ? 'Pearson r = ' + r2 : '';
+      document.getElementById('r_deep_pulse_label').textContent = r3 != null ? 'Pearson r = ' + r3 : '';
+      break;
+    case 'monatsvergleich':
+      drawMonthBar();
+      drawMonthPhases();
+      buildMonthTable();
+      break;
+  }
+}
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    const id = 'tab-' + tab.dataset.tab;
+    document.getElementById(id).classList.add('active');
+    drawForTab(tab.dataset.tab);
+  });
+});
+
+// Initial draw
+drawForTab('schlafphasen');
+</script>
+</body>
+</html>
