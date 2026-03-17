@@ -37,16 +37,16 @@
 </a>
 
 <script>
-// Heutiges Datum und gestern berechnen
 function pad(n) { return String(n).padStart(2,'0'); }
 function dateStr(d) { return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
 
-const today = new Date();
-const yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
-
-// Versuche erst gestern, dann vorgestern, dann heute
-const candidates = [yesterday, today, new Date(today.setDate(today.getDate()-1))];
-const dates = [...new Set(candidates.map(dateStr))];
+// Kandidaten: heute, gestern, vorgestern, 3 Tage zurück
+const now = new Date();
+const dates = [0,1,2,3].map(i => {
+  const d = new Date(now);
+  d.setDate(now.getDate() - i);
+  return dateStr(d);
+});
 
 async function findLatest() {
   for (const d of dates) {
@@ -60,7 +60,7 @@ async function findLatest() {
       }
     } catch(e) {}
   }
-  document.getElementById('latest-date').textContent = 'Noch kein Briefing heute';
+  document.getElementById('latest-date').textContent = 'Noch kein Briefing vorhanden';
   document.getElementById('briefing-link').style.opacity = '0.5';
 }
 findLatest();
