@@ -7,330 +7,804 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg:#0f1117; --card:#1a1d27; --card2:#22263a;
-    --text:#e8eaf0; --muted:#8892a4; --accent:#5b8dee;
-    --deep:#3d63dd; --light:#63b3ed; --rem:#9f7aea; --awake:#fc8181;
-    --spo2:#48bb78; --pulse:#ed8936; --border:#2d3148;
+    --bg: #0f1117; --card: #1a1d27; --card2: #22263a;
+    --text: #e8eaf0; --muted: #8892a4; --accent: #5b8dee;
+    --deep: #3d63dd; --light: #63b3ed; --rem: #9f7aea; --awake: #fc8181;
+    --spo2: #48bb78; --pulse: #ed8936; --border: #2d3148; --tab-active: #5b8dee;
   }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; min-height:100vh; }
-  header { background:var(--card); border-bottom:1px solid var(--border); padding:16px 24px; }
-  header h1 { font-size:1.4rem; font-weight:700; }
-  header .subtitle { color:var(--muted); font-size:0.85rem; margin-top:2px; }
-  .kpis { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; padding:20px 24px; }
-  .kpi { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; }
-  .kpi-label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
-  .kpi-value { font-size:1.4rem; font-weight:700; }
-  .kpi-sub { font-size:0.72rem; color:var(--muted); margin-top:3px; }
-  .section { padding:0 24px 20px; }
-  .section h2 { font-size:1rem; font-weight:700; color:var(--accent); margin:20px 0 12px; text-transform:uppercase; letter-spacing:.04em; }
-  .charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  .charts-grid-1 { display:grid; grid-template-columns:1fr; gap:16px; }
-  @media(max-width:800px) { .charts-grid { grid-template-columns:1fr; } }
-  .chart-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; }
-  .chart-card h3 { font-size:0.82rem; color:var(--muted); margin-bottom:12px; font-weight:600; text-transform:uppercase; }
-  table { width:100%; border-collapse:collapse; font-size:0.82rem; }
-  th { text-align:left; padding:8px 10px; color:var(--muted); font-weight:600; font-size:0.72rem; text-transform:uppercase; border-bottom:1px solid var(--border); white-space:nowrap; }
-  td { padding:8px 10px; border-bottom:1px solid var(--border); }
-  tr:hover td { background:var(--card2); }
-  .badge { display:inline-block; padding:2px 7px; border-radius:8px; font-size:0.72rem; font-weight:600; }
-  .badge-good { background:rgba(72,187,120,.2); color:#48bb78; }
-  .badge-warn { background:rgba(237,137,54,.2);  color:#ed8936; }
-  .badge-bad  { background:rgba(252,129,129,.2); color:#fc8181; }
-  .table-wrap { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:auto; padding:4px 0; }
-  footer { color:var(--muted); font-size:0.75rem; text-align:center; padding:24px; border-top:1px solid var(--border); margin-top:8px; }
-  .avg-row { background:rgba(91,141,238,.07); font-weight:600; }
+  [data-theme="light"] {
+    --bg: #f0f2f8; --card: #ffffff; --card2: #f7f9ff;
+    --text: #1a1d27; --muted: #5a6478; --border: #d0d7e8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; transition: background 0.2s, color 0.2s; }
+
+  header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  header h1 { font-size: 1.4rem; font-weight: 700; }
+  header .subtitle { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+  .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .theme-toggle { background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+  .theme-toggle:hover { background: var(--border); }
+  .filter-group { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); }
+  .filter-group select { background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 5px 10px; border-radius: 8px; font-size: 0.82rem; cursor: pointer; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 20px 24px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .kpi-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+  .kpi-value { font-size: 1.4rem; font-weight: 700; }
+  .kpi-sub { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+
+  .tabs { display: flex; padding: 0 24px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab { padding: 12px 18px; cursor: pointer; font-size: 0.88rem; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--tab-active); border-bottom-color: var(--tab-active); font-weight: 600; }
+  .tab-content { display: none; padding: 20px 24px; }
+  .tab-content.active { display: block; }
+
+  .charts-grid   { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+  .charts-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .charts-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) {
+    .charts-grid, .charts-grid-2, .charts-grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 0; }
+  .chart-card h3 { font-size: 0.88rem; color: var(--muted); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .chart-wrapper { position: relative; }
+  .gap-top { margin-top: 16px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { text-align: left; padding: 8px 12px; color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: var(--card2); }
+  .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: auto; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; }
+  .badge-good { background: rgba(72,187,120,.2); color: #48bb78; }
+  .badge-warn { background: rgba(252,129,74,.2);  color: #ed8936; }
+  .badge-bad  { background: rgba(252,129,129,.2); color: #fc8181; }
+
+  .corr-label { font-size: 0.78rem; color: var(--muted); text-align: center; margin-top: 6px; }
+  .no-data { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 40px; }
+  footer { color: var(--muted); font-size: 0.75rem; text-align: center; padding: 24px; border-top: 1px solid var(--border); margin-top: 8px; }
 </style>
 </head>
-<body>
+<body data-theme="dark">
 
 <header>
-  <h1>📊 Schlaf-Dashboard</h1>
-  <div class="subtitle">Björn · Letzte Nacht: 2026-03-17 · Aktualisiert: 17.03.2026 20:51</div>
+  <div>
+    <h1>🌙 Schlaf-Dashboard</h1>
+    <div class="subtitle">Björn · 118 Nächte · 2025-02-20 bis 2026-03-17</div>
+  </div>
+  <div class="header-right">
+    <div class="filter-group">
+      <label>Monat:</label>
+      <select id="monthFilter">
+        <option value="all">Alle</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Min. Schlaf:</label>
+      <select id="minSleepFilter">
+        <option value="180">3 Std.</option>
+        <option value="240">4 Std.</option>
+        <option value="300" selected>5 Std.</option>
+        <option value="360">6 Std.</option>
+      </select>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">☀️ Hell</button>
+  </div>
 </header>
 
-<!-- KPIs letzte Nacht -->
+<!-- KPIs -->
 <div class="kpis">
+  <div class="kpi" style="border-top:3px solid var(--rem)">
+    <div class="kpi-label">Beste REM-Nacht</div>
+    <div class="kpi-value">2h 44m</div>
+    <div class="kpi-sub">2025-06-09</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #48bb78">
+    <div class="kpi-label">Längste Nacht</div>
+    <div class="kpi-value">9h 25m</div>
+    <div class="kpi-sub">2025-02-24</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #fc8181">
+    <div class="kpi-label">Kürzeste Nacht</div>
+    <div class="kpi-value">3h 36m</div>
+    <div class="kpi-sub">2026-01-31</div>
+  </div>
   <div class="kpi" style="border-top:3px solid var(--accent)">
-    <div class="kpi-label">Schlafdauer</div>
-    <div class="kpi-value">7h 12m</div>
-    <div class="kpi-sub">Letzte Nacht</div>
+    <div class="kpi-label">Ø Effizienz</div>
+    <div class="kpi-value">94.7%</div>
+    <div class="kpi-sub">Schlafeffizienz</div>
   </div>
   <div class="kpi" style="border-top:3px solid var(--deep)">
-    <div class="kpi-label">Tiefschlaf</div>
-    <div class="kpi-value">18.3%</div>
-    <div class="kpi-sub">Norm: 15–25%</div>
+    <div class="kpi-label">Ø Tiefschlaf</div>
+    <div class="kpi-value">1h 26m</div>
+    <div class="kpi-sub">pro Nacht</div>
   </div>
   <div class="kpi" style="border-top:3px solid var(--rem)">
-    <div class="kpi-label">REM-Schlaf</div>
-    <div class="kpi-value">20.4%</div>
-    <div class="kpi-sub">Norm: 20–25%</div>
-  </div>
-  <div class="kpi" style="border-top:3px solid var(--accent)">
-    <div class="kpi-label">Effizienz</div>
-    <div class="kpi-value">96.4%</div>
-    <div class="kpi-sub">Norm: ≥85%</div>
-  </div>
-  <div class="kpi" style="border-top:3px solid var(--spo2)">
-    <div class="kpi-label">SpO₂ Ø</div>
-    <div class="kpi-value">93.4%</div>
-    <div class="kpi-sub">Sauerstoff</div>
+    <div class="kpi-label">Ø REM-Schlaf</div>
+    <div class="kpi-value">1h 19m</div>
+    <div class="kpi-sub">pro Nacht</div>
   </div>
   <div class="kpi" style="border-top:3px solid var(--pulse)">
-    <div class="kpi-label">Ruhepuls</div>
-    <div class="kpi-value">52 bpm</div>
-    <div class="kpi-sub">Letzte Nacht</div>
+    <div class="kpi-label">Ø Ruhepuls</div>
+    <div class="kpi-value">57.2 bpm</div>
+    <div class="kpi-sub">Nachts (10. Pztl.)</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid var(--spo2)">
+    <div class="kpi-label">Ø SpO₂</div>
+    <div class="kpi-value">92.9%</div>
+    <div class="kpi-sub">Sauerstoffsättigung</div>
   </div>
 </div>
 
-<!-- Charts -->
-<div class="section">
-  <h2>Verlauf der letzten 30 Nächte</h2>
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-tab="schlafphasen">Schlafphasen</div>
+  <div class="tab" data-tab="trends">Trends</div>
+  <div class="tab" data-tab="regelmaessigkeit">Regelmäßigkeit</div>
+  <div class="tab" data-tab="spo2puls">SpO₂ &amp; Puls</div>
+  <div class="tab" data-tab="korrelation">Korrelation</div>
+  <div class="tab" data-tab="monatsvergleich">Monatsvergleich</div>
+  <div class="tab" data-tab="tabelle">Alle Nächte</div>
+</div>
+
+<!-- TAB 1: Schlafphasen -->
+<div class="tab-content active" id="tab-schlafphasen">
   <div class="charts-grid">
     <div class="chart-card">
-      <h3>Schlafdauer (Stunden)</h3>
-      <canvas id="durChart" height="140"></canvas>
+      <h3>Schlafphasen pro Nacht (gestapelt)</h3>
+      <div class="chart-wrapper" style="height:320px"><canvas id="chartPhasenBar"></canvas></div>
     </div>
     <div class="chart-card">
-      <h3>Schlafphasen (%)</h3>
-      <canvas id="stagesChart" height="140"></canvas>
-    </div>
-    <div class="chart-card">
-      <h3>Schlafeffizienz (%)</h3>
-      <canvas id="effChart" height="140"></canvas>
-    </div>
-    <div class="chart-card">
-      <h3>SpO₂ Durchschnitt (%)</h3>
-      <canvas id="spo2Chart" height="140"></canvas>
-    </div>
-  </div>
-  <div class="charts-grid-1" style="margin-top:16px">
-    <div class="chart-card">
-      <h3>Ruhepuls (bpm)</h3>
-      <canvas id="hrChart" height="80"></canvas>
+      <h3>Durchschn. Schlafphasen-Verteilung</h3>
+      <div class="chart-wrapper" style="height:320px"><canvas id="chartPhasenDonut"></canvas></div>
     </div>
   </div>
 </div>
 
-<!-- Tabelle aller Nächte -->
-<div class="section">
-  <h2>Alle Nächte im Überblick</h2>
+<!-- TAB 2: Trends -->
+<div class="tab-content" id="tab-trends">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="chart-card">
+      <h3>Schlafdauer &amp; Effizienz (7-Tage gleitender Ø)</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartTrendDauer"></canvas></div>
+    </div>
+    <div class="charts-grid-2">
+      <div class="chart-card">
+        <h3>REM-Schlaf (min) mit 7T-Ø</h3>
+        <div class="chart-wrapper" style="height:220px"><canvas id="chartTrendREM"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Tiefschlaf (min) mit 7T-Ø</h3>
+        <div class="chart-wrapper" style="height:220px"><canvas id="chartTrendDeep"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: Regelmäßigkeit -->
+<div class="tab-content" id="tab-regelmaessigkeit">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="chart-card">
+      <h3>Einschlaf- und Aufwachzeiten</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartZeiten"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Wach-Episoden pro Nacht</h3>
+      <div class="chart-wrapper" style="height:200px"><canvas id="chartWachEpisoden"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 4: SpO₂ & Puls -->
+<div class="tab-content" id="tab-spo2puls">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="chart-card">
+      <h3>SpO₂ – Ø und Minimum (%)</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartSpo2"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Puls – Ø, Minimum und Ruhepuls (bpm)</h3>
+      <div class="chart-wrapper" style="height:260px"><canvas id="chartPuls"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5: Korrelation -->
+<div class="tab-content" id="tab-korrelation">
+  <div class="charts-grid-3">
+    <div class="chart-card">
+      <h3>Effizienz vs. SpO₂</h3>
+      <div class="chart-wrapper" style="height:280px"><canvas id="chartCorrEffSpo2"></canvas></div>
+      <div class="corr-label" id="r_eff_spo2_label"></div>
+    </div>
+    <div class="chart-card">
+      <h3>REM vs. SpO₂</h3>
+      <div class="chart-wrapper" style="height:280px"><canvas id="chartCorrRemSpo2"></canvas></div>
+      <div class="corr-label" id="r_rem_spo2_label"></div>
+    </div>
+    <div class="chart-card">
+      <h3>Tiefschlaf vs. Ruhepuls</h3>
+      <div class="chart-wrapper" style="height:280px"><canvas id="chartCorrDeepPulse"></canvas></div>
+      <div class="corr-label" id="r_deep_pulse_label"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 6: Monatsvergleich -->
+<div class="tab-content" id="tab-monatsvergleich">
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div class="charts-grid-2">
+      <div class="chart-card">
+        <h3>Ø Schlafdauer pro Monat</h3>
+        <div class="chart-wrapper" style="height:260px"><canvas id="chartMonthBar"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>Ø Tiefschlaf &amp; REM pro Monat</h3>
+        <div class="chart-wrapper" style="height:260px"><canvas id="chartMonthPhases"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Monatsübersicht</h3>
+      <table>
+        <thead><tr>
+          <th>Monat</th><th>Nächte</th><th>Ø Schlaf</th><th>Ø Tiefschlaf</th>
+          <th>Ø REM</th><th>Ø Effizienz</th><th>Ø SpO₂</th><th>Ø Ruhepuls</th>
+        </tr></thead>
+        <tbody id="monthTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 7: Alle Nächte -->
+<div class="tab-content" id="tab-tabelle">
   <div class="table-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>Datum</th><th>Dauer</th><th>Tief%</th><th>REM%</th>
-          <th>Leicht%</th><th>Effizienz</th><th>SpO₂ Ø/Min</th>
-          <th>Ruhepuls</th><th>Wach</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>2026-03-17</td><td>7h 12m</td><td>18.3%</td><td>20.4%</td><td>61.3%</td><td><span class="badge badge-good">96.4%</span></td><td>93.4% / 86.0%</td><td>52</td><td>3</td></tr>
-<tr><td>2026-03-16</td><td>7h 47m</td><td>16.3%</td><td>13.5%</td><td>70.2%</td><td><span class="badge badge-good">95.1%</span></td><td>93.3% / 71.0%</td><td>–</td><td>3</td></tr>
-<tr><td>2026-03-15</td><td>3h 42m</td><td>36.0%</td><td>0.0%</td><td>64.0%</td><td><span class="badge badge-good">92.1%</span></td><td>94.2% / 85.0%</td><td>57</td><td>3</td></tr>
-<tr><td>2026-03-14</td><td>8h 17m</td><td>13.7%</td><td>18.1%</td><td>68.2%</td><td><span class="badge badge-good">92.0%</span></td><td>–</td><td>51</td><td>4</td></tr>
-<tr><td>2026-03-13</td><td>11h 22m</td><td>29.6%</td><td>23.5%</td><td>46.9%</td><td><span class="badge badge-good">98.0%</span></td><td>95.1% / 89.0%</td><td>–</td><td>2</td></tr>
-<tr><td>2026-03-12</td><td>12h 00m</td><td>15.3%</td><td>10.8%</td><td>73.9%</td><td><span class="badge badge-warn">89.6%</span></td><td>94.3% / 84.0%</td><td>52</td><td>10</td></tr>
-<tr><td>2026-03-11</td><td>16h 27m</td><td>11.1%</td><td>27.1%</td><td>61.7%</td><td><span class="badge badge-good">96.9%</span></td><td>92.5% / 79.0%</td><td>50</td><td>9</td></tr>
-<tr><td>2026-03-09</td><td>14h 13m</td><td>14.8%</td><td>23.7%</td><td>61.6%</td><td><span class="badge badge-good">99.3%</span></td><td>–</td><td>42</td><td>6</td></tr>
-<tr><td>2026-03-08</td><td>11h 36m</td><td>23.0%</td><td>16.7%</td><td>60.3%</td><td><span class="badge badge-good">94.8%</span></td><td>94.0% / 84.0%</td><td>42</td><td>6</td></tr>
-<tr><td>2026-03-07</td><td>10h 24m</td><td>16.3%</td><td>17.9%</td><td>65.7%</td><td><span class="badge badge-good">99.7%</span></td><td>92.7% / 71.0%</td><td>42</td><td>2</td></tr>
-<tr><td>2026-03-06</td><td>12h 33m</td><td>27.9%</td><td>23.9%</td><td>48.3%</td><td><span class="badge badge-good">98.2%</span></td><td>92.6% / 71.0%</td><td>42</td><td>6</td></tr>
-<tr><td>2026-03-05</td><td>15h 13m</td><td>11.4%</td><td>27.8%</td><td>60.8%</td><td><span class="badge badge-good">96.0%</span></td><td>92.7% / 71.0%</td><td>42</td><td>9</td></tr>
-<tr><td>2026-03-04</td><td>12h 46m</td><td>15.1%</td><td>21.9%</td><td>62.9%</td><td><span class="badge badge-good">97.7%</span></td><td>92.6% / 71.0%</td><td>42</td><td>2</td></tr>
-<tr><td>2026-03-02</td><td>17h 53m</td><td>16.4%</td><td>19.4%</td><td>64.2%</td><td><span class="badge badge-good">98.2%</span></td><td>92.6% / 71.0%</td><td>42</td><td>9</td></tr>
-<tr><td>2026-03-01</td><td>12h 49m</td><td>22.3%</td><td>8.3%</td><td>69.4%</td><td><span class="badge badge-good">91.2%</span></td><td>94.8% / 94.0%</td><td>42</td><td>18</td></tr>
-<tr><td>2026-02-28</td><td>4h 50m</td><td>46.2%</td><td>10.3%</td><td>43.4%</td><td><span class="badge badge-good">98.6%</span></td><td>92.5% / 71.0%</td><td>42</td><td>1</td></tr>
-<tr><td>2026-02-27</td><td>7h 00m</td><td>18.6%</td><td>13.1%</td><td>68.3%</td><td><span class="badge badge-good">98.8%</span></td><td>92.6% / 71.0%</td><td>42</td><td>1</td></tr>
-<tr><td>2026-02-26</td><td>6h 06m</td><td>38.0%</td><td>21.0%</td><td>41.0%</td><td><span class="badge badge-warn">87.1%</span></td><td>92.5% / 71.0%</td><td>42</td><td>4</td></tr>
-<tr><td>2026-02-25</td><td>5h 55m</td><td>14.1%</td><td>22.3%</td><td>63.7%</td><td><span class="badge badge-good">95.7%</span></td><td>92.5% / 71.0%</td><td>42</td><td>2</td></tr>
-<tr><td>2026-02-24</td><td>6h 17m</td><td>25.7%</td><td>23.1%</td><td>51.2%</td><td><span class="badge badge-good">96.9%</span></td><td>92.5% / 71.0%</td><td>42</td><td>5</td></tr>
-<tr><td>2026-02-23</td><td>7h 09m</td><td>23.5%</td><td>17.2%</td><td>59.2%</td><td><span class="badge badge-good">96.0%</span></td><td>92.3% / 71.0%</td><td>42</td><td>4</td></tr>
-<tr><td>2026-02-22</td><td>6h 31m</td><td>19.4%</td><td>18.2%</td><td>62.4%</td><td><span class="badge badge-good">95.1%</span></td><td>92.2% / 71.0%</td><td>42</td><td>3</td></tr>
-<tr><td>2026-02-21</td><td>14h 18m</td><td>21.8%</td><td>17.0%</td><td>61.2%</td><td><span class="badge badge-good">96.1%</span></td><td>–</td><td>–</td><td>6</td></tr>
-<tr><td>2026-02-20</td><td>13h 58m</td><td>19.7%</td><td>17.8%</td><td>62.5%</td><td><span class="badge badge-good">97.4%</span></td><td>–</td><td>–</td><td>4</td></tr>
-<tr><td>2026-02-19</td><td>12h 36m</td><td>16.5%</td><td>22.9%</td><td>60.6%</td><td><span class="badge badge-good">96.8%</span></td><td>–</td><td>–</td><td>3</td></tr>
-<tr><td>2026-02-17</td><td>8h 19m</td><td>19.4%</td><td>20.0%</td><td>60.5%</td><td><span class="badge badge-good">97.7%</span></td><td>93.7% / 93.0%</td><td>–</td><td>2</td></tr>
-<tr><td>2026-02-16</td><td>7h 55m</td><td>12.2%</td><td>20.2%</td><td>67.6%</td><td><span class="badge badge-good">98.8%</span></td><td>–</td><td>–</td><td>2</td></tr>
-<tr><td>2026-02-15</td><td>14h 24m</td><td>22.6%</td><td>16.6%</td><td>60.9%</td><td><span class="badge badge-good">98.7%</span></td><td>–</td><td>–</td><td>4</td></tr>
-<tr><td>2026-02-14</td><td>12h 33m</td><td>29.0%</td><td>16.6%</td><td>54.4%</td><td><span class="badge badge-good">95.2%</span></td><td>93.3% / 71.0%</td><td>–</td><td>4</td></tr>
-<tr><td>2026-02-13</td><td>11h 59m</td><td>18.1%</td><td>17.0%</td><td>65.0%</td><td><span class="badge badge-good">95.6%</span></td><td>–</td><td>–</td><td>2</td></tr>
-<tr><td>2026-02-12</td><td>4h 44m</td><td>21.8%</td><td>12.3%</td><td>65.8%</td><td><span class="badge badge-good">96.6%</span></td><td>93.6% / 89.0%</td><td>–</td><td>2</td></tr>
-<tr><td>2026-02-11</td><td>9h 05m</td><td>30.6%</td><td>17.4%</td><td>51.9%</td><td><span class="badge badge-good">94.1%</span></td><td>–</td><td>–</td><td>5</td></tr>
-<tr><td>2026-02-09</td><td>15h 24m</td><td>17.1%</td><td>23.5%</td><td>59.4%</td><td><span class="badge badge-good">94.6%</span></td><td>–</td><td>–</td><td>8</td></tr>
-<tr><td>2026-02-08</td><td>281h 42m</td><td>21.0%</td><td>19.4%</td><td>59.6%</td><td><span class="badge badge-good">96.3%</span></td><td>–</td><td>–</td><td>152</td></tr>
-<tr><td>2026-02-07</td><td>12h 21m</td><td>16.2%</td><td>23.3%</td><td>60.5%</td><td><span class="badge badge-good">96.2%</span></td><td>–</td><td>42</td><td>6</td></tr>
-<tr><td>2026-02-06</td><td>278h 24m</td><td>21.5%</td><td>19.4%</td><td>59.1%</td><td><span class="badge badge-good">96.0%</span></td><td>–</td><td>42</td><td>149</td></tr>
-<tr><td>2026-02-05</td><td>274h 29m</td><td>21.4%</td><td>19.7%</td><td>58.9%</td><td><span class="badge badge-good">96.1%</span></td><td>92.7% / 71.0%</td><td>42</td><td>145</td></tr>
-<tr><td>2026-02-04</td><td>271h 59m</td><td>21.5%</td><td>20.2%</td><td>58.3%</td><td><span class="badge badge-good">96.0%</span></td><td>92.6% / 71.0%</td><td>42</td><td>144</td></tr>
-<tr><td>2026-02-03</td><td>259h 25m</td><td>21.2%</td><td>20.0%</td><td>58.8%</td><td><span class="badge badge-good">95.9%</span></td><td>92.7% / 71.0%</td><td>42</td><td>138</td></tr>
-<tr><td>2026-02-02</td><td>251h 26m</td><td>21.6%</td><td>19.8%</td><td>58.6%</td><td><span class="badge badge-good">96.0%</span></td><td>92.6% / 71.0%</td><td>42</td><td>128</td></tr>
-<tr><td>2026-02-01</td><td>246h 07m</td><td>22.0%</td><td>19.6%</td><td>58.4%</td><td><span class="badge badge-good">96.0%</span></td><td>92.5% / 71.0%</td><td>42</td><td>129</td></tr>
-<tr><td>2026-01-31</td><td>3h 36m</td><td>41.2%</td><td>0.0%</td><td>58.8%</td><td><span class="badge badge-warn">89.6%</span></td><td>93.0% / 81.0%</td><td>42</td><td>2</td></tr>
-<tr><td>2026-01-30</td><td>5h 58m</td><td>13.7%</td><td>16.5%</td><td>69.8%</td><td><span class="badge badge-good">96.2%</span></td><td>–</td><td>42</td><td>2</td></tr>
-<tr><td>2026-01-29</td><td>181h 12m</td><td>21.7%</td><td>20.4%</td><td>57.9%</td><td><span class="badge badge-good">96.1%</span></td><td>92.5% / 71.0%</td><td>42</td><td>66</td></tr>
-<tr><td>2026-01-28</td><td>182h 50m</td><td>21.2%</td><td>20.5%</td><td>58.2%</td><td><span class="badge badge-good">96.1%</span></td><td>93.1% / 83.0%</td><td>42</td><td>67</td></tr>
-<tr><td>2026-01-27</td><td>183h 46m</td><td>21.1%</td><td>21.1%</td><td>57.8%</td><td><span class="badge badge-good">96.2%</span></td><td>92.5% / 71.0%</td><td>42</td><td>69</td></tr>
-<tr><td>2026-01-25</td><td>178h 54m</td><td>21.0%</td><td>21.0%</td><td>58.0%</td><td><span class="badge badge-good">96.5%</span></td><td>92.5% / 71.0%</td><td>42</td><td>67</td></tr>
-<tr><td>2026-01-24</td><td>179h 27m</td><td>20.8%</td><td>21.0%</td><td>58.2%</td><td><span class="badge badge-good">96.5%</span></td><td>92.3% / 71.0%</td><td>42</td><td>65</td></tr>
-<tr><td>2026-01-23</td><td>165h 28m</td><td>20.7%</td><td>21.1%</td><td>58.2%</td><td><span class="badge badge-good">96.5%</span></td><td>92.2% / 71.0%</td><td>42</td><td>58</td></tr>
-<tr><td>2026-01-22</td><td>10h 47m</td><td>27.5%</td><td>21.9%</td><td>50.5%</td><td><span class="badge badge-good">93.6%</span></td><td>–</td><td>–</td><td>6</td></tr>
-<tr><td>2026-01-21</td><td>13h 32m</td><td>22.7%</td><td>25.0%</td><td>52.3%</td><td><span class="badge badge-good">93.0%</span></td><td>–</td><td>–</td><td>7</td></tr>
-<tr><td>2026-01-20</td><td>15h 59m</td><td>15.6%</td><td>22.2%</td><td>62.1%</td><td><span class="badge badge-warn">89.4%</span></td><td>–</td><td>–</td><td>6</td></tr>
-<tr><td>2026-01-19</td><td>14h 02m</td><td>14.7%</td><td>18.1%</td><td>67.2%</td><td><span class="badge badge-warn">88.7%</span></td><td>–</td><td>–</td><td>5</td></tr>
-<tr><td>2026-01-18</td><td>10h 45m</td><td>27.9%</td><td>15.2%</td><td>56.9%</td><td><span class="badge badge-bad">83.7%</span></td><td>–</td><td>–</td><td>7</td></tr>
+      <thead><tr>
+        <th>Datum</th><th>Dauer</th><th>Tief%</th><th>REM%</th>
+        <th>Leicht%</th><th>Effizienz</th><th>SpO₂ Ø/Min</th>
+        <th>Ruhepuls</th><th>Wach</th>
+      </tr></thead>
+      <tbody><tr><td>2026-03-17</td><td>7h 12m</td><td>18.3%</td><td>20.4%</td><td>61.3%</td><td><span class="badge badge-good">96.4%</span></td><td>93.4% / 86.0%</td><td>52 bpm</td><td>3</td></tr>
+<tr><td>2026-03-16</td><td>7h 47m</td><td>16.3%</td><td>13.5%</td><td>70.2%</td><td><span class="badge badge-good">95.1%</span></td><td>94.1% / 88.0%</td><td>55 bpm</td><td>3</td></tr>
+<tr><td>2026-03-15</td><td>3h 42m</td><td>36.0%</td><td>0.0%</td><td>64.0%</td><td><span class="badge badge-good">92.1%</span></td><td>94.2% / 85.0%</td><td>57 bpm</td><td>3</td></tr>
+<tr><td>2026-03-14</td><td>8h 17m</td><td>13.7%</td><td>18.1%</td><td>68.2%</td><td><span class="badge badge-good">92.0%</span></td><td>–</td><td>55 bpm</td><td>4</td></tr>
+<tr><td>2026-03-13</td><td>5h 41m</td><td>29.6%</td><td>23.5%</td><td>46.9%</td><td><span class="badge badge-good">98.0%</span></td><td>95.1% / 89.0%</td><td>–</td><td>1</td></tr>
+<tr><td>2026-03-12</td><td>6h 00m</td><td>15.3%</td><td>10.8%</td><td>73.9%</td><td><span class="badge badge-warn">89.6%</span></td><td>94.3% / 84.0%</td><td>55 bpm</td><td>5</td></tr>
+<tr><td>2026-03-11</td><td>8h 14m</td><td>11.1%</td><td>27.1%</td><td>61.7%</td><td><span class="badge badge-good">96.9%</span></td><td>92.5% / 79.0%</td><td>52 bpm</td><td>3</td></tr>
+<tr><td>2026-03-09</td><td>7h 07m</td><td>14.8%</td><td>23.7%</td><td>61.6%</td><td><span class="badge badge-good">99.3%</span></td><td>–</td><td>52 bpm</td><td>2</td></tr>
+<tr><td>2026-03-08</td><td>5h 48m</td><td>23.0%</td><td>16.7%</td><td>60.3%</td><td><span class="badge badge-good">94.8%</span></td><td>94.0% / 84.0%</td><td>69 bpm</td><td>3</td></tr>
+<tr><td>2026-03-07</td><td>5h 12m</td><td>16.3%</td><td>17.9%</td><td>65.7%</td><td><span class="badge badge-good">99.7%</span></td><td>94.4% / 85.0%</td><td>59 bpm</td><td>1</td></tr>
+<tr><td>2026-03-06</td><td>6h 17m</td><td>27.9%</td><td>23.9%</td><td>48.3%</td><td><span class="badge badge-good">98.2%</span></td><td>91.9% / 83.0%</td><td>57 bpm</td><td>2</td></tr>
+<tr><td>2026-03-05</td><td>7h 37m</td><td>11.4%</td><td>27.8%</td><td>60.8%</td><td><span class="badge badge-good">96.0%</span></td><td>93.5% / 75.0%</td><td>53 bpm</td><td>3</td></tr>
+<tr><td>2026-03-04</td><td>6h 23m</td><td>15.1%</td><td>21.9%</td><td>62.9%</td><td><span class="badge badge-good">97.7%</span></td><td>93.1% / 83.0%</td><td>54 bpm</td><td>1</td></tr>
+<tr><td>2026-03-02</td><td>8h 57m</td><td>16.4%</td><td>19.4%</td><td>64.2%</td><td><span class="badge badge-good">98.2%</span></td><td>96.7% / 93.0%</td><td>58 bpm</td><td>3</td></tr>
+<tr><td>2026-03-01</td><td>6h 25m</td><td>22.3%</td><td>8.3%</td><td>69.4%</td><td><span class="badge badge-good">91.2%</span></td><td>94.7% / 89.0%</td><td>69 bpm</td><td>6</td></tr>
+<tr><td>2026-02-28</td><td>4h 50m</td><td>46.2%</td><td>10.3%</td><td>43.4%</td><td><span class="badge badge-good">98.6%</span></td><td>91.0% / 84.0%</td><td>74 bpm</td><td>1</td></tr>
+<tr><td>2026-02-27</td><td>7h 00m</td><td>18.6%</td><td>13.1%</td><td>68.3%</td><td><span class="badge badge-good">98.8%</span></td><td>94.9% / 88.0%</td><td>54 bpm</td><td>1</td></tr>
+<tr><td>2026-02-26</td><td>6h 06m</td><td>38.0%</td><td>21.0%</td><td>41.0%</td><td><span class="badge badge-warn">87.1%</span></td><td>92.2% / 80.0%</td><td>56 bpm</td><td>4</td></tr>
+<tr><td>2026-02-25</td><td>5h 55m</td><td>14.1%</td><td>22.3%</td><td>63.7%</td><td><span class="badge badge-good">95.7%</span></td><td>92.2% / 81.0%</td><td>55 bpm</td><td>2</td></tr>
+<tr><td>2026-02-24</td><td>6h 17m</td><td>25.7%</td><td>23.1%</td><td>51.2%</td><td><span class="badge badge-good">96.9%</span></td><td>94.3% / 86.0%</td><td>55 bpm</td><td>5</td></tr>
+<tr><td>2026-02-23</td><td>7h 09m</td><td>23.5%</td><td>17.2%</td><td>59.2%</td><td><span class="badge badge-good">96.0%</span></td><td>94.3% / 86.0%</td><td>53 bpm</td><td>4</td></tr>
+<tr><td>2026-02-22</td><td>6h 31m</td><td>19.4%</td><td>18.2%</td><td>62.4%</td><td><span class="badge badge-good">95.1%</span></td><td>93.9% / 86.0%</td><td>56 bpm</td><td>3</td></tr>
+<tr><td>2026-02-21</td><td>7h 47m</td><td>23.8%</td><td>16.1%</td><td>60.2%</td><td><span class="badge badge-good">96.9%</span></td><td>93.2% / 83.0%</td><td>57 bpm</td><td>3</td></tr>
+<tr><td>2026-02-20</td><td>6h 11m</td><td>14.6%</td><td>19.9%</td><td>65.5%</td><td><span class="badge badge-good">98.1%</span></td><td>90.9% / 81.0%</td><td>54 bpm</td><td>1</td></tr>
+<tr><td>2026-02-19</td><td>6h 25m</td><td>18.4%</td><td>25.7%</td><td>55.8%</td><td><span class="badge badge-good">95.5%</span></td><td>92.4% / 81.0%</td><td>53 bpm</td><td>2</td></tr>
+<tr><td>2026-02-17</td><td>8h 19m</td><td>19.4%</td><td>20.0%</td><td>60.5%</td><td><span class="badge badge-good">97.7%</span></td><td>96.6% / 92.0%</td><td>57 bpm</td><td>2</td></tr>
+<tr><td>2026-02-16</td><td>7h 55m</td><td>12.2%</td><td>20.2%</td><td>67.6%</td><td><span class="badge badge-good">98.8%</span></td><td>91.9% / 86.0%</td><td>55 bpm</td><td>2</td></tr>
+<tr><td>2026-02-15</td><td>6h 29m</td><td>35.2%</td><td>12.1%</td><td>52.7%</td><td><span class="badge badge-good">98.7%</span></td><td>93.6% / 86.0%</td><td>72 bpm</td><td>2</td></tr>
+<tr><td>2026-02-14</td><td>6h 04m</td><td>22.3%</td><td>21.4%</td><td>56.3%</td><td><span class="badge badge-good">91.7%</span></td><td>90.0% / 71.0%</td><td>62 bpm</td><td>2</td></tr>
+<tr><td>2026-02-13</td><td>5h 55m</td><td>13.8%</td><td>12.4%</td><td>73.8%</td><td><span class="badge badge-good">100.0%</span></td><td>93.8% / 84.0%</td><td>57 bpm</td><td>0</td></tr>
+<tr><td>2026-02-12</td><td>4h 44m</td><td>21.8%</td><td>12.3%</td><td>65.8%</td><td><span class="badge badge-good">96.6%</span></td><td>93.6% / 89.0%</td><td>80 bpm</td><td>2</td></tr>
+<tr><td>2026-02-11</td><td>4h 21m</td><td>40.2%</td><td>23.0%</td><td>36.8%</td><td><span class="badge badge-good">91.6%</span></td><td>93.0% / 86.0%</td><td>54 bpm</td><td>3</td></tr>
+<tr><td>2026-02-09</td><td>7h 10m</td><td>16.5%</td><td>23.5%</td><td>60.0%</td><td><span class="badge badge-good">98.2%</span></td><td>90.2% / 80.0%</td><td>50 bpm</td><td>3</td></tr>
+<tr><td>2026-02-08</td><td>7h 04m</td><td>11.3%</td><td>23.8%</td><td>64.9%</td><td><span class="badge badge-good">98.1%</span></td><td>91.9% / 83.0%</td><td>52 bpm</td><td>2</td></tr>
+<tr><td>2026-02-07</td><td>5h 17m</td><td>22.7%</td><td>22.7%</td><td>54.6%</td><td><span class="badge badge-good">93.8%</span></td><td>90.7% / 85.0%</td><td>57 bpm</td><td>4</td></tr>
+<tr><td>2026-02-06</td><td>5h 38m</td><td>26.9%</td><td>28.4%</td><td>44.7%</td><td><span class="badge badge-good">93.1%</span></td><td>91.7% / 73.0%</td><td>54 bpm</td><td>3</td></tr>
+<tr><td>2026-02-05</td><td>7h 41m</td><td>20.4%</td><td>25.6%</td><td>54.0%</td><td><span class="badge badge-good">98.3%</span></td><td>91.6% / 80.0%</td><td>51 bpm</td><td>2</td></tr>
+<tr><td>2026-02-04</td><td>7h 54m</td><td>20.3%</td><td>34.2%</td><td>45.6%</td><td><span class="badge badge-good">97.1%</span></td><td>91.9% / 80.0%</td><td>54 bpm</td><td>1</td></tr>
+<tr><td>2026-02-02</td><td>7h 15m</td><td>14.0%</td><td>28.5%</td><td>57.5%</td><td><span class="badge badge-good">100.0%</span></td><td>90.4% / 81.0%</td><td>50 bpm</td><td>0</td></tr>
+<tr><td>2026-02-01</td><td>7h 27m</td><td>22.4%</td><td>18.8%</td><td>58.8%</td><td><span class="badge badge-good">97.6%</span></td><td>92.5% / 81.0%</td><td>52 bpm</td><td>3</td></tr>
+<tr><td>2026-01-31</td><td>3h 36m</td><td>41.2%</td><td>0.0%</td><td>58.8%</td><td><span class="badge badge-warn">89.6%</span></td><td>93.0% / 81.0%</td><td>78 bpm</td><td>2</td></tr>
+<tr><td>2026-01-30</td><td>5h 58m</td><td>13.7%</td><td>16.5%</td><td>69.8%</td><td><span class="badge badge-good">96.2%</span></td><td>93.0% / 85.0%</td><td>56 bpm</td><td>2</td></tr>
+<tr><td>2026-01-28</td><td>6h 28m</td><td>26.3%</td><td>18.0%</td><td>55.7%</td><td><span class="badge badge-good">97.7%</span></td><td>93.4% / 83.0%</td><td>53 bpm</td><td>2</td></tr>
+<tr><td>2026-01-27</td><td>7h 56m</td><td>16.0%</td><td>27.1%</td><td>56.9%</td><td><span class="badge badge-good">99.4%</span></td><td>93.0% / 84.0%</td><td>52 bpm</td><td>3</td></tr>
+<tr><td>2026-01-25</td><td>7h 09m</td><td>28.0%</td><td>19.3%</td><td>52.7%</td><td><span class="badge badge-good">96.6%</span></td><td>89.2% / 79.0%</td><td>–</td><td>4</td></tr>
+<tr><td>2026-01-24</td><td>6h 50m</td><td>18.8%</td><td>22.9%</td><td>58.3%</td><td><span class="badge badge-good">96.2%</span></td><td>91.5% / 76.0%</td><td>–</td><td>3</td></tr>
+<tr><td>2026-01-23</td><td>5h 09m</td><td>27.5%</td><td>19.1%</td><td>53.4%</td><td><span class="badge badge-good">99.4%</span></td><td>–</td><td>–</td><td>2</td></tr>
+<tr><td>2026-01-22</td><td>5h 38m</td><td>27.5%</td><td>24.6%</td><td>47.9%</td><td><span class="badge badge-warn">88.9%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2026-01-21</td><td>7h 54m</td><td>19.2%</td><td>25.3%</td><td>55.5%</td><td><span class="badge badge-good">96.1%</span></td><td>–</td><td>–</td><td>3</td></tr>
+<tr><td>2026-01-20</td><td>8h 05m</td><td>12.2%</td><td>19.2%</td><td>68.7%</td><td><span class="badge badge-bad">83.6%</span></td><td>–</td><td>–</td><td>3</td></tr>
+<tr><td>2026-01-19</td><td>5h 57m</td><td>18.2%</td><td>16.5%</td><td>65.3%</td><td><span class="badge badge-good">96.7%</span></td><td>–</td><td>–</td><td>2</td></tr>
+<tr><td>2026-01-18</td><td>4h 48m</td><td>39.9%</td><td>13.5%</td><td>46.5%</td><td><span class="badge badge-bad">71.6%</span></td><td>–</td><td>–</td><td>5</td></tr>
 <tr><td>2026-01-17</td><td>7h 59m</td><td>13.8%</td><td>16.9%</td><td>69.3%</td><td><span class="badge badge-good">92.5%</span></td><td>–</td><td>–</td><td>4</td></tr>
 <tr><td>2025-12-24</td><td>6h 20m</td><td>14.5%</td><td>10.8%</td><td>74.7%</td><td><span class="badge badge-bad">73.4%</span></td><td>–</td><td>–</td><td>6</td></tr>
 <tr><td>2025-12-21</td><td>8h 08m</td><td>19.9%</td><td>15.2%</td><td>65.0%</td><td><span class="badge badge-good">96.3%</span></td><td>–</td><td>–</td><td>2</td></tr>
-<tr><td>2025-12-20</td><td>13h 52m</td><td>19.8%</td><td>13.8%</td><td>66.3%</td><td><span class="badge badge-good">93.3%</span></td><td>–</td><td>–</td><td>8</td></tr>
-<tr><td>2025-12-19</td><td>11h 56m</td><td>21.6%</td><td>15.1%</td><td>63.3%</td><td><span class="badge badge-good">91.0%</span></td><td>–</td><td>–</td><td>9</td></tr>
-<tr><td>2025-12-18</td><td>13h 21m</td><td>18.9%</td><td>21.7%</td><td>59.4%</td><td><span class="badge badge-good">95.0%</span></td><td>–</td><td>–</td><td>5</td></tr>
+<tr><td>2025-12-20</td><td>5h 44m</td><td>19.8%</td><td>11.9%</td><td>68.3%</td><td><span class="badge badge-warn">89.4%</span></td><td>–</td><td>–</td><td>6</td></tr>
+<tr><td>2025-12-19</td><td>6h 12m</td><td>23.4%</td><td>18.0%</td><td>58.6%</td><td><span class="badge badge-good">92.5%</span></td><td>–</td><td>–</td><td>3</td></tr>
+<tr><td>2025-12-18</td><td>7h 09m</td><td>14.9%</td><td>24.9%</td><td>60.1%</td><td><span class="badge badge-good">97.3%</span></td><td>–</td><td>–</td><td>2</td></tr>
 <tr><td>2025-12-17</td><td>7h 13m</td><td>15.5%</td><td>20.6%</td><td>64.0%</td><td><span class="badge badge-good">91.2%</span></td><td>–</td><td>–</td><td>5</td></tr>
 <tr><td>2025-12-14</td><td>6h 54m</td><td>23.4%</td><td>10.4%</td><td>66.2%</td><td><span class="badge badge-good">93.2%</span></td><td>–</td><td>–</td><td>7</td></tr>
-<tr><td>2025-12-13</td><td>14h 31m</td><td>19.6%</td><td>21.0%</td><td>59.4%</td><td><span class="badge badge-good">92.1%</span></td><td>–</td><td>–</td><td>12</td></tr>
-<tr><td>2025-12-12</td><td>15h 20m</td><td>19.8%</td><td>30.8%</td><td>49.5%</td><td><span class="badge badge-good">93.4%</span></td><td>–</td><td>–</td><td>9</td></tr>
-<tr><td>2025-12-11</td><td>14h 14m</td><td>19.9%</td><td>26.5%</td><td>53.6%</td><td><span class="badge badge-good">96.0%</span></td><td>–</td><td>–</td><td>8</td></tr>
+<tr><td>2025-12-13</td><td>7h 37m</td><td>16.2%</td><td>30.6%</td><td>53.2%</td><td><span class="badge badge-good">91.0%</span></td><td>–</td><td>–</td><td>5</td></tr>
+<tr><td>2025-12-12</td><td>7h 43m</td><td>23.3%</td><td>30.9%</td><td>45.8%</td><td><span class="badge badge-good">95.9%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-12-11</td><td>6h 31m</td><td>15.9%</td><td>21.2%</td><td>62.9%</td><td><span class="badge badge-good">96.1%</span></td><td>–</td><td>–</td><td>4</td></tr>
 <tr><td>2025-12-10</td><td>6h 32m</td><td>23.5%</td><td>14.3%</td><td>62.2%</td><td><span class="badge badge-good">97.3%</span></td><td>–</td><td>–</td><td>3</td></tr>
 <tr><td>2025-11-19</td><td>7h 21m</td><td>22.2%</td><td>15.0%</td><td>62.8%</td><td><span class="badge badge-good">90.6%</span></td><td>–</td><td>–</td><td>3</td></tr>
 <tr><td>2025-11-18</td><td>7h 48m</td><td>19.7%</td><td>19.7%</td><td>60.7%</td><td><span class="badge badge-good">96.5%</span></td><td>–</td><td>–</td><td>2</td></tr>
 <tr><td>2025-11-15</td><td>7h 24m</td><td>14.4%</td><td>8.6%</td><td>77.0%</td><td><span class="badge badge-warn">88.3%</span></td><td>–</td><td>–</td><td>6</td></tr>
 <tr><td>2025-11-04</td><td>9h 21m</td><td>7.7%</td><td>18.9%</td><td>73.4%</td><td><span class="badge badge-good">98.1%</span></td><td>–</td><td>–</td><td>3</td></tr>
 <tr><td>2025-11-02</td><td>6h 36m</td><td>23.5%</td><td>27.3%</td><td>49.2%</td><td><span class="badge badge-good">98.8%</span></td><td>–</td><td>–</td><td>2</td></tr>
-<tr><td>2025-11-01</td><td>13h 46m</td><td>28.7%</td><td>20.9%</td><td>50.4%</td><td><span class="badge badge-good">96.3%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-11-01</td><td>7h 10m</td><td>33.5%</td><td>15.1%</td><td>51.4%</td><td><span class="badge badge-good">94.1%</span></td><td>–</td><td>–</td><td>2</td></tr>
 <tr><td>2025-10-30</td><td>8h 37m</td><td>12.8%</td><td>22.4%</td><td>64.8%</td><td><span class="badge badge-good">96.8%</span></td><td>–</td><td>–</td><td>4</td></tr>
 <tr><td>2025-10-12</td><td>6h 32m</td><td>33.2%</td><td>8.2%</td><td>58.7%</td><td><span class="badge badge-good">92.9%</span></td><td>–</td><td>–</td><td>4</td></tr>
-<tr><td>2025-10-11</td><td>13h 22m</td><td>28.2%</td><td>17.3%</td><td>54.5%</td><td><span class="badge badge-good">96.4%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-10-11</td><td>6h 50m</td><td>23.4%</td><td>26.1%</td><td>50.5%</td><td><span class="badge badge-good">100.0%</span></td><td>–</td><td>–</td><td>0</td></tr>
 <tr><td>2025-10-10</td><td>6h 33m</td><td>16.8%</td><td>32.3%</td><td>50.9%</td><td><span class="badge badge-good">97.8%</span></td><td>–</td><td>–</td><td>2</td></tr>
 <tr><td>2025-09-24</td><td>8h 15m</td><td>20.8%</td><td>25.5%</td><td>53.7%</td><td><span class="badge badge-good">97.1%</span></td><td>–</td><td>–</td><td>1</td></tr>
 <tr><td>2025-09-12</td><td>5h 34m</td><td>23.7%</td><td>15.9%</td><td>60.5%</td><td><span class="badge badge-warn">88.4%</span></td><td>–</td><td>–</td><td>5</td></tr>
 <tr><td>2025-09-11</td><td>5h 14m</td><td>25.5%</td><td>17.8%</td><td>56.7%</td><td><span class="badge badge-good">93.2%</span></td><td>–</td><td>–</td><td>3</td></tr>
 <tr><td>2025-09-07</td><td>4h 36m</td><td>44.6%</td><td>9.1%</td><td>46.4%</td><td><span class="badge badge-warn">87.9%</span></td><td>–</td><td>–</td><td>2</td></tr>
-<tr><td>2025-09-06</td><td>9h 28m</td><td>38.6%</td><td>4.4%</td><td>57.0%</td><td><span class="badge badge-warn">87.1%</span></td><td>–</td><td>–</td><td>6</td></tr>
-<tr><td>2025-09-04</td><td>15h 17m</td><td>17.0%</td><td>20.6%</td><td>62.4%</td><td><span class="badge badge-good">94.7%</span></td><td>–</td><td>–</td><td>9</td></tr>
-<tr><td>2025-09-02</td><td>15h 08m</td><td>19.7%</td><td>17.5%</td><td>62.8%</td><td><span class="badge badge-good">96.8%</span></td><td>–</td><td>–</td><td>3</td></tr>
-<tr><td>2025-09-01</td><td>16h 33m</td><td>16.0%</td><td>18.5%</td><td>65.5%</td><td><span class="badge badge-good">97.4%</span></td><td>–</td><td>–</td><td>4</td></tr>
-<tr><td>2025-08-31</td><td>13h 05m</td><td>26.1%</td><td>17.2%</td><td>56.7%</td><td><span class="badge badge-good">96.4%</span></td><td>–</td><td>–</td><td>8</td></tr>
-<tr><td>2025-08-30</td><td>11h 37m</td><td>24.2%</td><td>19.8%</td><td>56.0%</td><td><span class="badge badge-good">97.2%</span></td><td>–</td><td>–</td><td>6</td></tr>
+<tr><td>2025-09-06</td><td>4h 52m</td><td>32.9%</td><td>0.0%</td><td>67.1%</td><td><span class="badge badge-warn">86.4%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-09-04</td><td>7h 19m</td><td>12.1%</td><td>22.8%</td><td>65.1%</td><td><span class="badge badge-good">96.7%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-09-02</td><td>8h 18m</td><td>14.5%</td><td>17.1%</td><td>68.5%</td><td><span class="badge badge-good">96.9%</span></td><td>–</td><td>–</td><td>1</td></tr>
+<tr><td>2025-09-01</td><td>8h 15m</td><td>17.6%</td><td>20.0%</td><td>62.4%</td><td><span class="badge badge-good">97.8%</span></td><td>–</td><td>–</td><td>3</td></tr>
+<tr><td>2025-08-31</td><td>4h 50m</td><td>40.7%</td><td>12.4%</td><td>46.9%</td><td><span class="badge badge-good">94.2%</span></td><td>–</td><td>–</td><td>5</td></tr>
+<tr><td>2025-08-30</td><td>6h 47m</td><td>12.5%</td><td>25.1%</td><td>62.4%</td><td><span class="badge badge-good">99.5%</span></td><td>–</td><td>–</td><td>1</td></tr>
 <tr><td>2025-08-29</td><td>4h 42m</td><td>46.1%</td><td>26.2%</td><td>27.7%</td><td><span class="badge badge-warn">87.3%</span></td><td>–</td><td>–</td><td>1</td></tr>
 <tr><td>2025-08-26</td><td>6h 51m</td><td>21.4%</td><td>20.0%</td><td>58.6%</td><td><span class="badge badge-good">99.3%</span></td><td>–</td><td>–</td><td>1</td></tr>
-<tr><td>2025-08-25</td><td>17h 28m</td><td>10.1%</td><td>20.4%</td><td>69.5%</td><td><span class="badge badge-good">95.4%</span></td><td>–</td><td>–</td><td>8</td></tr>
-<tr><td>2025-08-24</td><td>14h 28m</td><td>25.7%</td><td>13.2%</td><td>61.1%</td><td><span class="badge badge-good">97.3%</span></td><td>–</td><td>–</td><td>3</td></tr>
-<tr><td>2025-08-23</td><td>15h 45m</td><td>27.3%</td><td>20.1%</td><td>52.6%</td><td><span class="badge badge-good">93.9%</span></td><td>–</td><td>–</td><td>6</td></tr>
+<tr><td>2025-08-25</td><td>7h 39m</td><td>14.4%</td><td>12.9%</td><td>72.8%</td><td><span class="badge badge-good">98.5%</span></td><td>–</td><td>–</td><td>2</td></tr>
+<tr><td>2025-08-24</td><td>6h 49m</td><td>38.4%</td><td>13.7%</td><td>47.9%</td><td><span class="badge badge-good">96.0%</span></td><td>–</td><td>–</td><td>1</td></tr>
+<tr><td>2025-08-23</td><td>8h 56m</td><td>18.8%</td><td>25.0%</td><td>56.2%</td><td><span class="badge badge-good">92.4%</span></td><td>–</td><td>–</td><td>5</td></tr>
 <tr><td>2025-08-22</td><td>7h 02m</td><td>18.7%</td><td>24.6%</td><td>56.6%</td><td><span class="badge badge-good">98.8%</span></td><td>–</td><td>–</td><td>1</td></tr>
 <tr><td>2025-06-15</td><td>6h 27m</td><td>23.0%</td><td>8.0%</td><td>69.0%</td><td><span class="badge badge-good">96.3%</span></td><td>–</td><td>–</td><td>2</td></tr>
-<tr><td>2025-06-14</td><td>13h 36m</td><td>26.0%</td><td>4.5%</td><td>69.5%</td><td><span class="badge badge-warn">88.1%</span></td><td>–</td><td>–</td><td>7</td></tr>
-<tr><td>2025-06-13</td><td>14h 30m</td><td>26.1%</td><td>14.0%</td><td>59.9%</td><td><span class="badge badge-good">90.1%</span></td><td>–</td><td>–</td><td>6</td></tr>
-<tr><td>2025-06-12</td><td>14h 24m</td><td>20.6%</td><td>22.5%</td><td>56.9%</td><td><span class="badge badge-good">97.4%</span></td><td>–</td><td>–</td><td>5</td></tr>
-<tr><td>2025-06-10</td><td>15h 45m</td><td>21.3%</td><td>23.7%</td><td>55.0%</td><td><span class="badge badge-good">97.0%</span></td><td>–</td><td>–</td><td>5</td></tr>
-<tr><td>2025-06-09</td><td>15h 40m</td><td>25.1%</td><td>28.3%</td><td>46.6%</td><td><span class="badge badge-good">97.8%</span></td><td>–</td><td>–</td><td>3</td></tr>
-<tr><td>2025-06-08</td><td>17h 50m</td><td>22.6%</td><td>27.4%</td><td>50.0%</td><td><span class="badge badge-good">95.6%</span></td><td>–</td><td>–</td><td>6</td></tr>
-<tr><td>2025-06-07</td><td>16h 22m</td><td>22.2%</td><td>22.2%</td><td>55.6%</td><td><span class="badge badge-good">96.0%</span></td><td>–</td><td>–</td><td>5</td></tr>
-<tr><td>2025-06-06</td><td>15h 45m</td><td>20.3%</td><td>21.8%</td><td>57.9%</td><td><span class="badge badge-good">96.9%</span></td><td>–</td><td>–</td><td>4</td></tr>
-<tr><td>2025-06-05</td><td>15h 01m</td><td>24.3%</td><td>21.9%</td><td>53.8%</td><td><span class="badge badge-good">95.4%</span></td><td>–</td><td>–</td><td>6</td></tr>
-<tr><td>2025-06-04</td><td>11h 46m</td><td>25.4%</td><td>15.7%</td><td>58.9%</td><td><span class="badge badge-good">94.1%</span></td><td>–</td><td>–</td><td>7</td></tr>
+<tr><td>2025-06-14</td><td>7h 09m</td><td>28.7%</td><td>1.4%</td><td>69.9%</td><td><span class="badge badge-bad">81.9%</span></td><td>–</td><td>–</td><td>5</td></tr>
+<tr><td>2025-06-13</td><td>7h 21m</td><td>23.6%</td><td>26.3%</td><td>50.1%</td><td><span class="badge badge-good">99.8%</span></td><td>–</td><td>–</td><td>1</td></tr>
+<tr><td>2025-06-12</td><td>7h 03m</td><td>17.5%</td><td>18.4%</td><td>64.1%</td><td><span class="badge badge-good">95.1%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-06-10</td><td>6h 40m</td><td>31.5%</td><td>25.5%</td><td>43.0%</td><td><span class="badge badge-good">100.0%</span></td><td>–</td><td>–</td><td>0</td></tr>
+<tr><td>2025-06-09</td><td>9h 00m</td><td>20.4%</td><td>30.4%</td><td>49.3%</td><td><span class="badge badge-good">96.3%</span></td><td>–</td><td>–</td><td>3</td></tr>
+<tr><td>2025-06-08</td><td>8h 50m</td><td>24.9%</td><td>24.3%</td><td>50.8%</td><td><span class="badge badge-good">95.0%</span></td><td>–</td><td>–</td><td>3</td></tr>
+<tr><td>2025-06-07</td><td>7h 32m</td><td>19.0%</td><td>19.7%</td><td>61.3%</td><td><span class="badge badge-good">97.2%</span></td><td>–</td><td>–</td><td>2</td></tr>
+<tr><td>2025-06-06</td><td>8h 13m</td><td>21.5%</td><td>23.7%</td><td>54.8%</td><td><span class="badge badge-good">96.7%</span></td><td>–</td><td>–</td><td>2</td></tr>
+<tr><td>2025-06-05</td><td>6h 48m</td><td>27.7%</td><td>19.6%</td><td>52.7%</td><td><span class="badge badge-good">94.0%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-06-04</td><td>4h 58m</td><td>22.1%</td><td>10.4%</td><td>67.4%</td><td><span class="badge badge-good">94.3%</span></td><td>–</td><td>–</td><td>3</td></tr>
 <tr><td>2025-06-03</td><td>9h 14m</td><td>20.8%</td><td>25.3%</td><td>54.0%</td><td><span class="badge badge-good">98.9%</span></td><td>–</td><td>–</td><td>2</td></tr>
 <tr><td>2025-03-11</td><td>7h 52m</td><td>26.5%</td><td>29.7%</td><td>43.9%</td><td><span class="badge badge-good">96.3%</span></td><td>–</td><td>–</td><td>1</td></tr>
-<tr><td>2025-03-10</td><td>15h 35m</td><td>19.0%</td><td>27.1%</td><td>53.9%</td><td><span class="badge badge-good">97.5%</span></td><td>–</td><td>–</td><td>3</td></tr>
-<tr><td>2025-03-09</td><td>14h 03m</td><td>18.4%</td><td>20.3%</td><td>61.3%</td><td><span class="badge badge-good">96.9%</span></td><td>–</td><td>–</td><td>6</td></tr>
-<tr><td>2025-03-08</td><td>13h 53m</td><td>20.4%</td><td>20.4%</td><td>59.2%</td><td><span class="badge badge-good">94.9%</span></td><td>–</td><td>–</td><td>7</td></tr>
+<tr><td>2025-03-10</td><td>7h 43m</td><td>11.4%</td><td>24.4%</td><td>64.1%</td><td><span class="badge badge-good">98.7%</span></td><td>–</td><td>–</td><td>2</td></tr>
+<tr><td>2025-03-09</td><td>6h 20m</td><td>26.8%</td><td>15.3%</td><td>57.9%</td><td><span class="badge badge-good">94.8%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-03-08</td><td>7h 33m</td><td>15.0%</td><td>24.7%</td><td>60.3%</td><td><span class="badge badge-good">95.0%</span></td><td>–</td><td>–</td><td>3</td></tr>
 <tr><td>2025-03-07</td><td>6h 30m</td><td>11.3%</td><td>7.7%</td><td>81.0%</td><td><span class="badge badge-warn">88.2%</span></td><td>–</td><td>–</td><td>5</td></tr>
 <tr><td>2025-03-04</td><td>7h 19m</td><td>18.7%</td><td>23.7%</td><td>57.6%</td><td><span class="badge badge-good">100.0%</span></td><td>–</td><td>–</td><td>0</td></tr>
 <tr><td>2025-03-02</td><td>6h 54m</td><td>19.1%</td><td>12.3%</td><td>68.6%</td><td><span class="badge badge-good">99.8%</span></td><td>–</td><td>–</td><td>1</td></tr>
-<tr><td>2025-03-01</td><td>13h 33m</td><td>24.8%</td><td>11.2%</td><td>64.0%</td><td><span class="badge badge-good">93.6%</span></td><td>–</td><td>–</td><td>6</td></tr>
+<tr><td>2025-03-01</td><td>6h 39m</td><td>30.8%</td><td>10.0%</td><td>59.1%</td><td><span class="badge badge-warn">87.9%</span></td><td>–</td><td>–</td><td>5</td></tr>
 <tr><td>2025-02-28</td><td>6h 04m</td><td>19.2%</td><td>0.0%</td><td>80.8%</td><td><span class="badge badge-warn">87.3%</span></td><td>–</td><td>–</td><td>6</td></tr>
 <tr><td>2025-02-26</td><td>6h 36m</td><td>19.4%</td><td>29.3%</td><td>51.3%</td><td><span class="badge badge-bad">83.4%</span></td><td>–</td><td>–</td><td>4</td></tr>
-<tr><td>2025-02-25</td><td>14h 27m</td><td>21.5%</td><td>24.1%</td><td>54.4%</td><td><span class="badge badge-warn">86.6%</span></td><td>–</td><td>–</td><td>11</td></tr>
-<tr><td>2025-02-24</td><td>17h 16m</td><td>18.2%</td><td>16.5%</td><td>65.3%</td><td><span class="badge badge-good">94.8%</span></td><td>–</td><td>–</td><td>9</td></tr>
-<tr><td>2025-02-23</td><td>17h 18m</td><td>15.8%</td><td>18.1%</td><td>66.1%</td><td><span class="badge badge-good">97.8%</span></td><td>–</td><td>–</td><td>5</td></tr>
-<tr><td>2025-02-22</td><td>14h 38m</td><td>23.9%</td><td>17.9%</td><td>58.2%</td><td><span class="badge badge-good">93.3%</span></td><td>–</td><td>–</td><td>10</td></tr>
-<tr><td>2025-02-21</td><td>14h 23m</td><td>26.5%</td><td>9.8%</td><td>63.6%</td><td><span class="badge badge-good">92.3%</span></td><td>–</td><td>–</td><td>11</td></tr>
-<tr><td>2025-02-20</td><td>14h 06m</td><td>26.6%</td><td>19.4%</td><td>54.0%</td><td><span class="badge badge-good">96.6%</span></td><td>–</td><td>–</td><td>4</td></tr>
-
-      </tbody>
+<tr><td>2025-02-25</td><td>7h 51m</td><td>23.1%</td><td>19.7%</td><td>57.1%</td><td><span class="badge badge-warn">89.5%</span></td><td>–</td><td>–</td><td>7</td></tr>
+<tr><td>2025-02-24</td><td>9h 25m</td><td>14.2%</td><td>13.8%</td><td>72.0%</td><td><span class="badge badge-good">99.6%</span></td><td>–</td><td>–</td><td>2</td></tr>
+<tr><td>2025-02-23</td><td>7h 53m</td><td>17.8%</td><td>23.3%</td><td>59.0%</td><td><span class="badge badge-good">95.7%</span></td><td>–</td><td>–</td><td>3</td></tr>
+<tr><td>2025-02-22</td><td>6h 45m</td><td>31.1%</td><td>11.6%</td><td>57.3%</td><td><span class="badge badge-good">90.6%</span></td><td>–</td><td>–</td><td>7</td></tr>
+<tr><td>2025-02-21</td><td>7h 38m</td><td>22.5%</td><td>8.3%</td><td>69.2%</td><td><span class="badge badge-good">93.9%</span></td><td>–</td><td>–</td><td>4</td></tr>
+<tr><td>2025-02-20</td><td>6h 28m</td><td>31.4%</td><td>32.5%</td><td>36.1%</td><td><span class="badge badge-good">100.0%</span></td><td>–</td><td>–</td><td>0</td></tr>
+</tbody>
     </table>
   </div>
 </div>
 
-<footer>Daten: Garmin / Health Connect · 17.03.2026 20:51 · 120 Nächte</footer>
+<footer>Daten: Garmin / Health Connect · Aktualisiert: 17.03.2026 21:19 · 118 Nächte</footer>
 
 <script>
-const LABELS  = ["2026-02-13", "2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-19", "2026-02-20", "2026-02-21", "2026-02-22", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-02-28", "2026-03-01", "2026-03-02", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17"];
-const DUR     = [11.98, 12.55, 14.4, 7.92, 8.32, 12.6, 13.97, 14.3, 6.52, 7.15, 6.28, 5.92, 6.1, 7.0, 4.83, 12.83, 17.9, 12.77, 15.23, 12.56, 10.4, 11.6, 14.23, 16.46, 12.0, 11.37, 8.28, 3.7, 7.78, 7.2];
-const DEEP    = [18.1, 29.0, 22.6, 12.2, 19.4, 16.5, 19.7, 21.8, 19.4, 23.5, 25.7, 14.1, 38.0, 18.6, 46.2, 22.3, 16.4, 15.1, 11.4, 27.9, 16.3, 23.0, 14.8, 11.1, 15.3, 29.6, 13.7, 36.0, 16.3, 18.3];
-const REM     = [17.0, 16.6, 16.6, 20.2, 20.0, 22.9, 17.8, 17.0, 18.2, 17.2, 23.1, 22.3, 21.0, 13.1, 10.3, 8.3, 19.4, 21.9, 27.8, 23.9, 17.9, 16.7, 23.7, 27.1, 10.8, 23.5, 18.1, 0.0, 13.5, 20.4];
-const EFF     = [95.6, 95.2, 98.7, 98.8, 97.7, 96.8, 97.4, 96.1, 95.1, 96.0, 96.9, 95.7, 87.1, 98.8, 98.6, 91.2, 98.2, 97.7, 96.0, 98.2, 99.7, 94.8, 99.3, 96.9, 89.6, 98.0, 92.0, 92.1, 95.1, 96.4];
-const SPO2    = ["null", 93.3, "null", "null", 93.7, "null", "null", "null", 92.2, 92.3, 92.5, 92.5, 92.5, 92.6, 92.5, 94.8, 92.6, 92.6, 92.7, 92.6, 92.7, 94.0, "null", 92.5, 94.3, 95.1, "null", 94.2, 93.3, 93.4];
-const HR      = ["null", "null", "null", "null", "null", "null", "null", "null", 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 50, 52, "null", 51, 57, "null", 52];
+const SLEEP_DATA   = [{"date": "2025-02-20", "total_sleep_min": 388.0, "deep_min": 122.0, "light_min": 140.0, "rem_min": 126.0, "awake_min": 0.0, "deep_pct": 31.4, "light_pct": 36.1, "rem_pct": 32.5, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 0, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-02-21", "total_sleep_min": 458.0, "deep_min": 103.0, "light_min": 317.0, "rem_min": 38.0, "awake_min": 30.0, "deep_pct": 22.5, "light_pct": 69.2, "rem_pct": 8.3, "awake_pct": 6.1, "efficiency": 93.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-02-22", "total_sleep_min": 405.0, "deep_min": 126.0, "light_min": 232.0, "rem_min": 47.0, "awake_min": 42.0, "deep_pct": 31.1, "light_pct": 57.3, "rem_pct": 11.6, "awake_pct": 9.4, "efficiency": 90.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 7, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-02-23", "total_sleep_min": 473.0, "deep_min": 84.0, "light_min": 279.0, "rem_min": 110.0, "awake_min": 21.0, "deep_pct": 17.8, "light_pct": 59.0, "rem_pct": 23.3, "awake_pct": 4.3, "efficiency": 95.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-02-24", "total_sleep_min": 565.0, "deep_min": 80.0, "light_min": 407.0, "rem_min": 78.0, "awake_min": 2.0, "deep_pct": 14.2, "light_pct": 72.0, "rem_pct": 13.8, "awake_pct": 0.4, "efficiency": 99.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-02-25", "total_sleep_min": 471.0, "deep_min": 109.0, "light_min": 269.0, "rem_min": 93.0, "awake_min": 55.0, "deep_pct": 23.1, "light_pct": 57.1, "rem_pct": 19.7, "awake_pct": 10.5, "efficiency": 89.5, "sleep_start": "?", "wake_time": "?", "wake_episodes": 7, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-02-26", "total_sleep_min": 396.0, "deep_min": 77.0, "light_min": 203.0, "rem_min": 116.0, "awake_min": 79.0, "deep_pct": 19.4, "light_pct": 51.3, "rem_pct": 29.3, "awake_pct": 16.6, "efficiency": 83.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-02-28", "total_sleep_min": 364.0, "deep_min": 70.0, "light_min": 294.0, "rem_min": 0.0, "awake_min": 53.0, "deep_pct": 19.2, "light_pct": 80.8, "rem_pct": 0.0, "awake_pct": 12.7, "efficiency": 87.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 6, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-03-01", "total_sleep_min": 399.0, "deep_min": 123.0, "light_min": 236.0, "rem_min": 40.0, "awake_min": 55.0, "deep_pct": 30.8, "light_pct": 59.1, "rem_pct": 10.0, "awake_pct": 12.1, "efficiency": 87.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-03-02", "total_sleep_min": 414.0, "deep_min": 79.0, "light_min": 284.0, "rem_min": 51.0, "awake_min": 1.0, "deep_pct": 19.1, "light_pct": 68.6, "rem_pct": 12.3, "awake_pct": 0.2, "efficiency": 99.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-03-04", "total_sleep_min": 439.0, "deep_min": 82.0, "light_min": 253.0, "rem_min": 104.0, "awake_min": 0.0, "deep_pct": 18.7, "light_pct": 57.6, "rem_pct": 23.7, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 0, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-03-07", "total_sleep_min": 390.0, "deep_min": 44.0, "light_min": 316.0, "rem_min": 30.0, "awake_min": 52.0, "deep_pct": 11.3, "light_pct": 81.0, "rem_pct": 7.7, "awake_pct": 11.8, "efficiency": 88.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-03-08", "total_sleep_min": 453.0, "deep_min": 68.0, "light_min": 273.0, "rem_min": 112.0, "awake_min": 24.0, "deep_pct": 15.0, "light_pct": 60.3, "rem_pct": 24.7, "awake_pct": 5.0, "efficiency": 95.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-03-09", "total_sleep_min": 380.0, "deep_min": 102.0, "light_min": 220.0, "rem_min": 58.0, "awake_min": 21.0, "deep_pct": 26.8, "light_pct": 57.9, "rem_pct": 15.3, "awake_pct": 5.2, "efficiency": 94.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-03-10", "total_sleep_min": 463.0, "deep_min": 53.0, "light_min": 297.0, "rem_min": 113.0, "awake_min": 6.0, "deep_pct": 11.4, "light_pct": 64.1, "rem_pct": 24.4, "awake_pct": 1.3, "efficiency": 98.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-03-11", "total_sleep_min": 472.0, "deep_min": 125.0, "light_min": 207.0, "rem_min": 140.0, "awake_min": 18.0, "deep_pct": 26.5, "light_pct": 43.9, "rem_pct": 29.7, "awake_pct": 3.7, "efficiency": 96.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-03", "total_sleep_min": 554.0, "deep_min": 115.0, "light_min": 299.0, "rem_min": 140.0, "awake_min": 6.0, "deep_pct": 20.8, "light_pct": 54.0, "rem_pct": 25.3, "awake_pct": 1.1, "efficiency": 98.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-04", "total_sleep_min": 298.0, "deep_min": 66.0, "light_min": 201.0, "rem_min": 31.0, "awake_min": 18.0, "deep_pct": 22.1, "light_pct": 67.4, "rem_pct": 10.4, "awake_pct": 5.7, "efficiency": 94.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-05", "total_sleep_min": 408.0, "deep_min": 113.0, "light_min": 215.0, "rem_min": 80.0, "awake_min": 26.0, "deep_pct": 27.7, "light_pct": 52.7, "rem_pct": 19.6, "awake_pct": 6.0, "efficiency": 94.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-06", "total_sleep_min": 493.0, "deep_min": 106.0, "light_min": 270.0, "rem_min": 117.0, "awake_min": 17.0, "deep_pct": 21.5, "light_pct": 54.8, "rem_pct": 23.7, "awake_pct": 3.3, "efficiency": 96.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-07", "total_sleep_min": 452.0, "deep_min": 86.0, "light_min": 277.0, "rem_min": 89.0, "awake_min": 13.0, "deep_pct": 19.0, "light_pct": 61.3, "rem_pct": 19.7, "awake_pct": 2.8, "efficiency": 97.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-08", "total_sleep_min": 530.0, "deep_min": 132.0, "light_min": 269.0, "rem_min": 129.0, "awake_min": 28.0, "deep_pct": 24.9, "light_pct": 50.8, "rem_pct": 24.3, "awake_pct": 5.0, "efficiency": 95.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-09", "total_sleep_min": 540.0, "deep_min": 110.0, "light_min": 266.0, "rem_min": 164.0, "awake_min": 21.0, "deep_pct": 20.4, "light_pct": 49.3, "rem_pct": 30.4, "awake_pct": 3.7, "efficiency": 96.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-10", "total_sleep_min": 400.0, "deep_min": 126.0, "light_min": 172.0, "rem_min": 102.0, "awake_min": 0.0, "deep_pct": 31.5, "light_pct": 43.0, "rem_pct": 25.5, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 0, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-12", "total_sleep_min": 423.0, "deep_min": 74.0, "light_min": 271.0, "rem_min": 78.0, "awake_min": 22.0, "deep_pct": 17.5, "light_pct": 64.1, "rem_pct": 18.4, "awake_pct": 4.9, "efficiency": 95.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-13", "total_sleep_min": 441.0, "deep_min": 104.0, "light_min": 221.0, "rem_min": 116.0, "awake_min": 1.0, "deep_pct": 23.6, "light_pct": 50.1, "rem_pct": 26.3, "awake_pct": 0.2, "efficiency": 99.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-14", "total_sleep_min": 429.0, "deep_min": 123.0, "light_min": 300.0, "rem_min": 6.0, "awake_min": 95.0, "deep_pct": 28.7, "light_pct": 69.9, "rem_pct": 1.4, "awake_pct": 18.1, "efficiency": 81.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-06-15", "total_sleep_min": 387.0, "deep_min": 89.0, "light_min": 267.0, "rem_min": 31.0, "awake_min": 15.0, "deep_pct": 23.0, "light_pct": 69.0, "rem_pct": 8.0, "awake_pct": 3.7, "efficiency": 96.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-08-22", "total_sleep_min": 422.0, "deep_min": 79.0, "light_min": 239.0, "rem_min": 104.0, "awake_min": 5.0, "deep_pct": 18.7, "light_pct": 56.6, "rem_pct": 24.6, "awake_pct": 1.2, "efficiency": 98.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-08-23", "total_sleep_min": 536.0, "deep_min": 101.0, "light_min": 301.0, "rem_min": 134.0, "awake_min": 44.0, "deep_pct": 18.8, "light_pct": 56.2, "rem_pct": 25.0, "awake_pct": 7.6, "efficiency": 92.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-08-24", "total_sleep_min": 409.0, "deep_min": 157.0, "light_min": 196.0, "rem_min": 56.0, "awake_min": 17.0, "deep_pct": 38.4, "light_pct": 47.9, "rem_pct": 13.7, "awake_pct": 4.0, "efficiency": 96.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-08-25", "total_sleep_min": 459.0, "deep_min": 66.0, "light_min": 334.0, "rem_min": 59.0, "awake_min": 7.0, "deep_pct": 14.4, "light_pct": 72.8, "rem_pct": 12.9, "awake_pct": 1.5, "efficiency": 98.5, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-08-26", "total_sleep_min": 411.0, "deep_min": 88.0, "light_min": 241.0, "rem_min": 82.0, "awake_min": 3.0, "deep_pct": 21.4, "light_pct": 58.6, "rem_pct": 20.0, "awake_pct": 0.7, "efficiency": 99.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-08-29", "total_sleep_min": 282.0, "deep_min": 130.0, "light_min": 78.0, "rem_min": 74.0, "awake_min": 41.0, "deep_pct": 46.1, "light_pct": 27.7, "rem_pct": 26.2, "awake_pct": 12.7, "efficiency": 87.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-08-30", "total_sleep_min": 407.0, "deep_min": 51.0, "light_min": 254.0, "rem_min": 102.0, "awake_min": 2.0, "deep_pct": 12.5, "light_pct": 62.4, "rem_pct": 25.1, "awake_pct": 0.5, "efficiency": 99.5, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-08-31", "total_sleep_min": 290.0, "deep_min": 118.0, "light_min": 136.0, "rem_min": 36.0, "awake_min": 18.0, "deep_pct": 40.7, "light_pct": 46.9, "rem_pct": 12.4, "awake_pct": 5.8, "efficiency": 94.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-09-01", "total_sleep_min": 495.0, "deep_min": 87.0, "light_min": 309.0, "rem_min": 99.0, "awake_min": 11.0, "deep_pct": 17.6, "light_pct": 62.4, "rem_pct": 20.0, "awake_pct": 2.2, "efficiency": 97.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-09-02", "total_sleep_min": 498.0, "deep_min": 72.0, "light_min": 341.0, "rem_min": 85.0, "awake_min": 16.0, "deep_pct": 14.5, "light_pct": 68.5, "rem_pct": 17.1, "awake_pct": 3.1, "efficiency": 96.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-09-04", "total_sleep_min": 439.0, "deep_min": 53.0, "light_min": 286.0, "rem_min": 100.0, "awake_min": 15.0, "deep_pct": 12.1, "light_pct": 65.1, "rem_pct": 22.8, "awake_pct": 3.3, "efficiency": 96.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-09-06", "total_sleep_min": 292.0, "deep_min": 96.0, "light_min": 196.0, "rem_min": 0.0, "awake_min": 46.0, "deep_pct": 32.9, "light_pct": 67.1, "rem_pct": 0.0, "awake_pct": 13.6, "efficiency": 86.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-09-07", "total_sleep_min": 276.0, "deep_min": 123.0, "light_min": 128.0, "rem_min": 25.0, "awake_min": 38.0, "deep_pct": 44.6, "light_pct": 46.4, "rem_pct": 9.1, "awake_pct": 12.1, "efficiency": 87.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-09-11", "total_sleep_min": 314.0, "deep_min": 80.0, "light_min": 178.0, "rem_min": 56.0, "awake_min": 23.0, "deep_pct": 25.5, "light_pct": 56.7, "rem_pct": 17.8, "awake_pct": 6.8, "efficiency": 93.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-09-12", "total_sleep_min": 334.0, "deep_min": 79.0, "light_min": 202.0, "rem_min": 53.0, "awake_min": 44.0, "deep_pct": 23.7, "light_pct": 60.5, "rem_pct": 15.9, "awake_pct": 11.6, "efficiency": 88.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-09-24", "total_sleep_min": 495.0, "deep_min": 103.0, "light_min": 266.0, "rem_min": 126.0, "awake_min": 15.0, "deep_pct": 20.8, "light_pct": 53.7, "rem_pct": 25.5, "awake_pct": 2.9, "efficiency": 97.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-10-10", "total_sleep_min": 393.0, "deep_min": 66.0, "light_min": 200.0, "rem_min": 127.0, "awake_min": 9.0, "deep_pct": 16.8, "light_pct": 50.9, "rem_pct": 32.3, "awake_pct": 2.2, "efficiency": 97.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-10-11", "total_sleep_min": 410.0, "deep_min": 96.0, "light_min": 207.0, "rem_min": 107.0, "awake_min": 0.0, "deep_pct": 23.4, "light_pct": 50.5, "rem_pct": 26.1, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 0, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-10-12", "total_sleep_min": 392.0, "deep_min": 130.0, "light_min": 230.0, "rem_min": 32.0, "awake_min": 30.0, "deep_pct": 33.2, "light_pct": 58.7, "rem_pct": 8.2, "awake_pct": 7.1, "efficiency": 92.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-10-30", "total_sleep_min": 517.0, "deep_min": 66.0, "light_min": 335.0, "rem_min": 116.0, "awake_min": 17.0, "deep_pct": 12.8, "light_pct": 64.8, "rem_pct": 22.4, "awake_pct": 3.2, "efficiency": 96.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-11-01", "total_sleep_min": 430.0, "deep_min": 144.0, "light_min": 221.0, "rem_min": 65.0, "awake_min": 27.0, "deep_pct": 33.5, "light_pct": 51.4, "rem_pct": 15.1, "awake_pct": 5.9, "efficiency": 94.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-11-02", "total_sleep_min": 396.0, "deep_min": 93.0, "light_min": 195.0, "rem_min": 108.0, "awake_min": 5.0, "deep_pct": 23.5, "light_pct": 49.2, "rem_pct": 27.3, "awake_pct": 1.2, "efficiency": 98.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-11-04", "total_sleep_min": 561.0, "deep_min": 43.0, "light_min": 412.0, "rem_min": 106.0, "awake_min": 11.0, "deep_pct": 7.7, "light_pct": 73.4, "rem_pct": 18.9, "awake_pct": 1.9, "efficiency": 98.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-11-15", "total_sleep_min": 444.0, "deep_min": 64.0, "light_min": 342.0, "rem_min": 38.0, "awake_min": 59.0, "deep_pct": 14.4, "light_pct": 77.0, "rem_pct": 8.6, "awake_pct": 11.7, "efficiency": 88.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 6, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-11-18", "total_sleep_min": 468.0, "deep_min": 92.0, "light_min": 284.0, "rem_min": 92.0, "awake_min": 17.0, "deep_pct": 19.7, "light_pct": 60.7, "rem_pct": 19.7, "awake_pct": 3.5, "efficiency": 96.5, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-11-19", "total_sleep_min": 441.0, "deep_min": 98.0, "light_min": 277.0, "rem_min": 66.0, "awake_min": 46.0, "deep_pct": 22.2, "light_pct": 62.8, "rem_pct": 15.0, "awake_pct": 9.4, "efficiency": 90.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-10", "total_sleep_min": 392.0, "deep_min": 92.0, "light_min": 244.0, "rem_min": 56.0, "awake_min": 11.0, "deep_pct": 23.5, "light_pct": 62.2, "rem_pct": 14.3, "awake_pct": 2.7, "efficiency": 97.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-11", "total_sleep_min": 391.0, "deep_min": 62.0, "light_min": 246.0, "rem_min": 83.0, "awake_min": 16.0, "deep_pct": 15.9, "light_pct": 62.9, "rem_pct": 21.2, "awake_pct": 3.9, "efficiency": 96.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-12", "total_sleep_min": 463.0, "deep_min": 108.0, "light_min": 212.0, "rem_min": 143.0, "awake_min": 20.0, "deep_pct": 23.3, "light_pct": 45.8, "rem_pct": 30.9, "awake_pct": 4.1, "efficiency": 95.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-13", "total_sleep_min": 457.0, "deep_min": 74.0, "light_min": 243.0, "rem_min": 140.0, "awake_min": 45.0, "deep_pct": 16.2, "light_pct": 53.2, "rem_pct": 30.6, "awake_pct": 9.0, "efficiency": 91.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-14", "total_sleep_min": 414.0, "deep_min": 97.0, "light_min": 274.0, "rem_min": 43.0, "awake_min": 30.0, "deep_pct": 23.4, "light_pct": 66.2, "rem_pct": 10.4, "awake_pct": 6.8, "efficiency": 93.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 7, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-17", "total_sleep_min": 433.0, "deep_min": 67.0, "light_min": 277.0, "rem_min": 89.0, "awake_min": 42.0, "deep_pct": 15.5, "light_pct": 64.0, "rem_pct": 20.6, "awake_pct": 8.8, "efficiency": 91.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-18", "total_sleep_min": 429.0, "deep_min": 64.0, "light_min": 258.0, "rem_min": 107.0, "awake_min": 12.0, "deep_pct": 14.9, "light_pct": 60.1, "rem_pct": 24.9, "awake_pct": 2.7, "efficiency": 97.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-19", "total_sleep_min": 372.0, "deep_min": 87.0, "light_min": 218.0, "rem_min": 67.0, "awake_min": 30.0, "deep_pct": 23.4, "light_pct": 58.6, "rem_pct": 18.0, "awake_pct": 7.5, "efficiency": 92.5, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-20", "total_sleep_min": 344.0, "deep_min": 68.0, "light_min": 235.0, "rem_min": 41.0, "awake_min": 41.0, "deep_pct": 19.8, "light_pct": 68.3, "rem_pct": 11.9, "awake_pct": 10.6, "efficiency": 89.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 6, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-21", "total_sleep_min": 488.0, "deep_min": 97.0, "light_min": 317.0, "rem_min": 74.0, "awake_min": 19.0, "deep_pct": 19.9, "light_pct": 65.0, "rem_pct": 15.2, "awake_pct": 3.7, "efficiency": 96.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2025-12-24", "total_sleep_min": 380.0, "deep_min": 55.0, "light_min": 284.0, "rem_min": 41.0, "awake_min": 138.0, "deep_pct": 14.5, "light_pct": 74.7, "rem_pct": 10.8, "awake_pct": 26.6, "efficiency": 73.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 6, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-17", "total_sleep_min": 479.0, "deep_min": 66.0, "light_min": 332.0, "rem_min": 81.0, "awake_min": 39.0, "deep_pct": 13.8, "light_pct": 69.3, "rem_pct": 16.9, "awake_pct": 7.5, "efficiency": 92.5, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-18", "total_sleep_min": 288.0, "deep_min": 115.0, "light_min": 134.0, "rem_min": 39.0, "awake_min": 114.0, "deep_pct": 39.9, "light_pct": 46.5, "rem_pct": 13.5, "awake_pct": 28.4, "efficiency": 71.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-19", "total_sleep_min": 357.0, "deep_min": 65.0, "light_min": 233.0, "rem_min": 59.0, "awake_min": 12.0, "deep_pct": 18.2, "light_pct": 65.3, "rem_pct": 16.5, "awake_pct": 3.3, "efficiency": 96.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-20", "total_sleep_min": 485.0, "deep_min": 59.0, "light_min": 333.0, "rem_min": 93.0, "awake_min": 95.0, "deep_pct": 12.2, "light_pct": 68.7, "rem_pct": 19.2, "awake_pct": 16.4, "efficiency": 83.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-21", "total_sleep_min": 474.0, "deep_min": 91.0, "light_min": 263.0, "rem_min": 120.0, "awake_min": 19.0, "deep_pct": 19.2, "light_pct": 55.5, "rem_pct": 25.3, "awake_pct": 3.9, "efficiency": 96.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-22", "total_sleep_min": 338.0, "deep_min": 93.0, "light_min": 162.0, "rem_min": 83.0, "awake_min": 42.0, "deep_pct": 27.5, "light_pct": 47.9, "rem_pct": 24.6, "awake_pct": 11.1, "efficiency": 88.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-23", "total_sleep_min": 309.0, "deep_min": 85.0, "light_min": 165.0, "rem_min": 59.0, "awake_min": 2.0, "deep_pct": 27.5, "light_pct": 53.4, "rem_pct": 19.1, "awake_pct": 0.6, "efficiency": 99.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-24", "total_sleep_min": 410.0, "deep_min": 77.0, "light_min": 239.0, "rem_min": 94.0, "awake_min": 16.0, "deep_pct": 18.8, "light_pct": 58.3, "rem_pct": 22.9, "awake_pct": 3.8, "efficiency": 96.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-25", "total_sleep_min": 429.0, "deep_min": 120.0, "light_min": 226.0, "rem_min": 83.0, "awake_min": 15.0, "deep_pct": 28.0, "light_pct": 52.7, "rem_pct": 19.3, "awake_pct": 3.4, "efficiency": 96.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-27", "total_sleep_min": 476.0, "deep_min": 76.0, "light_min": 271.0, "rem_min": 129.0, "awake_min": 3.0, "deep_pct": 16.0, "light_pct": 56.9, "rem_pct": 27.1, "awake_pct": 0.6, "efficiency": 99.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-28", "total_sleep_min": 388.0, "deep_min": 102.0, "light_min": 216.0, "rem_min": 70.0, "awake_min": 9.0, "deep_pct": 26.3, "light_pct": 55.7, "rem_pct": 18.0, "awake_pct": 2.3, "efficiency": 97.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-30", "total_sleep_min": 358.0, "deep_min": 49.0, "light_min": 250.0, "rem_min": 59.0, "awake_min": 14.0, "deep_pct": 13.7, "light_pct": 69.8, "rem_pct": 16.5, "awake_pct": 3.8, "efficiency": 96.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-01-31", "total_sleep_min": 216.0, "deep_min": 89.0, "light_min": 127.0, "rem_min": 0.0, "awake_min": 25.0, "deep_pct": 41.2, "light_pct": 58.8, "rem_pct": 0.0, "awake_pct": 10.4, "efficiency": 89.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-01", "total_sleep_min": 447.0, "deep_min": 100.0, "light_min": 263.0, "rem_min": 84.0, "awake_min": 11.0, "deep_pct": 22.4, "light_pct": 58.8, "rem_pct": 18.8, "awake_pct": 2.4, "efficiency": 97.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-02", "total_sleep_min": 435.0, "deep_min": 61.0, "light_min": 250.0, "rem_min": 124.0, "awake_min": 0.0, "deep_pct": 14.0, "light_pct": 57.5, "rem_pct": 28.5, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 0, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-04", "total_sleep_min": 474.0, "deep_min": 96.0, "light_min": 216.0, "rem_min": 162.0, "awake_min": 14.0, "deep_pct": 20.3, "light_pct": 45.6, "rem_pct": 34.2, "awake_pct": 2.9, "efficiency": 97.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-05", "total_sleep_min": 461.0, "deep_min": 94.0, "light_min": 249.0, "rem_min": 118.0, "awake_min": 8.0, "deep_pct": 20.4, "light_pct": 54.0, "rem_pct": 25.6, "awake_pct": 1.7, "efficiency": 98.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-06", "total_sleep_min": 338.0, "deep_min": 91.0, "light_min": 151.0, "rem_min": 96.0, "awake_min": 25.0, "deep_pct": 26.9, "light_pct": 44.7, "rem_pct": 28.4, "awake_pct": 6.9, "efficiency": 93.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-07", "total_sleep_min": 317.0, "deep_min": 72.0, "light_min": 173.0, "rem_min": 72.0, "awake_min": 21.0, "deep_pct": 22.7, "light_pct": 54.6, "rem_pct": 22.7, "awake_pct": 6.2, "efficiency": 93.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-08", "total_sleep_min": 424.0, "deep_min": 48.0, "light_min": 275.0, "rem_min": 101.0, "awake_min": 8.0, "deep_pct": 11.3, "light_pct": 64.9, "rem_pct": 23.8, "awake_pct": 1.9, "efficiency": 98.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-09", "total_sleep_min": 430.0, "deep_min": 71.0, "light_min": 258.0, "rem_min": 101.0, "awake_min": 8.0, "deep_pct": 16.5, "light_pct": 60.0, "rem_pct": 23.5, "awake_pct": 1.8, "efficiency": 98.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-11", "total_sleep_min": 261.0, "deep_min": 105.0, "light_min": 96.0, "rem_min": 60.0, "awake_min": 24.0, "deep_pct": 40.2, "light_pct": 36.8, "rem_pct": 23.0, "awake_pct": 8.4, "efficiency": 91.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-12", "total_sleep_min": 284.0, "deep_min": 62.0, "light_min": 187.0, "rem_min": 35.0, "awake_min": 10.0, "deep_pct": 21.8, "light_pct": 65.8, "rem_pct": 12.3, "awake_pct": 3.4, "efficiency": 96.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-13", "total_sleep_min": 355.0, "deep_min": 49.0, "light_min": 262.0, "rem_min": 44.0, "awake_min": 0.0, "deep_pct": 13.8, "light_pct": 73.8, "rem_pct": 12.4, "awake_pct": 0.0, "efficiency": 100.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 0, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-14", "total_sleep_min": 364.0, "deep_min": 81.0, "light_min": 205.0, "rem_min": 78.0, "awake_min": 33.0, "deep_pct": 22.3, "light_pct": 56.3, "rem_pct": 21.4, "awake_pct": 8.3, "efficiency": 91.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-15", "total_sleep_min": 389.0, "deep_min": 137.0, "light_min": 205.0, "rem_min": 47.0, "awake_min": 5.0, "deep_pct": 35.2, "light_pct": 52.7, "rem_pct": 12.1, "awake_pct": 1.3, "efficiency": 98.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-16", "total_sleep_min": 475.0, "deep_min": 58.0, "light_min": 321.0, "rem_min": 96.0, "awake_min": 6.0, "deep_pct": 12.2, "light_pct": 67.6, "rem_pct": 20.2, "awake_pct": 1.2, "efficiency": 98.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-17", "total_sleep_min": 499.0, "deep_min": 97.0, "light_min": 302.0, "rem_min": 100.0, "awake_min": 12.0, "deep_pct": 19.4, "light_pct": 60.5, "rem_pct": 20.0, "awake_pct": 2.3, "efficiency": 97.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-19", "total_sleep_min": 385.0, "deep_min": 71.0, "light_min": 215.0, "rem_min": 99.0, "awake_min": 18.0, "deep_pct": 18.4, "light_pct": 55.8, "rem_pct": 25.7, "awake_pct": 4.5, "efficiency": 95.5, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-20", "total_sleep_min": 371.0, "deep_min": 54.0, "light_min": 243.0, "rem_min": 74.0, "awake_min": 7.0, "deep_pct": 14.6, "light_pct": 65.5, "rem_pct": 19.9, "awake_pct": 1.9, "efficiency": 98.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-21", "total_sleep_min": 467.0, "deep_min": 111.0, "light_min": 281.0, "rem_min": 75.0, "awake_min": 15.0, "deep_pct": 23.8, "light_pct": 60.2, "rem_pct": 16.1, "awake_pct": 3.1, "efficiency": 96.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-22", "total_sleep_min": 391.0, "deep_min": 76.0, "light_min": 244.0, "rem_min": 71.0, "awake_min": 20.0, "deep_pct": 19.4, "light_pct": 62.4, "rem_pct": 18.2, "awake_pct": 4.9, "efficiency": 95.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-23", "total_sleep_min": 429.0, "deep_min": 101.0, "light_min": 254.0, "rem_min": 74.0, "awake_min": 18.0, "deep_pct": 23.5, "light_pct": 59.2, "rem_pct": 17.2, "awake_pct": 4.0, "efficiency": 96.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-24", "total_sleep_min": 377.0, "deep_min": 97.0, "light_min": 193.0, "rem_min": 87.0, "awake_min": 12.0, "deep_pct": 25.7, "light_pct": 51.2, "rem_pct": 23.1, "awake_pct": 3.1, "efficiency": 96.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-25", "total_sleep_min": 355.0, "deep_min": 50.0, "light_min": 226.0, "rem_min": 79.0, "awake_min": 16.0, "deep_pct": 14.1, "light_pct": 63.7, "rem_pct": 22.3, "awake_pct": 4.3, "efficiency": 95.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-26", "total_sleep_min": 366.0, "deep_min": 139.0, "light_min": 150.0, "rem_min": 77.0, "awake_min": 54.0, "deep_pct": 38.0, "light_pct": 41.0, "rem_pct": 21.0, "awake_pct": 12.9, "efficiency": 87.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-27", "total_sleep_min": 420.0, "deep_min": 78.0, "light_min": 287.0, "rem_min": 55.0, "awake_min": 5.0, "deep_pct": 18.6, "light_pct": 68.3, "rem_pct": 13.1, "awake_pct": 1.2, "efficiency": 98.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-02-28", "total_sleep_min": 290.0, "deep_min": 134.0, "light_min": 126.0, "rem_min": 30.0, "awake_min": 4.0, "deep_pct": 46.2, "light_pct": 43.4, "rem_pct": 10.3, "awake_pct": 1.4, "efficiency": 98.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-01", "total_sleep_min": 385.0, "deep_min": 86.0, "light_min": 267.0, "rem_min": 32.0, "awake_min": 37.0, "deep_pct": 22.3, "light_pct": 69.4, "rem_pct": 8.3, "awake_pct": 8.8, "efficiency": 91.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 6, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-02", "total_sleep_min": 537.0, "deep_min": 88.0, "light_min": 345.0, "rem_min": 104.0, "awake_min": 10.0, "deep_pct": 16.4, "light_pct": 64.2, "rem_pct": 19.4, "awake_pct": 1.8, "efficiency": 98.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-04", "total_sleep_min": 383.0, "deep_min": 58.0, "light_min": 241.0, "rem_min": 84.0, "awake_min": 9.0, "deep_pct": 15.1, "light_pct": 62.9, "rem_pct": 21.9, "awake_pct": 2.3, "efficiency": 97.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-05", "total_sleep_min": 457.0, "deep_min": 52.0, "light_min": 278.0, "rem_min": 127.0, "awake_min": 19.0, "deep_pct": 11.4, "light_pct": 60.8, "rem_pct": 27.8, "awake_pct": 4.0, "efficiency": 96.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-06", "total_sleep_min": 377.0, "deep_min": 105.0, "light_min": 182.0, "rem_min": 90.0, "awake_min": 7.0, "deep_pct": 27.9, "light_pct": 48.3, "rem_pct": 23.9, "awake_pct": 1.8, "efficiency": 98.2, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-07", "total_sleep_min": 312.0, "deep_min": 51.0, "light_min": 205.0, "rem_min": 56.0, "awake_min": 1.0, "deep_pct": 16.3, "light_pct": 65.7, "rem_pct": 17.9, "awake_pct": 0.3, "efficiency": 99.7, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-08", "total_sleep_min": 348.0, "deep_min": 80.0, "light_min": 210.0, "rem_min": 58.0, "awake_min": 19.0, "deep_pct": 23.0, "light_pct": 60.3, "rem_pct": 16.7, "awake_pct": 5.2, "efficiency": 94.8, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-09", "total_sleep_min": 427.0, "deep_min": 63.0, "light_min": 263.0, "rem_min": 101.0, "awake_min": 3.0, "deep_pct": 14.8, "light_pct": 61.6, "rem_pct": 23.7, "awake_pct": 0.7, "efficiency": 99.3, "sleep_start": "?", "wake_time": "?", "wake_episodes": 2, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-11", "total_sleep_min": 494.0, "deep_min": 55.0, "light_min": 305.0, "rem_min": 134.0, "awake_min": 16.0, "deep_pct": 11.1, "light_pct": 61.7, "rem_pct": 27.1, "awake_pct": 3.1, "efficiency": 96.9, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-12", "total_sleep_min": 360.0, "deep_min": 55.0, "light_min": 266.0, "rem_min": 39.0, "awake_min": 42.0, "deep_pct": 15.3, "light_pct": 73.9, "rem_pct": 10.8, "awake_pct": 10.4, "efficiency": 89.6, "sleep_start": "?", "wake_time": "?", "wake_episodes": 5, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-13", "total_sleep_min": 341.0, "deep_min": 101.0, "light_min": 160.0, "rem_min": 80.0, "awake_min": 7.0, "deep_pct": 29.6, "light_pct": 46.9, "rem_pct": 23.5, "awake_pct": 2.0, "efficiency": 98.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 1, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-14", "total_sleep_min": 497.0, "deep_min": 68.0, "light_min": 339.0, "rem_min": 90.0, "awake_min": 43.0, "deep_pct": 13.7, "light_pct": 68.2, "rem_pct": 18.1, "awake_pct": 8.0, "efficiency": 92.0, "sleep_start": "?", "wake_time": "?", "wake_episodes": 4, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-15", "total_sleep_min": 222.0, "deep_min": 80.0, "light_min": 142.0, "rem_min": 0.0, "awake_min": 19.0, "deep_pct": 36.0, "light_pct": 64.0, "rem_pct": 0.0, "awake_pct": 7.9, "efficiency": 92.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-16", "total_sleep_min": 467.0, "deep_min": 76.0, "light_min": 328.0, "rem_min": 63.0, "awake_min": 24.0, "deep_pct": 16.3, "light_pct": 70.2, "rem_pct": 13.5, "awake_pct": 4.9, "efficiency": 95.1, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}, {"date": "2026-03-17", "total_sleep_min": 432.0, "deep_min": 79.0, "light_min": 265.0, "rem_min": 88.0, "awake_min": 16.0, "deep_pct": 18.3, "light_pct": 61.3, "rem_pct": 20.4, "awake_pct": 3.6, "efficiency": 96.4, "sleep_start": "?", "wake_time": "?", "wake_episodes": 3, "sleep_start_hour": null, "wake_hour": null}];
+const SPO2_DATA    = {"2026-01-31": {"avg": 93.0, "min": 81.0}, "2026-02-01": {"avg": 92.5, "min": 81.0}, "2026-02-02": {"avg": 90.4, "min": 81.0}, "2026-02-03": {"avg": 94.7, "min": 92.0}, "2026-02-04": {"avg": 91.9, "min": 80.0}, "2026-02-05": {"avg": 91.6, "min": 80.0}, "2026-02-06": {"avg": 91.7, "min": 73.0}, "2026-02-07": {"avg": 90.7, "min": 85.0}, "2026-02-08": {"avg": 91.9, "min": 83.0}, "2026-02-09": {"avg": 90.2, "min": 80.0}, "2026-02-10": {"avg": 91.1, "min": 75.0}, "2026-02-11": {"avg": 93.0, "min": 86.0}, "2026-02-12": {"avg": 93.6, "min": 89.0}, "2026-02-13": {"avg": 93.8, "min": 84.0}, "2026-02-14": {"avg": 90.0, "min": 71.0}, "2026-02-15": {"avg": 93.6, "min": 86.0}, "2026-02-16": {"avg": 91.9, "min": 86.0}, "2026-02-17": {"avg": 96.6, "min": 92.0}, "2026-02-18": {"avg": 91.9, "min": 82.0}, "2026-02-19": {"avg": 92.4, "min": 81.0}, "2026-02-20": {"avg": 90.9, "min": 81.0}, "2026-02-21": {"avg": 93.2, "min": 83.0}, "2026-02-22": {"avg": 93.9, "min": 86.0}, "2026-01-24": {"avg": 91.5, "min": 76.0}, "2026-01-25": {"avg": 89.2, "min": 79.0}, "2026-01-26": {"avg": 93.0, "min": 89.0}, "2026-01-27": {"avg": 93.0, "min": 84.0}, "2026-01-28": {"avg": 93.4, "min": 83.0}, "2026-01-29": {"avg": 93.9, "min": 91.0}, "2026-01-30": {"avg": 93.0, "min": 85.0}, "2026-02-23": {"avg": 94.3, "min": 86.0}, "2026-02-24": {"avg": 94.3, "min": 86.0}, "2026-02-25": {"avg": 92.2, "min": 81.0}, "2026-02-26": {"avg": 92.2, "min": 80.0}, "2026-02-27": {"avg": 94.9, "min": 88.0}, "2026-02-28": {"avg": 91.0, "min": 84.0}, "2026-03-01": {"avg": 94.7, "min": 89.0}, "2026-03-02": {"avg": 96.7, "min": 93.0}, "2026-03-03": {"avg": 91.3, "min": 80.0}, "2026-03-04": {"avg": 93.1, "min": 83.0}, "2026-03-05": {"avg": 93.5, "min": 75.0}, "2026-03-06": {"avg": 91.9, "min": 83.0}, "2026-03-07": {"avg": 94.4, "min": 85.0}, "2026-03-08": {"avg": 94.0, "min": 84.0}, "2026-03-10": {"avg": 95.9, "min": 93.0}, "2026-03-11": {"avg": 92.5, "min": 79.0}, "2026-03-12": {"avg": 94.3, "min": 84.0}, "2026-03-13": {"avg": 95.1, "min": 89.0}, "2026-03-15": {"avg": 94.2, "min": 85.0}, "2026-03-16": {"avg": 94.1, "min": 88.0}, "2026-03-17": {"avg": 93.4, "min": 86.0}};
+const PULSE_DATA   = {"2026-03-02": {"avg": 69.4, "min": 49, "max": 103, "resting": 58}, "2026-03-03": {"avg": 67.6, "min": 49, "max": 147, "resting": 52}, "2026-03-04": {"avg": 65.9, "min": 50, "max": 111, "resting": 54}, "2026-03-05": {"avg": 72.0, "min": 49, "max": 158, "resting": 53}, "2026-03-06": {"avg": 74.0, "min": 54, "max": 142, "resting": 57}, "2026-03-07": {"avg": 73.7, "min": 55, "max": 111, "resting": 59}, "2026-03-08": {"avg": 81.6, "min": 63, "max": 132, "resting": 69}, "2026-02-19": {"avg": 65.0, "min": 42, "max": 112, "resting": 53}, "2026-02-20": {"avg": 67.6, "min": 50, "max": 114, "resting": 54}, "2026-02-21": {"avg": 75.3, "min": 51, "max": 162, "resting": 57}, "2026-02-22": {"avg": 72.5, "min": 49, "max": 158, "resting": 56}, "2026-01-26": {"avg": 73.1, "min": 52, "max": 108, "resting": 59}, "2026-01-27": {"avg": 67.5, "min": 49, "max": 140, "resting": 52}, "2026-01-28": {"avg": 65.8, "min": 45, "max": 106, "resting": 53}, "2026-01-29": {"avg": 77.8, "min": 47, "max": 144, "resting": 56}, "2026-01-30": {"avg": 79.5, "min": 51, "max": 130, "resting": 56}, "2026-01-31": {"avg": 92.6, "min": 68, "max": 130, "resting": 78}, "2026-02-01": {"avg": 70.5, "min": 49, "max": 142, "resting": 52}, "2026-02-02": {"avg": 59.6, "min": 45, "max": 112, "resting": 50}, "2026-02-03": {"avg": 73.2, "min": 50, "max": 136, "resting": 55}, "2026-02-04": {"avg": 64.8, "min": 50, "max": 104, "resting": 54}, "2026-02-05": {"avg": 63.2, "min": 48, "max": 102, "resting": 51}, "2026-02-06": {"avg": 67.7, "min": 48, "max": 121, "resting": 54}, "2026-02-07": {"avg": 72.6, "min": 51, "max": 116, "resting": 57}, "2026-02-08": {"avg": 70.9, "min": 48, "max": 172, "resting": 52}, "2026-02-09": {"avg": 58.4, "min": 45, "max": 97, "resting": 50}, "2026-02-10": {"avg": 59.6, "min": 47, "max": 104, "resting": 50}, "2026-02-11": {"avg": 73.4, "min": 50, "max": 142, "resting": 54}, "2026-02-12": {"avg": 80.0, "min": 80, "max": 80, "resting": 80}, "2026-02-13": {"avg": 71.3, "min": 50, "max": 147, "resting": 57}, "2026-02-14": {"avg": 76.7, "min": 55, "max": 110, "resting": 62}, "2026-02-15": {"avg": 87.6, "min": 64, "max": 126, "resting": 72}, "2026-02-16": {"avg": 67.9, "min": 49, "max": 105, "resting": 55}, "2026-02-17": {"avg": 65.5, "min": 54, "max": 109, "resting": 57}, "2026-02-18": {"avg": 63.8, "min": 44, "max": 139, "resting": 51}, "2026-02-23": {"avg": 65.1, "min": 49, "max": 100, "resting": 53}, "2026-02-24": {"avg": 64.6, "min": 51, "max": 107, "resting": 55}, "2026-02-25": {"avg": 67.0, "min": 51, "max": 119, "resting": 55}, "2026-02-26": {"avg": 76.7, "min": 51, "max": 163, "resting": 56}, "2026-02-27": {"avg": 73.1, "min": 49, "max": 111, "resting": 54}, "2026-02-28": {"avg": 90.3, "min": 63, "max": 138, "resting": 74}, "2026-03-01": {"avg": 81.5, "min": 60, "max": 143, "resting": 69}, "2026-03-09": {"avg": 59.7, "min": 48, "max": 90, "resting": 52}, "2026-03-10": {"avg": 64.9, "min": 52, "max": 99, "resting": 58}, "2026-03-11": {"avg": 62.0, "min": 50, "max": 109, "resting": 52}, "2026-03-12": {"avg": 73.6, "min": 52, "max": 159, "resting": 55}, "2026-03-14": {"avg": 70.7, "min": 51, "max": 111, "resting": 55}, "2026-03-15": {"avg": 57.0, "min": 57, "max": 57, "resting": 57}, "2026-03-16": {"avg": 55.6, "min": 55, "max": 58, "resting": 55}, "2026-03-17": {"avg": 52.0, "min": 52, "max": 52, "resting": 52}};
+const MONTHLY_DATA = [{"month": "2025-02", "nights": 8, "avg_sleep": 440.0, "avg_deep": 96.4, "avg_rem": 76.0, "avg_efficiency": 92.5, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-03", "nights": 8, "avg_sleep": 426.2, "avg_deep": 84.5, "avg_rem": 81.0, "avg_efficiency": 95.1, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-06", "nights": 12, "avg_sleep": 446.2, "avg_deep": 103.7, "avg_rem": 90.2, "avg_efficiency": 95.5, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-08", "nights": 8, "avg_sleep": 402.0, "avg_deep": 98.8, "avg_rem": 80.9, "avg_efficiency": 95.8, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-09", "nights": 8, "avg_sleep": 392.9, "avg_deep": 86.6, "avg_rem": 68.0, "avg_efficiency": 93.0, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-10", "nights": 4, "avg_sleep": 428.0, "avg_deep": 89.5, "avg_rem": 95.5, "avg_efficiency": 96.9, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-11", "nights": 6, "avg_sleep": 456.7, "avg_deep": 89.0, "avg_rem": 79.2, "avg_efficiency": 94.4, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2025-12", "nights": 11, "avg_sleep": 414.8, "avg_deep": 79.2, "avg_rem": 80.4, "avg_efficiency": 92.1, "avg_spo2": null, "avg_resting_pulse": null}, {"month": "2026-01", "nights": 13, "avg_sleep": 385.2, "avg_deep": 83.6, "avg_rem": 74.5, "avg_efficiency": 92.7, "avg_spo2": 92.2, "avg_resting_pulse": 59.8}, {"month": "2026-02", "nights": 25, "avg_sleep": 392.2, "avg_deep": 85.3, "avg_rem": 81.6, "avg_efficiency": 96.4, "avg_spo2": 92.5, "avg_resting_pulse": 57.0}, {"month": "2026-03", "nights": 15, "avg_sleep": 402.6, "avg_deep": 73.1, "avg_rem": 76.4, "avg_efficiency": 95.7, "avg_spo2": 94.0, "avg_resting_pulse": 56.9}];
+const CORR_DATA    = {"eff_spo2": [{"x": 96.2, "y": 91.5}, {"x": 96.6, "y": 89.2}, {"x": 99.4, "y": 93.0}, {"x": 97.7, "y": 93.4}, {"x": 96.2, "y": 93.0}, {"x": 89.6, "y": 93.0}, {"x": 97.6, "y": 92.5}, {"x": 100.0, "y": 90.4}, {"x": 97.1, "y": 91.9}, {"x": 98.3, "y": 91.6}, {"x": 93.1, "y": 91.7}, {"x": 93.8, "y": 90.7}, {"x": 98.1, "y": 91.9}, {"x": 98.2, "y": 90.2}, {"x": 91.6, "y": 93.0}, {"x": 96.6, "y": 93.6}, {"x": 100.0, "y": 93.8}, {"x": 91.7, "y": 90.0}, {"x": 98.7, "y": 93.6}, {"x": 98.8, "y": 91.9}, {"x": 97.7, "y": 96.6}, {"x": 95.5, "y": 92.4}, {"x": 98.1, "y": 90.9}, {"x": 96.9, "y": 93.2}, {"x": 95.1, "y": 93.9}, {"x": 96.0, "y": 94.3}, {"x": 96.9, "y": 94.3}, {"x": 95.7, "y": 92.2}, {"x": 87.1, "y": 92.2}, {"x": 98.8, "y": 94.9}, {"x": 98.6, "y": 91.0}, {"x": 91.2, "y": 94.7}, {"x": 98.2, "y": 96.7}, {"x": 97.7, "y": 93.1}, {"x": 96.0, "y": 93.5}, {"x": 98.2, "y": 91.9}, {"x": 99.7, "y": 94.4}, {"x": 94.8, "y": 94.0}, {"x": 96.9, "y": 92.5}, {"x": 89.6, "y": 94.3}, {"x": 98.0, "y": 95.1}, {"x": 92.1, "y": 94.2}, {"x": 95.1, "y": 94.1}, {"x": 96.4, "y": 93.4}], "rem_spo2": [{"x": 94.0, "y": 91.5}, {"x": 83.0, "y": 89.2}, {"x": 129.0, "y": 93.0}, {"x": 70.0, "y": 93.4}, {"x": 59.0, "y": 93.0}, {"x": 0.0, "y": 93.0}, {"x": 84.0, "y": 92.5}, {"x": 124.0, "y": 90.4}, {"x": 162.0, "y": 91.9}, {"x": 118.0, "y": 91.6}, {"x": 96.0, "y": 91.7}, {"x": 72.0, "y": 90.7}, {"x": 101.0, "y": 91.9}, {"x": 101.0, "y": 90.2}, {"x": 60.0, "y": 93.0}, {"x": 35.0, "y": 93.6}, {"x": 44.0, "y": 93.8}, {"x": 78.0, "y": 90.0}, {"x": 47.0, "y": 93.6}, {"x": 96.0, "y": 91.9}, {"x": 100.0, "y": 96.6}, {"x": 99.0, "y": 92.4}, {"x": 74.0, "y": 90.9}, {"x": 75.0, "y": 93.2}, {"x": 71.0, "y": 93.9}, {"x": 74.0, "y": 94.3}, {"x": 87.0, "y": 94.3}, {"x": 79.0, "y": 92.2}, {"x": 77.0, "y": 92.2}, {"x": 55.0, "y": 94.9}, {"x": 30.0, "y": 91.0}, {"x": 32.0, "y": 94.7}, {"x": 104.0, "y": 96.7}, {"x": 84.0, "y": 93.1}, {"x": 127.0, "y": 93.5}, {"x": 90.0, "y": 91.9}, {"x": 56.0, "y": 94.4}, {"x": 58.0, "y": 94.0}, {"x": 134.0, "y": 92.5}, {"x": 39.0, "y": 94.3}, {"x": 80.0, "y": 95.1}, {"x": 0.0, "y": 94.2}, {"x": 63.0, "y": 94.1}, {"x": 88.0, "y": 93.4}], "deep_pulse": [{"x": 76.0, "y": 52}, {"x": 102.0, "y": 53}, {"x": 49.0, "y": 56}, {"x": 89.0, "y": 78}, {"x": 100.0, "y": 52}, {"x": 61.0, "y": 50}, {"x": 96.0, "y": 54}, {"x": 94.0, "y": 51}, {"x": 91.0, "y": 54}, {"x": 72.0, "y": 57}, {"x": 48.0, "y": 52}, {"x": 71.0, "y": 50}, {"x": 105.0, "y": 54}, {"x": 62.0, "y": 80}, {"x": 49.0, "y": 57}, {"x": 81.0, "y": 62}, {"x": 137.0, "y": 72}, {"x": 58.0, "y": 55}, {"x": 97.0, "y": 57}, {"x": 71.0, "y": 53}, {"x": 54.0, "y": 54}, {"x": 111.0, "y": 57}, {"x": 76.0, "y": 56}, {"x": 101.0, "y": 53}, {"x": 97.0, "y": 55}, {"x": 50.0, "y": 55}, {"x": 139.0, "y": 56}, {"x": 78.0, "y": 54}, {"x": 134.0, "y": 74}, {"x": 86.0, "y": 69}, {"x": 88.0, "y": 58}, {"x": 58.0, "y": 54}, {"x": 52.0, "y": 53}, {"x": 105.0, "y": 57}, {"x": 51.0, "y": 59}, {"x": 80.0, "y": 69}, {"x": 63.0, "y": 52}, {"x": 55.0, "y": 52}, {"x": 55.0, "y": 55}, {"x": 68.0, "y": 55}, {"x": 80.0, "y": 57}, {"x": 76.0, "y": 55}, {"x": 79.0, "y": 52}], "r_eff_spo2": 0.0, "r_rem_spo2": -0.249, "r_deep_pulse": 0.283};
+const ALL_MONTHS   = ["2025-02", "2025-03", "2025-06", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03"];
 
-const gridColor   = 'rgba(45,49,72,0.8)';
-const tickColor   = '#8892a4';
-const baseOpts    = {
-  responsive: true,
-  plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
-  scales: {
-    x: { ticks: { color: tickColor, maxTicksLimit: 8, maxRotation: 45 }, grid: { color: gridColor } },
-    y: { ticks: { color: tickColor }, grid: { color: gridColor } }
-  }
+const COLORS = {
+  deep: '#3d63dd', light: '#63b3ed', rem: '#9f7aea', awake: '#fc8181',
+  spo2: '#48bb78', pulse: '#ed8936', accent: '#5b8dee',
 };
 
-// Schlafdauer
-new Chart(document.getElementById('durChart'), {
-  type: 'bar',
-  data: { labels: LABELS, datasets: [{
-    data: DUR, backgroundColor: 'rgba(91,141,238,0.6)', borderColor: '#5b8dee',
-    borderWidth: 1, borderRadius: 3
-  }] },
-  options: { ...baseOpts, plugins: { ...baseOpts.plugins,
-    annotation: { annotations: { line: { type:'line', yMin:7, yMax:7,
-      borderColor:'rgba(72,187,120,0.5)', borderDash:[4,4], label:{content:'7h',display:true} } } }
-  } }
-});
+let activeCharts = {};
+let currentFilter = { month: 'all', minSleep: 300 };
 
-// Schlafphasen
-new Chart(document.getElementById('stagesChart'), {
-  type: 'bar',
-  data: { labels: LABELS, datasets: [
-    { label:'Tiefschlaf', data: DEEP, backgroundColor:'rgba(61,99,221,0.8)', borderRadius:2 },
-    { label:'REM',        data: REM,  backgroundColor:'rgba(159,122,234,0.8)', borderRadius:2 },
-  ] },
-  options: { ...baseOpts, plugins: { legend: { display:true, labels:{ color:tickColor } } },
-    scales: { ...baseOpts.scales, y: { stacked:false, ticks:{ color:tickColor }, grid:{ color:gridColor } } },
+// ── Theme ────────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const body = document.body;
+  const btn  = document.querySelector('.theme-toggle');
+  if (body.dataset.theme === 'dark') {
+    body.dataset.theme = 'light'; btn.textContent = '🌙 Dunkel';
+  } else {
+    body.dataset.theme = 'dark';  btn.textContent = '☀️ Hell';
   }
+  redrawAll();
+}
+
+// ── Month filter ─────────────────────────────────────────────────────────────
+const monthSel = document.getElementById('monthFilter');
+ALL_MONTHS.forEach(m => {
+  const opt = document.createElement('option');
+  opt.value = m; opt.textContent = formatMonth(m);
+  monthSel.appendChild(opt);
+});
+monthSel.addEventListener('change', e => { currentFilter.month = e.target.value; redrawAll(); });
+document.getElementById('minSleepFilter').addEventListener('change', e => {
+  currentFilter.minSleep = parseInt(e.target.value); redrawAll();
 });
 
-// Effizienz
-new Chart(document.getElementById('effChart'), {
-  type: 'line',
-  data: { labels: LABELS, datasets: [{
-    data: EFF, borderColor:'#5b8dee', backgroundColor:'rgba(91,141,238,0.15)',
-    fill:true, tension:0.3, pointRadius:2
-  }] },
-  options: { ...baseOpts, scales: { ...baseOpts.scales,
-    y: { min:70, max:100, ticks:{ color:tickColor }, grid:{ color:gridColor } }
-  } }
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function formatMonth(m) {
+  const [y, mo] = m.split('-');
+  return ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][parseInt(mo)-1] + ' ' + y;
+}
+function fmtH(min) {
+  const h = Math.floor(min/60), m = Math.round(min%60);
+  return h + 'h ' + String(m).padStart(2,'0') + 'm';
+}
+function getFilteredData() {
+  return SLEEP_DATA.filter(s => {
+    if (currentFilter.month !== 'all' && !s.date.startsWith(currentFilter.month)) return false;
+    if (s.total_sleep_min < currentFilter.minSleep) return false;
+    return true;
+  });
+}
+function destroyChart(id) {
+  if (activeCharts[id]) { activeCharts[id].destroy(); delete activeCharts[id]; }
+}
+function getGridColor() {
+  return document.body.dataset.theme === 'light' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
+}
+function getTextColor() {
+  return document.body.dataset.theme === 'light' ? '#5a6478' : '#8892a4';
+}
+function chartDefaults() {
+  return {
+    plugins: { legend: { labels: { color: getTextColor(), boxWidth: 12, font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: getTextColor(), maxTicksLimit: 10, font:{size:10} }, grid: { color: getGridColor() } },
+      y: { ticks: { color: getTextColor(), font:{size:10} }, grid: { color: getGridColor() } }
+    }
+  };
+}
+function computeMA(arr, w) {
+  return arr.map((_, i) => {
+    const chunk = arr.slice(Math.max(0,i-w+1), i+1).filter(v=>v!=null);
+    return chunk.length ? Math.round(chunk.reduce((a,b)=>a+b,0)/chunk.length*10)/10 : null;
+  });
+}
+
+// ── Tab 1: Schlafphasen ──────────────────────────────────────────────────────
+function drawPhasenBar(data) {
+  destroyChart('chartPhasenBar');
+  const ctx = document.getElementById('chartPhasenBar').getContext('2d');
+  const defs = chartDefaults();
+  activeCharts['chartPhasenBar'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.date.slice(5)),
+      datasets: [
+        { label:'Tiefschlaf',  data: data.map(d=>d.deep_min),  backgroundColor: COLORS.deep,  stack:'s' },
+        { label:'Leichtschlaf',data: data.map(d=>d.light_min), backgroundColor: COLORS.light, stack:'s' },
+        { label:'REM',         data: data.map(d=>d.rem_min),   backgroundColor: COLORS.rem,   stack:'s' },
+        { label:'Wach',        data: data.map(d=>d.awake_min), backgroundColor: COLORS.awake, stack:'s' },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: defs.plugins,
+      scales: {
+        x: { stacked:true, ...defs.scales.x },
+        y: { stacked:true, ...defs.scales.y, title:{ display:true, text:'Minuten', color:getTextColor() } }
+      }
+    }
+  });
+}
+
+function drawPhasenDonut(data) {
+  destroyChart('chartPhasenDonut');
+  const ctx = document.getElementById('chartPhasenDonut').getContext('2d');
+  const n = data.length || 1;
+  const aD = data.reduce((s,d)=>s+d.deep_min,0)/n;
+  const aL = data.reduce((s,d)=>s+d.light_min,0)/n;
+  const aR = data.reduce((s,d)=>s+d.rem_min,0)/n;
+  const aA = data.reduce((s,d)=>s+d.awake_min,0)/n;
+  activeCharts['chartPhasenDonut'] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Tiefschlaf','Leichtschlaf','REM','Wach'],
+      datasets: [{ data:[aD,aL,aR,aA], backgroundColor:[COLORS.deep,COLORS.light,COLORS.rem,COLORS.awake], borderWidth:2, borderColor:'transparent' }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: {
+        legend: { position:'bottom', labels:{ color:getTextColor(), font:{size:11} } },
+        tooltip: { callbacks: { label: c => ' ' + fmtH(c.raw) + ' (' + Math.round(c.raw/(aD+aL+aR+aA)*100) + '%)' } }
+      }
+    }
+  });
+}
+
+// ── Tab 2: Trends ────────────────────────────────────────────────────────────
+function drawTrendDauer(data) {
+  destroyChart('chartTrendDauer');
+  const ctx = document.getElementById('chartTrendDauer').getContext('2d');
+  const defs = chartDefaults();
+  const maT  = computeMA(data.map(d=>d.total_sleep_min), 7);
+  activeCharts['chartTrendDauer'] = new Chart(ctx, {
+    type:'bar',
+    data: {
+      labels: data.map(d=>d.date.slice(5)),
+      datasets: [
+        { label:'Schlafdauer (min)', data:data.map(d=>d.total_sleep_min), backgroundColor:COLORS.accent+'88', yAxisID:'y' },
+        { label:'7T-Ø Dauer', data:maT, type:'line', borderColor:COLORS.accent, borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.4 },
+        { label:'Effizienz (%)', data:data.map(d=>d.efficiency), type:'line', borderColor:COLORS.rem, borderWidth:2, pointRadius:0, yAxisID:'y2', tension:0.4, borderDash:[5,3] },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: defs.plugins,
+      scales: {
+        x: defs.scales.x,
+        y:  { ...defs.scales.y, position:'left',  title:{ display:true, text:'Minuten', color:getTextColor() } },
+        y2: { ...defs.scales.y, position:'right', min:0, max:100, grid:{ drawOnChartArea:false }, title:{ display:true, text:'%', color:getTextColor() } }
+      }
+    }
+  });
+}
+
+function drawTrendLine(canvasId, label, values, dates, color) {
+  destroyChart(canvasId);
+  const ctx  = document.getElementById(canvasId).getContext('2d');
+  const ma   = computeMA(values, 7);
+  const defs = chartDefaults();
+  activeCharts[canvasId] = new Chart(ctx, {
+    type:'bar',
+    data: {
+      labels: dates.map(d=>d.slice(5)),
+      datasets: [
+        { label, data:values, backgroundColor:color+'88', yAxisID:'y' },
+        { label:'7T-Ø', data:ma, type:'line', borderColor:color, borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.4 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: defs.plugins,
+      scales: { x:defs.scales.x, y:{ ...defs.scales.y, title:{ display:true, text:'Minuten', color:getTextColor() } } }
+    }
+  });
+}
+
+// ── Tab 3: Regelmäßigkeit ────────────────────────────────────────────────────
+function drawZeiten(data) {
+  destroyChart('chartZeiten');
+  const ctx = document.getElementById('chartZeiten').getContext('2d');
+  function toH(t) {
+    if (!t) return null;
+    const [h,m] = t.split(':').map(Number);
+    let v = h + m/60;
+    if (v >= 18) v -= 24;
+    return Math.round(v*100)/100;
+  }
+  const defs = chartDefaults();
+  activeCharts['chartZeiten'] = new Chart(ctx, {
+    type:'line',
+    data: {
+      labels: data.map(d=>d.date.slice(5)),
+      datasets: [
+        { label:'Einschlafzeit', data:data.map(d=>toH(d.sleep_start)), borderColor:COLORS.rem, tension:0.3, pointRadius:3, fill:false },
+        { label:'Aufwachzeit',   data:data.map(d=>d.wake_hour), borderColor:COLORS.spo2, tension:0.3, pointRadius:3, fill:false },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: {
+        ...defs.plugins,
+        tooltip:{ callbacks:{ label:c => c.dataset.label+': '+(c.raw<0?(24+c.raw).toFixed(1):c.raw.toFixed(1))+' Uhr' } }
+      },
+      scales: {
+        x: defs.scales.x,
+        y: { ...defs.scales.y, ticks:{ color:getTextColor(), callback:v=>(v<0?24+v:v).toFixed(0)+':00' } }
+      }
+    }
+  });
+}
+
+function drawWachEpisoden(data) {
+  destroyChart('chartWachEpisoden');
+  const ctx  = document.getElementById('chartWachEpisoden').getContext('2d');
+  const defs = chartDefaults();
+  activeCharts['chartWachEpisoden'] = new Chart(ctx, {
+    type:'bar',
+    data: {
+      labels: data.map(d=>d.date.slice(5)),
+      datasets:[{ label:'Wach-Episoden', data:data.map(d=>d.wake_episodes), backgroundColor:COLORS.awake+'aa' }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:defs.plugins,
+      scales:{ x:defs.scales.x, y:{ ...defs.scales.y, ticks:{ stepSize:1, color:getTextColor() } } }
+    }
+  });
+}
+
+// ── Tab 4: SpO₂ & Puls ──────────────────────────────────────────────────────
+function drawSpo2(data) {
+  destroyChart('chartSpo2');
+  const ctx  = document.getElementById('chartSpo2').getContext('2d');
+  const defs = chartDefaults();
+  activeCharts['chartSpo2'] = new Chart(ctx, {
+    type:'line',
+    data: {
+      labels: data.map(d=>d.date.slice(5)),
+      datasets: [
+        { label:'Ø SpO₂',  data:data.map(d=>SPO2_DATA[d.date]?.avg??null), borderColor:COLORS.spo2, backgroundColor:COLORS.spo2+'33', tension:0.3, fill:true, pointRadius:3, spanGaps:true },
+        { label:'Min SpO₂',data:data.map(d=>SPO2_DATA[d.date]?.min??null), borderColor:COLORS.awake, borderDash:[4,3], tension:0.3, pointRadius:2, spanGaps:true },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:defs.plugins,
+      scales:{ x:defs.scales.x, y:{ ...defs.scales.y, min:75, max:100, title:{ display:true, text:'%', color:getTextColor() } } }
+    }
+  });
+}
+
+function drawPuls(data) {
+  destroyChart('chartPuls');
+  const ctx  = document.getElementById('chartPuls').getContext('2d');
+  const defs = chartDefaults();
+  activeCharts['chartPuls'] = new Chart(ctx, {
+    type:'line',
+    data: {
+      labels: data.map(d=>d.date.slice(5)),
+      datasets: [
+        { label:'Ø Puls',               data:data.map(d=>PULSE_DATA[d.date]?.avg??null),     borderColor:COLORS.pulse,  backgroundColor:COLORS.pulse+'33', tension:0.3, fill:true, pointRadius:2, spanGaps:true },
+        { label:'Min Puls',             data:data.map(d=>PULSE_DATA[d.date]?.min??null),     borderColor:COLORS.accent, borderDash:[4,3], tension:0.3, pointRadius:2, spanGaps:true },
+        { label:'Ruhepuls (10. Pztl.)', data:data.map(d=>PULSE_DATA[d.date]?.resting??null), borderColor:'#e53e3e',     borderWidth:2, borderDash:[2,2], tension:0.3, pointRadius:3, spanGaps:true },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:defs.plugins,
+      scales:{ x:defs.scales.x, y:{ ...defs.scales.y, title:{ display:true, text:'bpm', color:getTextColor() } } }
+    }
+  });
+}
+
+// ── Tab 5: Korrelation ───────────────────────────────────────────────────────
+function drawCorrelation(canvasId, corrData, xLabel, yLabel) {
+  destroyChart(canvasId);
+  if (!corrData || corrData.length === 0) return;
+  const ctx  = document.getElementById(canvasId).getContext('2d');
+  const defs = chartDefaults();
+  activeCharts[canvasId] = new Chart(ctx, {
+    type:'scatter',
+    data:{ datasets:[{ label:'', data:corrData, backgroundColor:COLORS.accent+'99', pointRadius:5 }] },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:false } },
+      scales:{
+        x:{ ...defs.scales.x, title:{ display:true, text:xLabel, color:getTextColor() } },
+        y:{ ...defs.scales.y, title:{ display:true, text:yLabel, color:getTextColor() } },
+      }
+    }
+  });
+}
+
+// ── Tab 6: Monatsvergleich ───────────────────────────────────────────────────
+function drawMonthBar() {
+  destroyChart('chartMonthBar');
+  const ctx  = document.getElementById('chartMonthBar').getContext('2d');
+  const defs = chartDefaults();
+  activeCharts['chartMonthBar'] = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: MONTHLY_DATA.map(m=>formatMonth(m.month)),
+      datasets:[{ label:'Ø Schlafdauer (min)', data:MONTHLY_DATA.map(m=>m.avg_sleep), backgroundColor:COLORS.accent }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:defs.plugins,
+      scales:{ x:defs.scales.x, y:{ ...defs.scales.y, title:{ display:true, text:'Minuten', color:getTextColor() } } }
+    }
+  });
+}
+
+function drawMonthPhases() {
+  destroyChart('chartMonthPhases');
+  const ctx  = document.getElementById('chartMonthPhases').getContext('2d');
+  const defs = chartDefaults();
+  activeCharts['chartMonthPhases'] = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: MONTHLY_DATA.map(m=>formatMonth(m.month)),
+      datasets:[
+        { label:'Tiefschlaf', data:MONTHLY_DATA.map(m=>m.avg_deep), backgroundColor:COLORS.deep, stack:'s' },
+        { label:'REM',        data:MONTHLY_DATA.map(m=>m.avg_rem),  backgroundColor:COLORS.rem,  stack:'s' },
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:defs.plugins,
+      scales:{
+        x:{ stacked:true, ...defs.scales.x },
+        y:{ stacked:true, ...defs.scales.y, title:{ display:true, text:'Minuten', color:getTextColor() } }
+      }
+    }
+  });
+}
+
+function buildMonthTable() {
+  const tbody = document.getElementById('monthTableBody');
+  tbody.innerHTML = '';
+  MONTHLY_DATA.forEach(m => {
+    const eff = m.avg_efficiency;
+    const cls = eff >= 85 ? 'badge-good' : eff >= 75 ? 'badge-warn' : 'badge-bad';
+    const tr  = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${formatMonth(m.month)}</strong></td>
+      <td>${m.nights}</td>
+      <td>${fmtH(m.avg_sleep)}</td>
+      <td>${fmtH(m.avg_deep)}</td>
+      <td>${fmtH(m.avg_rem)}</td>
+      <td><span class="badge ${cls}">${eff}%</span></td>
+      <td>${m.avg_spo2 ? m.avg_spo2 + '%' : '–'}</td>
+      <td>${m.avg_resting_pulse ? m.avg_resting_pulse + ' bpm' : '–'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── Redraw ───────────────────────────────────────────────────────────────────
+function redrawAll() {
+  const activeTab = document.querySelector('.tab.active')?.dataset.tab;
+  drawForTab(activeTab);
+}
+
+function drawForTab(tabName, data) {
+  if (!data) data = getFilteredData();
+  if (!data.length) return;
+  const dates = data.map(d=>d.date);
+  switch(tabName) {
+    case 'schlafphasen':
+      drawPhasenBar(data); drawPhasenDonut(data); break;
+    case 'trends':
+      drawTrendDauer(data);
+      drawTrendLine('chartTrendREM',  'REM (min)',        data.map(d=>d.rem_min),  dates, COLORS.rem);
+      drawTrendLine('chartTrendDeep', 'Tiefschlaf (min)', data.map(d=>d.deep_min), dates, COLORS.deep);
+      break;
+    case 'regelmaessigkeit':
+      drawZeiten(data); drawWachEpisoden(data); break;
+    case 'spo2puls':
+      drawSpo2(data); drawPuls(data); break;
+    case 'korrelation':
+      drawCorrelation('chartCorrEffSpo2',  CORR_DATA.eff_spo2,   'Effizienz (%)', 'SpO₂ (%)');
+      drawCorrelation('chartCorrRemSpo2',  CORR_DATA.rem_spo2,   'REM (min)',     'SpO₂ (%)');
+      drawCorrelation('chartCorrDeepPulse',CORR_DATA.deep_pulse, 'Tiefschlaf (min)', 'Ruhepuls (bpm)');
+      document.getElementById('r_eff_spo2_label').textContent   = CORR_DATA.r_eff_spo2   != null ? 'Pearson r = ' + CORR_DATA.r_eff_spo2   : '';
+      document.getElementById('r_rem_spo2_label').textContent   = CORR_DATA.r_rem_spo2   != null ? 'Pearson r = ' + CORR_DATA.r_rem_spo2   : '';
+      document.getElementById('r_deep_pulse_label').textContent = CORR_DATA.r_deep_pulse != null ? 'Pearson r = ' + CORR_DATA.r_deep_pulse : '';
+      break;
+    case 'monatsvergleich':
+      drawMonthBar(); drawMonthPhases(); buildMonthTable(); break;
+  }
+}
+
+// ── Tab switching ────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t  => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    drawForTab(tab.dataset.tab);
+  });
 });
 
-// SpO₂
-new Chart(document.getElementById('spo2Chart'), {
-  type: 'line',
-  data: { labels: LABELS, datasets: [{
-    data: SPO2, borderColor:'#48bb78', backgroundColor:'rgba(72,187,120,0.15)',
-    fill:true, tension:0.3, pointRadius:2, spanGaps:true
-  }] },
-  options: { ...baseOpts, scales: { ...baseOpts.scales,
-    y: { min:80, max:100, ticks:{ color:tickColor }, grid:{ color:gridColor } }
-  } }
-});
-
-// Ruhepuls
-new Chart(document.getElementById('hrChart'), {
-  type: 'line',
-  data: { labels: LABELS, datasets: [{
-    data: HR, borderColor:'#ed8936', backgroundColor:'rgba(237,137,54,0.15)',
-    fill:true, tension:0.3, pointRadius:3, spanGaps:true
-  }] },
-  options: { ...baseOpts }
-});
+// ── Initial draw ─────────────────────────────────────────────────────────────
+drawForTab('schlafphasen');
 </script>
 </body>
 </html>
