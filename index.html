@@ -37,33 +37,16 @@
 </a>
 
 <script>
-function pad(n) { return String(n).padStart(2,'0'); }
-function dateStr(d) { return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
-
-// Kandidaten: heute, gestern, vorgestern, 3 Tage zurück
-const now = new Date();
-const dates = [0,1,2,3].map(i => {
-  const d = new Date(now);
-  d.setDate(now.getDate() - i);
-  return dateStr(d);
-});
-
-async function findLatest() {
-  for (const d of dates) {
-    const url = 'schlaf_briefing_' + d + '.html';
-    try {
-      const r = await fetch(url, {method:'HEAD'});
-      if (r.ok) {
-        document.getElementById('briefing-link').href = url;
-        document.getElementById('latest-date').textContent = 'Nacht vom ' + d;
-        return;
-      }
-    } catch(e) {}
-  }
-  document.getElementById('latest-date').textContent = 'Noch kein Briefing vorhanden';
-  document.getElementById('briefing-link').style.opacity = '0.5';
-}
-findLatest();
+fetch('latest.json?_=' + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('briefing-link').href = data.briefing;
+    document.getElementById('latest-date').textContent = 'Nacht vom ' + data.date;
+  })
+  .catch(() => {
+    document.getElementById('latest-date').textContent = 'Noch kein Briefing vorhanden';
+    document.getElementById('briefing-link').style.opacity = '0.5';
+  });
 </script>
 </body>
 </html>
