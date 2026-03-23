@@ -26,7 +26,9 @@ jobs:
         run: pip install google-api-python-client google-auth
 
       - name: Service-Account-Schlüssel schreiben
-        run: echo '${{ secrets.GDRIVE_SERVICE_ACCOUNT }}' > /tmp/service_account.json
+        env:
+          GDRIVE_SERVICE_ACCOUNT: ${{ secrets.GDRIVE_SERVICE_ACCOUNT }}
+        run: python3 -c "import os; open('/tmp/service_account.json','w').write(os.environ['GDRIVE_SERVICE_ACCOUNT'])"
 
       - name: CSV-Dateien herunterladen
         run: python download_drive.py
