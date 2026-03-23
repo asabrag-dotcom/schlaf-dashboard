@@ -4,24 +4,60 @@ Google Drive → lokaler Ordner (für GitHub Actions)
 Lädt alle CSV-Dateien aus den drei Gesundheitsdaten-Ordnern herunter.
 
 Umgebungsvariablen:
-  SERVICE_ACCOUNT_FILE  – Pfad zur Service-Account-JSON
-  DRIVE_DATA_PATH       – Zielordner (Standard: /tmp/drive_data)
-  DRIVE_SCHLAF_ID       – Folder-ID: Health Sync Schlaf
-  DRIVE_SPO2_ID         – Folder-ID: Health Sync Sauerstoffsättigung
-  DRIVE_PULS_ID         – Folder-ID: Health Sync Puls
+  GDRIVE_SERVICE_ACCOUNT – Service-Account-JSON als String (bevorzugt)
+  SERVICE_ACCOUNT_FILE   – Pfad zur Service-Account-JSON (Fallback)
+  DRIVE_DATA_PATH        – Zielordner (Standard: /tmp/drive_data)
+  DRIVE_SCHLAF_ID        – Folder-ID: Health Sync Schlaf
+  DRIVE_SPO2_ID          – Folder-ID: Health Sync Sauerstoffsättigung
+  DRIVE_PULS_ID          – Folder-ID: Health Sync Puls
 """
 
 import os
 import io
 import sys
+import json
+import re
 
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
-SCOPES            = ['https://www.googleapis.com/auth/drive.readonly']
-SERVICE_ACCT_FILE = os.environ['SERVICE_ACCOUNT_FILE']
-DRIVE_DATA_PATH   = os.environ.get('DRIVE_DATA_PATH', '/tmp/drive_data')
+SCOPES          = ['https://www.googleapis.com/auth/drive.readonly']
+DRIVE_DATA_PATH = os.environ.get('DRIVE_DATA_PATH', '/tmp/drive_data')
+
+
+def load_credentials():
+    """
+    Lädt Service-Account-Credentials robust aus Umgebungsvariable oder Datei.
+    Korrigiert automatisch Zeilenumbrüche im private_key (häufiges GitHub-Secrets-Problem).
+    """
+    def parse_sa_json(raw):
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            fixed = re.sub(
+                r'("private_key"\s*:\s*")(.*?)(")',
+                lambda m: m.group(1) + m.group(2).replace('\n', '\\n') + m.group(3),
+                raw, flags=re.DOTALL
+            )
+            return json.loads(fixed)
+
+    # Zuerst: direkt aus Umgebungsvariable
+    sa_json = os.environ.get('GDRIVE_SERVICE_ACCOUNT', '')
+    if sa_json:
+        info = parse_sa_json(sa_json)
+        return service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
+
+    # Fallback: aus Datei
+    sa_file = os.environ.get('SERVICE_ACCOUNT_FILE', '')
+    if sa_file and os.path.exists(sa_file):
+        with open(sa_file, encoding='utf-8') as f:
+            info = parse_sa_json(f.read())
+        return service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
+
+    raise EnvironmentError("Keine Service-Account-Credentials gefunden. "
+                           "Setze GDRIVE_SERVICE_ACCOUNT oder SERVICE_ACCOUNT_FILE.")
+
 
 FOLDERS = {
     'Health Sync Schlaf':             os.environ['DRIVE_SCHLAF_ID'],
@@ -61,8 +97,7 @@ def download_folder(service, folder_id, local_dir):
 
 
 def main():
-    creds   = service_account.Credentials.from_service_account_file(
-                  SERVICE_ACCT_FILE, scopes=SCOPES)
+    creds   = load_credentials()
     service = build('drive', 'v3', credentials=creds, cache_discovery=False)
 
     for name, fid in FOLDERS.items():
