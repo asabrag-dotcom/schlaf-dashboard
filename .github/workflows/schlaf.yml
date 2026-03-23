@@ -1,0 +1,62 @@
+name: Schlaf-Dashboard Aktualisierung
+
+on:
+  schedule:
+    - cron: '0 10 * * 1-5'
+    - cron: '5 11 * * 0,6'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Abhängigkeiten installieren
+        run: pip install google-api-python-client google-auth
+
+      - name: Service-Account-Schlüssel schreiben
+        run: echo '${{ secrets.GDRIVE_SERVICE_ACCOUNT }}' > /tmp/service_account.json
+
+      - name: CSV-Dateien herunterladen
+        run: python download_drive.py
+        env:
+          SERVICE_ACCOUNT_FILE: /tmp/service_account.json
+          DRIVE_DATA_PATH:      /tmp/drive_data
+          DRIVE_SCHLAF_ID:      1Snum6OAQbbjm57ILL7un7akATABPs-xT
+          DRIVE_SPO2_ID:        1H_qWKkgbEL3WUxlSmtEk5xt1QUJzDlv3
+          DRIVE_PULS_ID:        1WymKZ2ZEGQVYW1gEdTA-OqM43Zw2v1mm
+
+      - name: Dashboard generieren
+        run: python process_health_data.py
+        env:
+          GITHUB_ACTIONS:  'true'
+          DRIVE_DATA_PATH: /tmp/drive_data
+          OUTPUT_DIR:      ${{ github.workspace }}
+
+      - name: Schlaf-Briefing generieren
+        run: python schlaf_briefing.py
+        env:
+          GITHUB_ACTIONS:  'true'
+          DRIVE_DATA_PATH: /tmp/drive_data
+          OUTPUT_DIR:      ${{ github.workspace }}
+
+      - name: Änderungen pushen
+        run: |
+          git config user.name  "Schlaf-Bot"
+          git config user.email "schlaf-bot@users.noreply.github.com"
+          git add schlaf_dashboard.html latest.json index.html
+          git add schlaf_briefing_*.html 2>/dev/null || true
+          git diff --staged --quiet && echo "Keine Änderungen." || \
+            git commit -m "Update $(date +'%Y-%m-%d %H:%M') [automated]"
+          git push
