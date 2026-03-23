@@ -25,19 +25,14 @@ jobs:
       - name: Abhängigkeiten installieren
         run: pip install google-api-python-client google-auth
 
-      - name: Service-Account-Schlüssel schreiben
-        env:
-          GDRIVE_SERVICE_ACCOUNT: ${{ secrets.GDRIVE_SERVICE_ACCOUNT }}
-        run: python3 -c "import os; open('/tmp/service_account.json','w').write(os.environ['GDRIVE_SERVICE_ACCOUNT'])"
-
       - name: CSV-Dateien herunterladen
         run: python download_drive.py
         env:
-          SERVICE_ACCOUNT_FILE: /tmp/service_account.json
-          DRIVE_DATA_PATH:      /tmp/drive_data
-          DRIVE_SCHLAF_ID:      1Snum6OAQbbjm57ILL7un7akATABPs-xT
-          DRIVE_SPO2_ID:        1H_qWKkgbEL3WUxlSmtEk5xt1QUJzDlv3
-          DRIVE_PULS_ID:        1WymKZ2ZEGQVYW1gEdTA-OqM43Zw2v1mm
+          GDRIVE_SERVICE_ACCOUNT: ${{ secrets.GDRIVE_SERVICE_ACCOUNT }}
+          DRIVE_DATA_PATH:        /tmp/drive_data
+          DRIVE_SCHLAF_ID:        1Snum6OAQbbjm57ILL7un7akATABPs-xT
+          DRIVE_SPO2_ID:          1H_qWKkgbEL3WUxlSmtEk5xt1QUJzDlv3
+          DRIVE_PULS_ID:          1WymKZ2ZEGQVYW1gEdTA-OqM43Zw2v1mm
 
       - name: Dashboard generieren
         run: python process_health_data.py
