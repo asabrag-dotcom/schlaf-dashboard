@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gewichts-Dashboard – Björn</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:#0f1117; --card:#1a1d27; --card2:#22263a;
+    --text:#e8eaf0; --muted:#8892a4; --accent:#5b8dee;
+    --border:#2d3148; --good:#48bb78; --warn:#ed8936; --bad:#fc8181;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; max-width:1000px; margin:0 auto; padding:24px 16px; }
+  header { margin-bottom:24px; }
+  header h1 { font-size:1.5rem; font-weight:700; }
+  header .sub { color:var(--muted); font-size:0.85rem; margin-top:4px; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; margin:20px 0; }
+  .kpi { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px; }
+  .kpi-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px; }
+  .kpi-value { font-size:1.3rem; font-weight:700; }
+  .kpi-sub { font-size:0.72rem; color:var(--muted); margin-top:3px; }
+  .better { color:var(--good); }
+  .worse  { color:var(--bad); }
+  .neutral { color:var(--muted); }
+  section { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; }
+  section h2 { font-size:0.95rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:.05em; margin-bottom:16px; }
+  .chart-wrap { position:relative; height:320px; }
+  .settings { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end; margin-bottom:20px; }
+  .setting-group { display:flex; flex-direction:column; gap:6px; }
+  .setting-group label { font-size:0.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+  .setting-group input[type=range] { width:180px; accent-color:var(--accent); }
+  .setting-group input[type=number] { background:var(--card2); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:6px 10px; width:100px; font-size:0.9rem; }
+  .setting-val { font-size:0.9rem; font-weight:600; color:var(--accent); }
+  .bmi-bar { position:relative; height:18px; border-radius:9px; background:linear-gradient(to right, #63b3ed 0%,#63b3ed 18.5%,#48bb78 18.5%,#48bb78 25%,#ed8936 25%,#ed8936 30%,#fc8181 30%,#fc8181 100%); margin:10px 0; overflow:visible; max-width:400px; }
+  .bmi-marker { position:absolute; top:-4px; width:2px; height:26px; background:#fff; border-radius:2px; transform:translateX(-50%); }
+  .bmi-labels { display:flex; justify-content:space-between; font-size:0.68rem; color:var(--muted); max-width:400px; }
+  table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+  th { text-align:left; padding:8px 10px; color:var(--muted); font-weight:600; font-size:0.72rem; text-transform:uppercase; border-bottom:1px solid var(--border); }
+  td { padding:8px 10px; border-bottom:1px solid var(--border); }
+  tr:hover td { background:var(--card2); }
+  .progress-bar { background:var(--card2); border-radius:8px; height:14px; margin-top:8px; overflow:hidden; }
+  .progress-fill { height:100%; border-radius:8px; background:linear-gradient(to right,var(--accent),var(--good)); transition:width .3s; }
+  footer { color:var(--muted); font-size:0.75rem; text-align:center; margin-top:24px; padding-top:12px; border-top:1px solid var(--border); }
+  @media(max-width:600px) { .settings { flex-direction:column; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚖️ Gewichts-Dashboard</h1>
+  <div class="sub">Björn · Stand: 2026-03-28 · Aktualisiert: 28.03.2026 14:00</div>
+</header>
+
+<!-- KPIs -->
+<div class="kpis">
+  <div class="kpi" style="border-top:3px solid var(--accent)">
+    <div class="kpi-label">Aktuelles Gewicht</div>
+    <div class="kpi-value" id="kpi-current">88.8 kg</div>
+    <div class="kpi-sub">2026-03-28</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #ed8936">
+    <div class="kpi-label">BMI</div>
+    <div class="kpi-value" style="color:#ed8936">26.8</div>
+    <div class="kpi-sub">Übergewicht</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid var(--bad)">
+    <div class="kpi-label">Trend (30 Tage)</div>
+    <div class="kpi-value worse">+0.32 kg</div>
+    <div class="kpi-sub">Hochrechnung 30 Tage</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid var(--muted)">
+    <div class="kpi-label">vs. 7 Tage</div>
+    <div class="kpi-value worse">▲ 0.5 kg</div>
+    <div class="kpi-sub">Veränderung</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid var(--muted)">
+    <div class="kpi-label">vs. 30 Tage</div>
+    <div class="kpi-value better">▼ 0.3 kg</div>
+    <div class="kpi-sub">Veränderung</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid var(--muted)">
+    <div class="kpi-label">vs. 90 Tage</div>
+    <div class="kpi-value neutral">–</div>
+    <div class="kpi-sub">Veränderung</div>
+  </div>
+</div>
+
+<!-- Einstellungen -->
+<section>
+  <h2>Einstellungen</h2>
+  <div class="settings">
+    <div class="setting-group">
+      <label>Zielgewicht</label>
+      <input type="number" id="target-input" value="85" min="50" max="150" step="0.5">
+    </div>
+    <div class="setting-group">
+      <label>Kreatin-Abzug: <span class="setting-val" id="creatine-val">1.5 kg</span></label>
+      <input type="range" id="creatine-slider" min="0" max="3" step="0.1" value="1.5">
+    </div>
+    <div class="setting-group">
+      <label>Kreatin aktiv</label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:4px">
+        <input type="checkbox" id="creatine-active" checked style="width:18px;height:18px;accent-color:var(--accent)">
+        <span style="font-size:0.9rem">Zweite Linie anzeigen</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Zielgewicht Fortschritt -->
+  <div id="target-section">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:0.85rem;color:var(--muted)">Fortschritt zum Zielgewicht</span>
+      <span id="target-info" style="font-size:0.85rem;font-weight:600"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div id="target-days" style="font-size:0.78rem;color:var(--muted);margin-top:6px"></div>
+  </div>
+</section>
+
+<!-- Hauptchart -->
+<section>
+  <h2>Gewichtsverlauf</h2>
+  <div class="chart-wrap"><canvas id="weightChart"></canvas></div>
+</section>
+
+<!-- BMI -->
+<section>
+  <h2>BMI-Einordnung</h2>
+  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+    <div>
+      <div style="font-size:2rem;font-weight:700;color:#ed8936">26.8</div>
+      <div style="font-size:0.85rem;color:#ed8936">Übergewicht</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-top:4px">Größe: 182 cm</div>
+    </div>
+    <div style="flex:1;min-width:200px">
+      <div class="bmi-bar">
+        <div class="bmi-marker" id="bmi-marker" style="left:39.3%"></div>
+      </div>
+      <div class="bmi-labels">
+        <span>15</span><span>Unter&shy;gew.</span><span>Normal</span><span>Über&shy;gew.</span><span>Adip.</span><span>45</span>
+      </div>
+    </div>
+  </div>
+  <div id="bmi-info" style="margin-top:16px;font-size:0.85rem;color:var(--muted)">
+    Dein BMI von 26.8 liegt im Bereich Übergewicht (25–29.9). Ein Abbau von 5–10% des Körpergewichts reduziert das kardiovaskuläre Risiko deutlich.
+  </div>
+</section>
+
+<!-- Letzte Messungen -->
+<section>
+  <h2>Letzte 20 Messungen</h2>
+  <table>
+    <thead><tr><th>Datum</th><th>Gewicht</th><th>BMI</th><th>7-Tage-Ø</th><th>Ohne Kreatin</th></tr></thead>
+    <tbody id="hist-table"></tbody>
+  </table>
+</section>
+
+<footer>Daten: Garmin / Health Connect · Automatisch generiert · 28.03.2026 14:00</footer>
+
+<script>
+const RAW_DATES   = ["2026-02-23", "2026-02-25", "2026-03-02", "2026-03-05", "2026-03-06", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28"];
+const RAW_WEIGHTS = [90.4, 89.1, 89.6, 88.3, 88.3, 89.7, 89.6, 88.5, 89.4, 90.4, 89.1, 89.0, 88.6, 88.3, 89.1, 90.2, 89.6, 89.0, 89.9, 89.1, 88.8];
+const MA7         = [90.4, 89.75, 89.7, 89.35, 89.14, 89.23, 89.29, 89.01, 89.06, 89.17, 89.29, 89.39, 89.23, 89.04, 89.13, 89.24, 89.13, 89.11, 89.24, 89.31, 89.39];
+const PROJ_DATES  = ["2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-18", "2026-04-19", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-16", "2026-05-17", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-23", "2026-05-24", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-05-30", "2026-05-31", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-06", "2026-06-07", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26"];
+const PROJ_VALS   = [89.39, 89.4, 89.41, 89.42, 89.43, 89.44, 89.45, 89.46, 89.47, 89.48, 89.49, 89.5, 89.52, 89.53, 89.54, 89.55, 89.56, 89.57, 89.58, 89.59, 89.6, 89.61, 89.62, 89.63, 89.64, 89.66, 89.67, 89.68, 89.69, 89.7, 89.71, 89.72, 89.73, 89.74, 89.75, 89.76, 89.77, 89.78, 89.8, 89.81, 89.82, 89.83, 89.84, 89.85, 89.86, 89.87, 89.88, 89.89, 89.9, 89.91, 89.92, 89.94, 89.95, 89.96, 89.97, 89.98, 89.99, 90.0, 90.01, 90.02, 90.03, 90.04, 90.05, 90.06, 90.08, 90.09, 90.1, 90.11, 90.12, 90.13, 90.14, 90.15, 90.16, 90.17, 90.18, 90.19, 90.2, 90.22, 90.23, 90.24, 90.25, 90.26, 90.27, 90.28, 90.29, 90.3, 90.31, 90.32, 90.33, 90.34];
+const HEIGHT_M    = 1.82;
+
+let chart = null;
+
+function bmi(w) { return Math.round(w / (HEIGHT_M * HEIGHT_M) * 10) / 10; }
+
+function updateDashboard() {
+  const target     = parseFloat(document.getElementById('target-input').value) || 85;
+  const creatine   = parseFloat(document.getElementById('creatine-slider').value);
+  const showCreat  = document.getElementById('creatine-active').checked;
+  document.getElementById('creatine-val').textContent = creatine.toFixed(1) + ' kg';
+
+  const currentW   = RAW_WEIGHTS[RAW_WEIGHTS.length - 1];
+  const creatW     = Math.round((currentW - creatine) * 10) / 10;
+
+  // KPI aktualisieren
+  document.getElementById('kpi-current').textContent = currentW + ' kg';
+
+  // Zielgewicht
+  const startW = RAW_WEIGHTS[0];
+  const totalDiff = startW - target;
+  const doneDiff  = startW - currentW;
+  const pct = totalDiff > 0 ? Math.min(Math.max(doneDiff / totalDiff * 100, 0), 100) : 0;
+  document.getElementById('progress-fill').style.width = pct.toFixed(1) + '%';
+
+  const remaining = Math.round((currentW - target) * 10) / 10;
+  document.getElementById('target-info').textContent =
+    remaining > 0 ? `Noch ${remaining} kg bis Ziel (${target} kg)` :
+    remaining < 0 ? `Ziel um ${Math.abs(remaining)} kg unterschritten ✓` : 'Ziel erreicht! ✓';
+
+  // Projektion Tage
+  let daysText = '';
+  for (let i = 0; i < PROJ_VALS.length; i++) {
+    if (PROJ_VALS[i] <= target) {
+      daysText = `📅 Bei aktuellem Trend: Ziel voraussichtlich in ${i+1} Tagen erreicht (${PROJ_DATES[i]})`;
+      break;
+    }
+  }
+  if (!daysText && PROJ_VALS[PROJ_VALS.length-1] > target) {
+    daysText = 'ℹ️ Bei aktuellem Trend wird das Ziel innerhalb von 90 Tagen nicht erreicht.';
+  }
+  document.getElementById('target-days').textContent = daysText;
+
+  // Chart
+  const withoutCreat = showCreat ? RAW_WEIGHTS.map(w => Math.round((w - creatine) * 10) / 10) : null;
+
+  const allDates = [...RAW_DATES, ...PROJ_DATES];
+
+  if (chart) chart.destroy();
+  const ctx = document.getElementById('weightChart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: allDates,
+      datasets: [
+        {
+          label: 'Gemessenes Gewicht',
+          data: [...RAW_WEIGHTS, ...Array(PROJ_DATES.length).fill(null)],
+          borderColor: '#5b8dee',
+          backgroundColor: 'rgba(91,141,238,0.08)',
+          borderWidth: 2,
+          pointRadius: RAW_WEIGHTS.length > 60 ? 0 : 3,
+          pointHoverRadius: 5,
+          tension: 0.3,
+          fill: false,
+        },
+        {
+          label: '7-Tage-Durchschnitt',
+          data: [...MA7, ...Array(PROJ_DATES.length).fill(null)],
+          borderColor: '#9f7aea',
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.4,
+          fill: false,
+        },
+        showCreat ? {
+          label: `Ohne Kreatin (-${creatine.toFixed(1)} kg)`,
+          data: [...withoutCreat, ...Array(PROJ_DATES.length).fill(null)],
+          borderColor: '#48bb78',
+          borderWidth: 1.5,
+          borderDash: [4, 4],
+          pointRadius: 0,
+          tension: 0.3,
+          fill: false,
+        } : null,
+        {
+          label: 'Prognose (Trend)',
+          data: [...Array(RAW_DATES.length).fill(null), ...PROJ_VALS],
+          borderColor: '#ed8936',
+          borderWidth: 1.5,
+          borderDash: [6, 3],
+          pointRadius: 0,
+          tension: 0.2,
+          fill: false,
+        },
+        {
+          label: `Ziel (${target} kg)`,
+          data: allDates.map(() => target),
+          borderColor: 'rgba(252,129,129,0.5)',
+          borderWidth: 1,
+          borderDash: [3, 3],
+          pointRadius: 0,
+          fill: false,
+        },
+      ].filter(Boolean),
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#8892a4', font: { size: 11 } } },
+        tooltip: {
+          backgroundColor: '#1a1d27',
+          titleColor: '#e8eaf0',
+          bodyColor: '#8892a4',
+          borderColor: '#2d3148',
+          borderWidth: 1,
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + ' kg' : '–'}`,
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#8892a4', maxTicksLimit: 10, font: { size: 10 } },
+          grid: { color: '#2d3148' },
+        },
+        y: {
+          ticks: { color: '#8892a4', callback: v => v + ' kg' },
+          grid: { color: '#2d3148' },
+        }
+      }
+    }
+  });
+
+  // Tabelle
+  const tbody = document.getElementById('hist-table');
+  tbody.innerHTML = '';
+  const last20 = RAW_DATES.slice(-20).reverse();
+  last20.forEach((d, i) => {
+    const idx  = RAW_DATES.length - 1 - i;
+    const w    = RAW_WEIGHTS[idx];
+    const ma   = MA7[idx];
+    const noC  = Math.round((w - creatine) * 10) / 10;
+    const b    = bmi(w);
+    tbody.innerHTML += `<tr>
+      <td>${d}</td>
+      <td><strong>${w} kg</strong></td>
+      <td>${b}</td>
+      <td style="color:var(--muted)">${ma} kg</td>
+      <td style="color:#48bb78">${noC} kg</td>
+    </tr>`;
+  });
+}
+
+document.getElementById('target-input').addEventListener('input', updateDashboard);
+document.getElementById('creatine-slider').addEventListener('input', updateDashboard);
+document.getElementById('creatine-active').addEventListener('change', updateDashboard);
+
+updateDashboard();
+</script>
+</body>
+</html>
