@@ -4,12 +4,11 @@ Google Drive → lokaler Ordner (für GitHub Actions)
 Lädt alle CSV-Dateien aus den drei Gesundheitsdaten-Ordnern herunter.
 
 Umgebungsvariablen:
-  GDRIVE_SERVICE_ACCOUNT – Service-Account-JSON als String oder Base64 (bevorzugt)
-  SERVICE_ACCOUNT_FILE   – Pfad zur Service-Account-JSON (Fallback)
-  DRIVE_DATA_PATH        – Zielordner (Standard: /tmp/drive_data)
-  DRIVE_SCHLAF_ID        – Folder-ID: Health Sync Schlaf
-  DRIVE_SPO2_ID          – Folder-ID: Health Sync Sauerstoffsättigung
-  DRIVE_PULS_ID          – Folder-ID: Health Sync Puls
+  SERVICE_ACCOUNT_FILE  – Pfad zur Service-Account-JSON
+  DRIVE_DATA_PATH       – Zielordner (Standard: /tmp/drive_data)
+  DRIVE_SCHLAF_ID       – Folder-ID: Health Sync Schlaf
+  DRIVE_SPO2_ID         – Folder-ID: Health Sync Sauerstoffsättigung
+  DRIVE_PULS_ID         – Folder-ID: Health Sync Puls
 """
 
 import os
@@ -29,7 +28,7 @@ DRIVE_DATA_PATH = os.environ.get('DRIVE_DATA_PATH', '/tmp/drive_data')
 
 def parse_sa_info(raw: str) -> dict:
     """
-    Parst Service-Account-JSON robust.
+    Versucht Service-Account-JSON zu parsen.
     Unterstützt: Base64-kodiert, reines JSON, JSON mit unescapten Zeilenumbrüchen.
     """
     raw = raw.strip()
@@ -82,12 +81,14 @@ def load_credentials():
 
     raise EnvironmentError("Keine Service-Account-Credentials gefunden.")
 
-
 FOLDERS = {
     'Health Sync Schlaf':             os.environ['DRIVE_SCHLAF_ID'],
     'Health Sync Sauerstoffsättigung': os.environ['DRIVE_SPO2_ID'],
     'Health Sync Puls':               os.environ['DRIVE_PULS_ID'],
+    'Health Sync Gewicht':            os.environ.get('DRIVE_GEWICHT_ID', ''),
 }
+# Leere Folder-IDs überspringen (optionale Ordner)
+FOLDERS = {k: v for k, v in FOLDERS.items() if v}
 
 
 def download_folder(service, folder_id, local_dir):
