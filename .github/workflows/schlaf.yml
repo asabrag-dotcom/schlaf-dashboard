@@ -33,8 +33,9 @@ jobs:
           DRIVE_SCHLAF_ID:        1Snum6OAQbbjm57ILL7un7akATABPs-xT
           DRIVE_SPO2_ID:          1H_qWKkgbEL3WUxlSmtEk5xt1QUJzDlv3
           DRIVE_PULS_ID:          1WymKZ2ZEGQVYW1gEdTA-OqM43Zw2v1mm
+          DRIVE_GEWICHT_ID:       18RbnBVhX78EVw-yXtsMhnP4hXm838l2p
 
-      - name: Dashboard generieren
+      - name: Schlaf-Dashboard generieren
         run: python process_health_data.py
         env:
           GITHUB_ACTIONS:  'true'
@@ -48,12 +49,20 @@ jobs:
           DRIVE_DATA_PATH: /tmp/drive_data
           OUTPUT_DIR:      ${{ github.workspace }}
 
+      - name: Gewichts-Dashboard generieren
+        run: python gewicht_dashboard.py
+        env:
+          GITHUB_ACTIONS:  'true'
+          DRIVE_DATA_PATH: /tmp/drive_data
+          OUTPUT_DIR:      ${{ github.workspace }}
+
       - name: Änderungen pushen
         run: |
           git config user.name  "Schlaf-Bot"
           git config user.email "schlaf-bot@users.noreply.github.com"
           git add schlaf_dashboard.html latest.json index.html
           git add schlaf_briefing_*.html 2>/dev/null || true
+          git add gewicht_dashboard.html 2>/dev/null || true
           git diff --staged --quiet && echo "Keine Änderungen." || \
             git commit -m "Update $(date +'%Y-%m-%d %H:%M') [automated]"
           git push
