@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schlaf-Briefing 2026-04-01 – Björn</title>
+<style>
+  :root {
+    --bg:#0f1117; --card:#1a1d27; --card2:#22263a;
+    --text:#e8eaf0; --muted:#8892a4; --accent:#5b8dee;
+    --border:#2d3148; --good:#48bb78; --warn:#ed8936; --bad:#fc8181;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; max-width:900px; margin:0 auto; padding:24px 16px; }
+  header { margin-bottom:24px; }
+  header h1 { font-size:1.5rem; font-weight:700; }
+  header .sub { color:var(--muted); font-size:0.85rem; margin-top:4px; }
+  .note-badge { display:inline-block; padding:6px 18px; border-radius:20px; font-size:1rem; font-weight:700; color:#fff; margin-top:10px; background:#48bb78; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:20px 0; }
+  .kpi { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px; }
+  .kpi-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px; }
+  .kpi-value { font-size:1.25rem; font-weight:700; }
+  .kpi-sub { font-size:0.7rem; color:var(--muted); margin-top:3px; }
+  section { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; }
+  section h2 { font-size:0.95rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:.05em; margin-bottom:14px; }
+  ul { list-style:none; padding:0; display:flex; flex-direction:column; gap:8px; }
+  li.issue { color:var(--bad); font-size:0.9rem; }
+  li.ok    { color:var(--good); font-size:0.9rem; }
+  .rec-card { background:var(--card2); border-radius:8px; padding:14px; margin-bottom:10px; }
+  .rec-title { font-weight:700; font-size:0.9rem; margin-bottom:6px; }
+  .rec-text { font-size:0.85rem; color:var(--muted); line-height:1.5; }
+  table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+  th { text-align:left; padding:8px 10px; color:var(--muted); font-weight:600; font-size:0.72rem; text-transform:uppercase; border-bottom:1px solid var(--border); }
+  td { padding:8px 10px; border-bottom:1px solid var(--border); }
+  tr:hover td { background:var(--card2); }
+  td.better { color:var(--good); }
+  td.worse  { color:var(--bad); }
+  td.neutral{ color:var(--muted); }
+  .badge { display:inline-block; padding:2px 7px; border-radius:8px; font-size:0.72rem; font-weight:600; }
+  .badge-good { background:rgba(72,187,120,.2); color:var(--good); }
+  .badge-warn { background:rgba(237,137,54,.2);  color:var(--warn); }
+  .badge-bad  { background:rgba(252,129,129,.2); color:var(--bad); }
+  .apnoe-warning { background:rgba(252,129,129,.1); border:1px solid var(--bad); border-radius:8px; padding:14px; margin-top:12px; font-size:0.88rem; color:var(--bad); }
+  footer { color:var(--muted); font-size:0.75rem; text-align:center; margin-top:24px; padding-top:12px; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🌙 Schlaf-Briefing</h1>
+  <div class="sub">Björn · Nacht vom 2026-04-01 · Erstellt am 01.04.2026 12:12</div>
+  <div class="note-badge">Gut</div>
+</header>
+
+<div class="kpis">
+  <div class="kpi" style="border-top:3px solid var(--accent)">
+    <div class="kpi-label">Schlafdauer</div>
+    <div class="kpi-value">6h 47m</div>
+    <div class="kpi-sub">? – ?</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #5b8dee">
+    <div class="kpi-label">Effizienz</div>
+    <div class="kpi-value">96.9%</div>
+    <div class="kpi-sub">Norm: ≥85%</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #3d63dd">
+    <div class="kpi-label">Tiefschlaf</div>
+    <div class="kpi-value">1h 57m</div>
+    <div class="kpi-sub">28.7% (Norm: 15–25%)</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #9f7aea">
+    <div class="kpi-label">REM-Schlaf</div>
+    <div class="kpi-value">1h 02m</div>
+    <div class="kpi-sub">15.2% (Norm: 20–25%)</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #48bb78">
+    <div class="kpi-label">Wach-Episoden</div>
+    <div class="kpi-value">3</div>
+    <div class="kpi-sub">Unterbrechungen</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #fc8181">
+    <div class="kpi-label">SpO₂ Ø / Min</div>
+    <div class="kpi-value">92.9% / 85.0%</div>
+    <div class="kpi-sub">Sauerstoffsättigung</div>
+  </div>
+  <div class="kpi" style="border-top:3px solid #ed8936">
+    <div class="kpi-label">Ruhepuls (Nacht)</div>
+    <div class="kpi-value">54 bpm</div>
+    <div class="kpi-sub">Ø 54 bpm</div>
+  </div>
+</div>
+
+<section>
+  <h2>1. Befund der letzten Nacht</h2>
+  <ul><li class="issue">⚠️ Verkürzte Schlafdauer (6h 47m; Empfehlung: 7–9 Std.)</li><li class="issue">⚠️ REM-Schlaf reduziert (15.2%; Norm: 20–25%) – beeinträchtigt emotionale Verarbeitung und kognitive Leistung</li><li class="issue">⚠️ SpO₂-Minima unter 90% (85.0%) – kurzfristige Entsättigungen, Abklärung empfohlen</li><li class="ok">✓ Hohe Schlafeffizienz (96.9%)</li><li class="ok">✓ Ausreichender Tiefschlaf (28.7%)</li></ul>
+  <div class='apnoe-warning'>⚠️ <strong>Hinweis:</strong> Wiederholte Entsättigungen (SpO₂ &lt; 90%) können auf eine schlafbezogene Atmungsstörung (z.B. obstruktive Schlafapnoe) hinweisen. Eine schlafmedizinische Abklärung wird empfohlen.</div>
+</section>
+
+<section>
+  <h2>2. Trend der letzten 7 Nächte</h2>
+  <table>
+    <thead><tr><th>Metrik</th><th>Heute</th><th>7-Tage-Ø</th><th>Differenz</th></tr></thead>
+    <tbody><tr><td>Schlafdauer (min)</td><td>407.0</td><td>413.7</td><td class='worse'>↓ 6.7</td></tr><tr><td>Effizienz</td><td>96.9%</td><td>95.8%</td><td class='better'>↑ 1.1%</td></tr><tr><td>Tiefschlaf</td><td>28.7%</td><td>17.4%</td><td class='better'>↑ 11.3%</td></tr><tr><td>REM-Anteil</td><td>15.2%</td><td>19.7%</td><td class='worse'>↓ 4.5%</td></tr><tr><td>SpO₂ Ø</td><td>92.9%</td><td>93.5%</td><td class='worse'>↓ 0.6%</td></tr></tbody>
+  </table>
+</section>
+
+<section>
+  <h2>3. Empfehlungen für heute</h2>
+  <div class="rec-card"><div class="rec-title">💡 REM-Schlaf fördern</div><div class="rec-text">Ihre REM-Phasen waren mit 15.2% reduziert. REM tritt vor allem in den frühen Morgenstunden auf. Vermeiden Sie Alkohol und spätes Essen – beides unterdrückt den REM-Schlaf nachweislich. Regelmäßige Aufwachzeiten stabilisieren den REM-Anteil.</div></div><div class="rec-card"><div class="rec-title">💡 Schlafbezogene Atmungsstörung ausschließen</div><div class="rec-text">Wiederholte SpO₂-Minima unter 90% (heute: 85.0%) können auf eine Schlafapnoe hindeuten. Ich empfehle eine Abklärung beim HNO-Arzt oder Pneumologen, ggf. eine ambulante Polygraphie.</div></div><div class="rec-card"><div class="rec-title">💡 Schlafdauer verlängern</div><div class="rec-text">Ihre Schlafdauer von 6h 47m liegt unter der empfohlenen Schlafdauer von 7–9 Stunden. Versuchen Sie, früher ins Bett zu gehen oder den Wecker etwas zu verzögern.</div></div>
+</section>
+
+<section>
+  <h2>4. Letzte 14 Nächte im Überblick</h2>
+  <table>
+    <thead>
+      <tr><th>Datum</th><th>Schlaf</th><th>Tief%</th><th>REM%</th><th>Effizienz</th><th>SpO₂ Ø/Min</th><th>Ruhepuls</th></tr>
+    </thead>
+    <tbody><tr><td>2026-04-01</td><td>6h 47m</td><td>28.7%</td><td>15.2%</td><td><span class="badge badge-good">96.9%</span></td><td>92.9% / 85.0%</td><td>54</td></tr><tr><td>2026-04-01</td><td>6h 47m</td><td>28.7%</td><td>15.2%</td><td><span class="badge badge-good">96.9%</span></td><td>92.9% / 85.0%</td><td>54</td></tr><tr><td>2026-03-31</td><td>7h 27m</td><td>21.9%</td><td>35.3%</td><td><span class="badge badge-good">96.8%</span></td><td>93.4% / 75.0%</td><td>49</td></tr><tr><td>2026-03-30</td><td>7h 16m</td><td>26.8%</td><td>18.3%</td><td><span class="badge badge-good">96.5%</span></td><td>93.4% / 75.0%</td><td>50</td></tr><tr><td>2026-03-29</td><td>6h 24m</td><td>3.6%</td><td>12.0%</td><td><span class="badge badge-good">96.0%</span></td><td>93.5% / 75.0%</td><td>48</td></tr><tr><td>2026-03-28</td><td>6h 26m</td><td>15.5%</td><td>11.4%</td><td><span class="badge badge-good">92.1%</span></td><td>93.5% / 88.0%</td><td>56</td></tr><tr><td>2026-03-27</td><td>7h 03m</td><td>13.0%</td><td>26.5%</td><td><span class="badge badge-good">96.4%</span></td><td>92.2% / 82.0%</td><td>51</td></tr><tr><td>2026-03-26</td><td>6h 53m</td><td>12.6%</td><td>19.1%</td><td><span class="badge badge-good">96.0%</span></td><td>95.5% / 92.0%</td><td>41</td></tr><tr><td>2026-03-25</td><td>6h 00m</td><td>26.7%</td><td>12.5%</td><td><span class="badge badge-good">97.0%</span></td><td>92.6% / 84.0%</td><td>41</td></tr><tr><td>2026-03-24</td><td>7h 28m</td><td>16.5%</td><td>24.8%</td><td><span class="badge badge-good">97.6%</span></td><td>93.3% / 84.0%</td><td>46</td></tr><tr><td>2026-03-23</td><td>6h 13m</td><td>25.5%</td><td>15.3%</td><td><span class="badge badge-good">97.1%</span></td><td>93.6% / 75.0%</td><td>49</td></tr><tr><td>2026-03-22</td><td>8h 16m</td><td>16.1%</td><td>22.8%</td><td><span class="badge badge-good">98.8%</span></td><td>–</td><td>50</td></tr><tr><td>2026-03-21</td><td>4h 20m</td><td>38.5%</td><td>13.8%</td><td><span class="badge badge-warn">87.0%</span></td><td>–</td><td>–</td></tr><tr><td>2026-03-20</td><td>6h 14m</td><td>28.3%</td><td>26.7%</td><td><span class="badge badge-good">97.4%</span></td><td>–</td><td>41</td></tr><tr><td>2026-03-19</td><td>6h 27m</td><td>21.4%</td><td>31.5%</td><td><span class="badge badge-good">96.3%</span></td><td>–</td><td>41</td></tr></tbody>
+  </table>
+</section>
+
+<footer>Daten: Garmin / Health Connect · Automatisch generiert · 01.04.2026 12:12</footer>
+</body>
+</html>
