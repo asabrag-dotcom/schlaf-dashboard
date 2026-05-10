@@ -3,7 +3,7 @@ name: Schlaf-Dashboard Aktualisierung
 on:
   schedule:
     - cron: '0 10 * * 1-5'
-    - cron: '5 11 * * 0,6'
+        - cron: '0 13 * * 0,6'  # Sa+So 15:00 CEST (= 13:00 UTC Sommer / 14:00 UTC Winter)
   workflow_dispatch:
 
 permissions:
