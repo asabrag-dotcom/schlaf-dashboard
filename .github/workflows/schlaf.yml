@@ -1,30 +1,30 @@
 name: Schlaf-Dashboard Aktualisierung
- 
+
 on:
   schedule:
     - cron: '0 10 * * 1-5'   # Mo–Fr 11:00 CET (= 10:00 UTC Winter / 09:00 UTC Sommer)
     - cron: '0 13 * * 0,6'   # Sa+So 15:00 CEST (= 13:00 UTC Sommer / 14:00 UTC Winter)
   workflow_dispatch:
- 
+
 permissions:
   contents: write
- 
+
 jobs:
   update:
     runs-on: ubuntu-latest
- 
+
     steps:
       - name: Repository auschecken
         uses: actions/checkout@v4
- 
+
       - name: Python einrichten
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
- 
+
       - name: Abhängigkeiten installieren
         run: pip install google-api-python-client google-auth
- 
+
       - name: CSV-Dateien herunterladen
         run: python download_drive.py
         env:
@@ -34,33 +34,41 @@ jobs:
           DRIVE_SPO2_ID:          1H_qWKkgbEL3WUxlSmtEk5xt1QUJzDlv3
           DRIVE_PULS_ID:          1WymKZ2ZEGQVYW1gEdTA-OqM43Zw2v1mm
           DRIVE_GEWICHT_ID:       18RbnBVhX78EVw-yXtsMhnP4hXm838l2p
- 
+
       - name: Schlaf-Dashboard generieren
         run: python process_health_data.py
         env:
           GITHUB_ACTIONS:  'true'
           DRIVE_DATA_PATH: /tmp/drive_data
           OUTPUT_DIR:      ${{ github.workspace }}
- 
+
+      - name: KPIs für Polaris exportieren
+        run: python export_kpis.py
+        env:
+          GITHUB_ACTIONS:  'true'
+          DRIVE_DATA_PATH: /tmp/drive_data
+          OUTPUT_DIR:      ${{ github.workspace }}
+
       - name: Schlaf-Briefing generieren
         run: python schlaf_briefing.py
         env:
           GITHUB_ACTIONS:  'true'
           DRIVE_DATA_PATH: /tmp/drive_data
           OUTPUT_DIR:      ${{ github.workspace }}
- 
+
       - name: Gewichts-Dashboard generieren
         run: python gewicht_dashboard.py
         env:
           GITHUB_ACTIONS:  'true'
           DRIVE_DATA_PATH: /tmp/drive_data
           OUTPUT_DIR:      ${{ github.workspace }}
- 
+
       - name: Änderungen pushen
         run: |
           git config user.name  "Schlaf-Bot"
           git config user.email "schlaf-bot@users.noreply.github.com"
           git add schlaf_dashboard.html latest.json index.html
+          git add kpis.json 2>/dev/null || true
           git add schlaf_briefing_*.html 2>/dev/null || true
           git add gewicht_dashboard.html 2>/dev/null || true
           git diff --staged --quiet && echo "Keine Änderungen." || \
