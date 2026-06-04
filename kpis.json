@@ -1,5 +1,5 @@
 {
-  "stand": "2026-06-04 21:46",
+  "stand": "2026-06-04 22:06",
   "schlaf": {
     "datum": "2026-06-04",
     "bewertung": "Schlecht",
@@ -167,5 +167,161 @@
       "laengste_min": 565,
       "kuerzeste_min": 216
     }
+  },
+  "gewicht": {
+    "datum": "2026-06-03",
+    "kg": 89.5,
+    "bmi": 27.0,
+    "bmi_klasse": "Übergewicht",
+    "groesse_cm": 182,
+    "ziel_kg": 85.0,
+    "rest_kg": 4.5,
+    "kreatin_abzug": 1.5,
+    "trend_30_kg": 1.37,
+    "vs_7t": -0.1,
+    "vs_30t": 1.1,
+    "vs_90t": 1.2,
+    "messungen": [
+      {
+        "datum": "2026-06-03",
+        "kg": 89.5,
+        "bmi": 27.0,
+        "avg7": 88.9,
+        "ohne_kreatin": 88.0
+      },
+      {
+        "datum": "2026-05-28",
+        "kg": 89.6,
+        "bmi": 27.0,
+        "avg7": 88.8,
+        "ohne_kreatin": 88.1
+      },
+      {
+        "datum": "2026-05-22",
+        "kg": 88.8,
+        "bmi": 26.8,
+        "avg7": 88.7,
+        "ohne_kreatin": 87.3
+      },
+      {
+        "datum": "2026-05-07",
+        "kg": 88.4,
+        "bmi": 26.7,
+        "avg7": 88.8,
+        "ohne_kreatin": 86.9
+      },
+      {
+        "datum": "2026-04-28",
+        "kg": 88.5,
+        "bmi": 26.7,
+        "avg7": 89.0,
+        "ohne_kreatin": 87.0
+      },
+      {
+        "datum": "2026-04-22",
+        "kg": 88.6,
+        "bmi": 26.7,
+        "avg7": 89.2,
+        "ohne_kreatin": 87.1
+      },
+      {
+        "datum": "2026-04-16",
+        "kg": 88.6,
+        "bmi": 26.7,
+        "avg7": 89.3,
+        "ohne_kreatin": 87.1
+      },
+      {
+        "datum": "2026-04-15",
+        "kg": 89.3,
+        "bmi": 27.0,
+        "avg7": 89.4,
+        "ohne_kreatin": 87.8
+      },
+      {
+        "datum": "2026-04-11",
+        "kg": 88.7,
+        "bmi": 26.8,
+        "avg7": 89.4,
+        "ohne_kreatin": 87.2
+      },
+      {
+        "datum": "2026-04-09",
+        "kg": 89.2,
+        "bmi": 26.9,
+        "avg7": 89.5,
+        "ohne_kreatin": 87.7
+      },
+      {
+        "datum": "2026-04-07",
+        "kg": 90.2,
+        "bmi": 27.2,
+        "avg7": 89.6,
+        "ohne_kreatin": 88.7
+      },
+      {
+        "datum": "2026-04-03",
+        "kg": 89.8,
+        "bmi": 27.1,
+        "avg7": 89.4,
+        "ohne_kreatin": 88.3
+      },
+      {
+        "datum": "2026-04-02",
+        "kg": 89.0,
+        "bmi": 26.9,
+        "avg7": 89.3,
+        "ohne_kreatin": 87.5
+      },
+      {
+        "datum": "2026-04-01",
+        "kg": 89.4,
+        "bmi": 27.0,
+        "avg7": 89.4,
+        "ohne_kreatin": 87.9
+      },
+      {
+        "datum": "2026-03-31",
+        "kg": 89.2,
+        "bmi": 26.9,
+        "avg7": 89.4,
+        "ohne_kreatin": 87.7
+      },
+      {
+        "datum": "2026-03-30",
+        "kg": 90.0,
+        "bmi": 27.2,
+        "avg7": 89.4,
+        "ohne_kreatin": 88.5
+      },
+      {
+        "datum": "2026-03-29",
+        "kg": 89.5,
+        "bmi": 27.0,
+        "avg7": 89.4,
+        "ohne_kreatin": 88.0
+      },
+      {
+        "datum": "2026-03-28",
+        "kg": 88.8,
+        "bmi": 26.8,
+        "avg7": 89.4,
+        "ohne_kreatin": 87.3
+      },
+      {
+        "datum": "2026-03-27",
+        "kg": 89.1,
+        "bmi": 26.9,
+        "avg7": 89.3,
+        "ohne_kreatin": 87.6
+      },
+      {
+        "datum": "2026-03-26",
+        "kg": 89.9,
+        "bmi": 27.1,
+        "avg7": 89.2,
+        "ohne_kreatin": 88.4
+      }
+    ]
   }
 }
