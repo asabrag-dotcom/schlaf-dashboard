@@ -5,74 +5,87 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gewichts-Dashboard – Björn</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#0f1117; --card:#1a1d27; --card2:#22263a;
-    --text:#e8eaf0; --muted:#8892a4; --accent:#5b8dee;
-    --border:#2d3148; --good:#48bb78; --warn:#ed8936; --bad:#fc8181;
+    --bg:#0d1017; --card:#161a23; --card2:#1f2330;
+    --text:#e6e8ef; --muted:#7e8699; --accent:#5b8dee;
+    --border:#252a38; --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+    --purple:#a78bfa;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; max-width:1000px; margin:0 auto; padding:24px 16px; }
-  header { margin-bottom:24px; }
-  header h1 { font-size:1.5rem; font-weight:700; }
-  header .sub { color:var(--muted); font-size:0.85rem; margin-top:4px; }
-  .kpis { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; margin:20px 0; }
-  .kpi { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px; }
-  .kpi-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px; }
-  .kpi-value { font-size:1.3rem; font-weight:700; }
-  .kpi-sub { font-size:0.72rem; color:var(--muted); margin-top:3px; }
+  body {
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    max-width:1120px; margin:0 auto; padding:40px 24px 60px;
+    font-feature-settings:'cv11','ss03';
+    -webkit-font-smoothing:antialiased;
+  }
+  header { margin-bottom:36px; }
+  header .eyebrow { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-weight:600; margin-bottom:8px; }
+  header h1 { font-size:1.75rem; font-weight:700; letter-spacing:-0.02em; }
+  header .sub { color:var(--muted); font-size:0.88rem; margin-top:6px; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin:28px 0 36px; }
+  .kpi { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px; transition:border-color .15s; }
+  .kpi:hover { border-color:#363c4d; }
+  .kpi-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:600; margin-bottom:8px; }
+  .kpi-value { font-size:1.5rem; font-weight:700; letter-spacing:-0.015em; font-variant-numeric:tabular-nums; }
+  .kpi-sub { font-size:0.75rem; color:var(--muted); margin-top:4px; }
   .better { color:var(--good); }
   .worse  { color:var(--bad); }
   .neutral { color:var(--muted); }
-  section { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; }
-  section h2 { font-size:0.95rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:.05em; margin-bottom:16px; }
-  .chart-wrap { position:relative; height:320px; }
-  .settings { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end; margin-bottom:20px; }
-  .setting-group { display:flex; flex-direction:column; gap:6px; }
-  .setting-group label { font-size:0.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
-  .setting-group input[type=range] { width:180px; accent-color:var(--accent); }
-  .setting-group input[type=number] { background:var(--card2); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:6px 10px; width:100px; font-size:0.9rem; }
-  .setting-val { font-size:0.9rem; font-weight:600; color:var(--accent); }
-  .bmi-bar { position:relative; height:18px; border-radius:9px; background:linear-gradient(to right, #63b3ed 0%,#63b3ed 18.5%,#48bb78 18.5%,#48bb78 25%,#ed8936 25%,#ed8936 30%,#fc8181 30%,#fc8181 100%); margin:10px 0; overflow:visible; max-width:400px; }
-  .bmi-marker { position:absolute; top:-4px; width:2px; height:26px; background:#fff; border-radius:2px; transform:translateX(-50%); }
-  .bmi-labels { display:flex; justify-content:space-between; font-size:0.68rem; color:var(--muted); max-width:400px; }
-  table { width:100%; border-collapse:collapse; font-size:0.82rem; }
-  th { text-align:left; padding:8px 10px; color:var(--muted); font-weight:600; font-size:0.72rem; text-transform:uppercase; border-bottom:1px solid var(--border); }
-  td { padding:8px 10px; border-bottom:1px solid var(--border); }
-  tr:hover td { background:var(--card2); }
-  .progress-bar { background:var(--card2); border-radius:8px; height:14px; margin-top:8px; overflow:hidden; }
-  .progress-fill { height:100%; border-radius:8px; background:linear-gradient(to right,var(--accent),var(--good)); transition:width .3s; }
-  footer { color:var(--muted); font-size:0.75rem; text-align:center; margin-top:24px; padding-top:12px; border-top:1px solid var(--border); }
-  @media(max-width:600px) { .settings { flex-direction:column; } }
+  section { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:20px; }
+  section h2 { font-size:0.78rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; margin-bottom:20px; }
+  .chart-wrap { position:relative; height:420px; }
+  .settings { display:flex; flex-wrap:wrap; gap:28px; align-items:flex-end; margin-bottom:24px; }
+  .setting-group { display:flex; flex-direction:column; gap:8px; }
+  .setting-group label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:600; }
+  .setting-group input[type=range] { width:200px; accent-color:var(--accent); }
+  .setting-group input[type=number] { background:var(--card2); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:8px 12px; width:110px; font-size:0.92rem; font-family:inherit; font-variant-numeric:tabular-nums; }
+  .setting-val { color:var(--accent); font-weight:600; font-variant-numeric:tabular-nums; }
+  .bmi-bar { position:relative; height:14px; border-radius:7px; background:linear-gradient(to right, #63b3ed 0%,#63b3ed 18.5%,#4ade80 18.5%,#4ade80 25%,#fbbf24 25%,#fbbf24 30%,#f87171 30%,#f87171 100%); margin:10px 0; max-width:480px; }
+  .bmi-marker { position:absolute; top:-5px; width:3px; height:24px; background:#fff; border-radius:2px; transform:translateX(-50%); box-shadow:0 0 0 2px rgba(0,0,0,0.4); }
+  .bmi-labels { display:flex; justify-content:space-between; font-size:0.68rem; color:var(--muted); max-width:480px; }
+  table { width:100%; border-collapse:collapse; font-size:0.86rem; font-variant-numeric:tabular-nums; }
+  th { text-align:left; padding:12px 14px; color:var(--muted); font-weight:600; font-size:0.7rem; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid var(--border); }
+  td { padding:11px 14px; border-bottom:1px solid rgba(255,255,255,0.04); }
+  tr:hover td { background:rgba(255,255,255,0.025); }
+  .progress-bar { background:var(--card2); border-radius:10px; height:10px; margin-top:10px; overflow:hidden; }
+  .progress-fill { height:100%; border-radius:10px; background:linear-gradient(to right,var(--accent),var(--good)); transition:width .3s; }
+  footer { color:var(--muted); font-size:0.75rem; text-align:center; margin-top:32px; padding-top:18px; border-top:1px solid var(--border); }
+  @media(max-width:600px) { .settings { flex-direction:column; } body { padding:24px 16px; } .chart-wrap { height:340px; } }
 </style>
 </head>
 <body>
 
 <header>
+  <div class="eyebrow">Gesundheits-Tracking</div>
   <h1>⚖️ Gewichts-Dashboard</h1>
-  <div class="sub">Björn · Stand: 2026-06-12 · Aktualisiert: 13.06.2026 15:19</div>
+  <div class="sub">Björn · Stand: 2026-06-14 · Aktualisiert: 14.06.2026 12:27</div>
 </header>
 
 <!-- KPIs -->
 <div class="kpis">
   <div class="kpi" style="border-top:3px solid var(--accent)">
     <div class="kpi-label">Aktuelles Gewicht</div>
-    <div class="kpi-value" id="kpi-current">88.4 kg</div>
-    <div class="kpi-sub">2026-06-12</div>
+    <div class="kpi-value" id="kpi-current">86.9 kg</div>
+    <div class="kpi-sub">2026-06-14</div>
   </div>
-  <div class="kpi" style="border-top:3px solid #ed8936">
+  <div class="kpi" style="border-top:3px solid #fbbf24">
     <div class="kpi-label">BMI</div>
-    <div class="kpi-value" style="color:#ed8936">26.7</div>
+    <div class="kpi-value" style="color:#fbbf24">26.2</div>
     <div class="kpi-sub">Übergewicht</div>
   </div>
   <div class="kpi" style="border-top:3px solid var(--good)">
     <div class="kpi-label">Trend (30 Tage)</div>
-    <div class="kpi-value better">-0.97 kg</div>
+    <div class="kpi-value better">-1.91 kg</div>
     <div class="kpi-sub">Hochrechnung 30 Tage</div>
   </div>
   <div class="kpi" style="border-top:3px solid var(--muted)">
     <div class="kpi-label">vs. 7 Tage</div>
-    <div class="kpi-value better">▼ 1.1 kg</div>
+    <div class="kpi-value better">▼ 2.7 kg</div>
     <div class="kpi-sub">Veränderung</div>
   </div>
   <div class="kpi" style="border-top:3px solid var(--muted)">
@@ -82,7 +95,7 @@
   </div>
   <div class="kpi" style="border-top:3px solid var(--muted)">
     <div class="kpi-label">vs. 90 Tage</div>
-    <div class="kpi-value better">▼ 1.0 kg</div>
+    <div class="kpi-value better">▼ 3.5 kg</div>
     <div class="kpi-sub">Veränderung</div>
   </div>
 </div>
@@ -130,13 +143,13 @@
   <h2>BMI-Einordnung</h2>
   <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
     <div>
-      <div style="font-size:2rem;font-weight:700;color:#ed8936">26.7</div>
-      <div style="font-size:0.85rem;color:#ed8936">Übergewicht</div>
+      <div style="font-size:2rem;font-weight:700;color:#fbbf24">26.2</div>
+      <div style="font-size:0.85rem;color:#fbbf24">Übergewicht</div>
       <div style="font-size:0.78rem;color:var(--muted);margin-top:4px">Größe: 182 cm</div>
     </div>
     <div style="flex:1;min-width:200px">
       <div class="bmi-bar">
-        <div class="bmi-marker" id="bmi-marker" style="left:39.0%"></div>
+        <div class="bmi-marker" id="bmi-marker" style="left:37.3%"></div>
       </div>
       <div class="bmi-labels">
         <span>15</span><span>Unter&shy;gew.</span><span>Normal</span><span>Über&shy;gew.</span><span>Adip.</span><span>45</span>
@@ -144,7 +157,7 @@
     </div>
   </div>
   <div id="bmi-info" style="margin-top:16px;font-size:0.85rem;color:var(--muted)">
-    Dein BMI von 26.7 liegt im Bereich Übergewicht (25–29.9). Ein Abbau von 5–10% des Körpergewichts reduziert das kardiovaskuläre Risiko deutlich.
+    Dein BMI von 26.2 liegt im Bereich Übergewicht (25–29.9). Ein Abbau von 5–10% des Körpergewichts reduziert das kardiovaskuläre Risiko deutlich.
   </div>
 </section>
 
@@ -157,14 +170,14 @@
   </table>
 </section>
 
-<footer>Daten: Garmin / Health Connect · Automatisch generiert · 13.06.2026 15:19</footer>
+<footer>Daten: Garmin / Health Connect · Automatisch generiert · 14.06.2026 12:27</footer>
 
 <script>
-const RAW_DATES   = ["2026-02-23", "2026-02-25", "2026-03-02", "2026-03-05", "2026-03-06", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-07", "2026-04-09", "2026-04-11", "2026-04-15", "2026-04-16", "2026-04-22", "2026-04-28", "2026-05-07", "2026-05-22", "2026-05-28", "2026-06-03", "2026-06-08", "2026-06-10", "2026-06-11", "2026-06-12"];
-const RAW_WEIGHTS = [90.4, 89.1, 89.6, 88.3, 88.3, 89.7, 89.6, 88.5, 89.4, 90.4, 89.1, 89.0, 88.6, 88.3, 89.1, 90.2, 89.6, 89.0, 89.9, 89.1, 88.8, 89.5, 90.0, 89.2, 89.4, 89.0, 89.8, 90.2, 89.2, 88.7, 89.3, 88.6, 88.6, 88.5, 88.4, 88.8, 89.6, 89.5, 89.6, 88.6, 88.2, 88.4];
-const MA7         = [90.4, 89.75, 89.7, 89.35, 89.14, 89.23, 89.29, 89.01, 89.06, 89.17, 89.29, 89.39, 89.23, 89.04, 89.13, 89.24, 89.13, 89.11, 89.24, 89.31, 89.39, 89.44, 89.41, 89.36, 89.41, 89.29, 89.39, 89.59, 89.54, 89.36, 89.37, 89.26, 89.2, 89.01, 88.76, 88.7, 88.83, 88.86, 89.0, 89.0, 88.96, 88.96];
-const PROJ_DATES  = ["2026-06-13", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-27", "2026-06-28", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-11", "2026-07-12", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-18", "2026-07-19", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-26", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-08", "2026-08-09", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-22", "2026-08-23", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-29", "2026-08-30", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10"];
-const PROJ_VALS   = [85.84, 85.81, 85.78, 85.75, 85.71, 85.68, 85.65, 85.62, 85.58, 85.55, 85.52, 85.49, 85.46, 85.42, 85.39, 85.36, 85.33, 85.29, 85.26, 85.23, 85.2, 85.16, 85.13, 85.1, 85.07, 85.04, 85.0, 84.97, 84.94, 84.91, 84.87, 84.84, 84.81, 84.78, 84.74, 84.71, 84.68, 84.65, 84.62, 84.58, 84.55, 84.52, 84.49, 84.45, 84.42, 84.39, 84.36, 84.32, 84.29, 84.26, 84.23, 84.2, 84.16, 84.13, 84.1, 84.07, 84.03, 84.0, 83.97, 83.94, 83.9, 83.87, 83.84, 83.81, 83.78, 83.74, 83.71, 83.68, 83.65, 83.61, 83.58, 83.55, 83.52, 83.48, 83.45, 83.42, 83.39, 83.36, 83.32, 83.29, 83.26, 83.23, 83.19, 83.16, 83.13, 83.1, 83.07, 83.03, 83.0, 82.97];
+const RAW_DATES   = ["2026-02-23", "2026-02-25", "2026-03-02", "2026-03-05", "2026-03-06", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-07", "2026-04-09", "2026-04-11", "2026-04-15", "2026-04-16", "2026-04-22", "2026-04-28", "2026-05-07", "2026-05-22", "2026-05-28", "2026-06-03", "2026-06-08", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-14"];
+const RAW_WEIGHTS = [90.4, 89.1, 89.6, 88.3, 88.3, 89.7, 89.6, 88.5, 89.4, 90.4, 89.1, 89.0, 88.6, 88.3, 89.1, 90.2, 89.6, 89.0, 89.9, 89.1, 88.8, 89.5, 90.0, 89.2, 89.4, 89.0, 89.8, 90.2, 89.2, 88.7, 89.3, 88.6, 88.6, 88.5, 88.4, 88.8, 89.6, 89.5, 89.6, 88.6, 88.2, 88.4, 86.9];
+const MA7         = [90.4, 89.75, 89.7, 89.35, 89.14, 89.23, 89.29, 89.01, 89.06, 89.17, 89.29, 89.39, 89.23, 89.04, 89.13, 89.24, 89.13, 89.11, 89.24, 89.31, 89.39, 89.44, 89.41, 89.36, 89.41, 89.29, 89.39, 89.59, 89.54, 89.36, 89.37, 89.26, 89.2, 89.01, 88.76, 88.7, 88.83, 88.86, 89.0, 89.0, 88.96, 88.96, 88.69];
+const PROJ_DATES  = ["2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-27", "2026-06-28", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-11", "2026-07-12", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-18", "2026-07-19", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-26", "2026-07-27", "2026-07-28", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-04", "2026-08-05", "2026-08-06", "2026-08-07", "2026-08-08", "2026-08-09", "2026-08-10", "2026-08-11", "2026-08-12", "2026-08-13", "2026-08-14", "2026-08-15", "2026-08-16", "2026-08-17", "2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21", "2026-08-22", "2026-08-23", "2026-08-24", "2026-08-25", "2026-08-26", "2026-08-27", "2026-08-28", "2026-08-29", "2026-08-30", "2026-08-31", "2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-12"];
+const PROJ_VALS   = [88.63, 88.56, 88.5, 88.43, 88.37, 88.31, 88.24, 88.18, 88.12, 88.05, 87.99, 87.92, 87.86, 87.8, 87.73, 87.67, 87.61, 87.54, 87.48, 87.41, 87.35, 87.29, 87.22, 87.16, 87.1, 87.03, 86.97, 86.9, 86.84, 86.78, 86.71, 86.65, 86.59, 86.52, 86.46, 86.39, 86.33, 86.27, 86.2, 86.14, 86.08, 86.01, 85.95, 85.88, 85.82, 85.76, 85.69, 85.63, 85.57, 85.5, 85.44, 85.37, 85.31, 85.25, 85.18, 85.12, 85.06, 84.99, 84.93, 84.86, 84.8, 84.74, 84.67, 84.61, 84.55, 84.48, 84.42, 84.35, 84.29, 84.23, 84.16, 84.1, 84.04, 83.97, 83.91, 83.84, 83.78, 83.72, 83.65, 83.59, 83.53, 83.46, 83.4, 83.33, 83.27, 83.21, 83.14, 83.08, 83.01, 82.95];
 const HEIGHT_M    = 1.82;
 
 let chart = null;
@@ -221,41 +234,45 @@ function updateDashboard() {
       labels: allDates,
       datasets: [
         {
-          label: 'Gemessenes Gewicht',
+          label: 'Messung',
           data: [...RAW_WEIGHTS, ...Array(PROJ_DATES.length).fill(null)],
           borderColor: '#5b8dee',
-          backgroundColor: 'rgba(91,141,238,0.08)',
-          borderWidth: 2,
-          pointRadius: RAW_WEIGHTS.length > 60 ? 0 : 3,
+          backgroundColor: 'rgba(91,141,238,0.06)',
+          borderWidth: 1.25,
+          pointRadius: 0,
           pointHoverRadius: 5,
-          tension: 0.3,
-          fill: false,
+          pointHoverBackgroundColor: '#5b8dee',
+          pointHoverBorderColor: '#fff',
+          pointHoverBorderWidth: 2,
+          tension: 0.32,
+          fill: true,
         },
         {
-          label: '7-Tage-Durchschnitt',
+          label: '7-Tage-Mittel',
           data: [...MA7, ...Array(PROJ_DATES.length).fill(null)],
-          borderColor: '#9f7aea',
-          borderWidth: 2,
+          borderColor: '#a78bfa',
+          borderWidth: 1.5,
           pointRadius: 0,
+          pointHoverRadius: 0,
           tension: 0.4,
           fill: false,
         },
         showCreat ? {
           label: `Ohne Kreatin (-${creatine.toFixed(1)} kg)`,
           data: [...withoutCreat, ...Array(PROJ_DATES.length).fill(null)],
-          borderColor: '#48bb78',
-          borderWidth: 1.5,
-          borderDash: [4, 4],
+          borderColor: '#4ade80',
+          borderWidth: 1,
+          borderDash: [3, 3],
           pointRadius: 0,
-          tension: 0.3,
+          tension: 0.32,
           fill: false,
         } : null,
         {
           label: 'Prognose (Trend)',
           data: [...Array(RAW_DATES.length).fill(null), ...PROJ_VALS],
-          borderColor: '#ed8936',
-          borderWidth: 1.5,
-          borderDash: [6, 3],
+          borderColor: '#fbbf24',
+          borderWidth: 1.25,
+          borderDash: [5, 3],
           pointRadius: 0,
           tension: 0.2,
           fill: false,
@@ -263,9 +280,9 @@ function updateDashboard() {
         {
           label: `Ziel (${target} kg)`,
           data: allDates.map(() => target),
-          borderColor: 'rgba(252,129,129,0.5)',
+          borderColor: 'rgba(126,134,153,0.5)',
           borderWidth: 1,
-          borderDash: [3, 3],
+          borderDash: [2, 4],
           pointRadius: 0,
           fill: false,
         },
@@ -276,13 +293,24 @@ function updateDashboard() {
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: { labels: { color: '#8892a4', font: { size: 11 } } },
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#7e8699',
+            font: { family: 'Inter', size: 11, weight: '500' },
+            padding: 18, boxWidth: 14, boxHeight: 2, usePointStyle: false
+          }
+        },
         tooltip: {
-          backgroundColor: '#1a1d27',
-          titleColor: '#e8eaf0',
-          bodyColor: '#8892a4',
-          borderColor: '#2d3148',
+          backgroundColor: '#161a23',
+          borderColor: '#252a38',
           borderWidth: 1,
+          titleColor: '#e6e8ef',
+          bodyColor: '#7e8699',
+          padding: 12,
+          cornerRadius: 8,
+          titleFont: { family: 'Inter', size: 12, weight: '600' },
+          bodyFont: { family: 'Inter', size: 11 },
           callbacks: {
             label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + ' kg' : '–'}`,
           }
@@ -290,12 +318,12 @@ function updateDashboard() {
       },
       scales: {
         x: {
-          ticks: { color: '#8892a4', maxTicksLimit: 10, font: { size: 10 } },
-          grid: { color: '#2d3148' },
+          ticks: { color: '#7e8699', maxTicksLimit: 10, font: { family: 'Inter', size: 10 } },
+          grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
         },
         y: {
-          ticks: { color: '#8892a4', callback: v => v + ' kg' },
-          grid: { color: '#2d3148' },
+          ticks: { color: '#7e8699', font: { family: 'Inter', size: 10 }, callback: v => v + ' kg' },
+          grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
         }
       }
     }
