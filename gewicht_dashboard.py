@@ -161,10 +161,10 @@ def bmi_category(bmi_val):
     if bmi_val < 18.5:
         return "Untergewicht", "#63b3ed"
     if bmi_val < 25.0:
-        return "Normalgewicht", "#48bb78"
+        return "Normalgewicht", "#4ade80"
     if bmi_val < 30.0:
-        return "Übergewicht", "#ed8936"
-    return "Adipositas", "#fc8181"
+        return "Übergewicht", "#fbbf24"
+    return "Adipositas", "#f87171"
 
 
 # ── 4. HTML generieren ────────────────────────────────────────────────────────
@@ -188,14 +188,17 @@ def generate_dashboard(data):
     ma7 = moving_average(data, 7)
 
     # Vollständige Trend-Projektion (nächste 90 Tage)
-    base_date = datetime.strptime(data[0][0], '%Y-%m-%d')
-    last_date  = datetime.strptime(data[-1][0], '%Y-%m-%d')
+    # FIX (Juni 2026): Projektion am letzten 7-Tage-Mittel (ma7[-1]) verankern statt
+    # am Regressions-Intercept. Sonst springt die Prognoselinie visuell mehrere kg
+    # unter den letzten Messwert, weil die Regressionsgerade über die verrauschte
+    # Punktwolke am rechten Rand systematisch tiefer läuft. Steigung bleibt gleich.
+    last_date = datetime.strptime(data[-1][0], '%Y-%m-%d')
+    anchor    = ma7[-1] if ma7 else current_w
     proj_dates = []
     proj_vals  = []
     for i in range(1, 91):
         pd = last_date + timedelta(days=i)
-        days_from_base = (pd - base_date).days
-        proj_val = round(slope * days_from_base + _, 2)
+        proj_val = round(anchor + slope * i, 2)
         proj_dates.append(pd.strftime('%Y-%m-%d'))
         proj_vals.append(proj_val)
 
@@ -242,50 +245,63 @@ def generate_dashboard(data):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gewichts-Dashboard – Björn</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {{
-    --bg:#0f1117; --card:#1a1d27; --card2:#22263a;
-    --text:#e8eaf0; --muted:#8892a4; --accent:#5b8dee;
-    --border:#2d3148; --good:#48bb78; --warn:#ed8936; --bad:#fc8181;
+    --bg:#0d1017; --card:#161a23; --card2:#1f2330;
+    --text:#e6e8ef; --muted:#7e8699; --accent:#5b8dee;
+    --border:#252a38; --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+    --purple:#a78bfa;
   }}
   * {{ box-sizing:border-box; margin:0; padding:0; }}
-  body {{ background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; max-width:1000px; margin:0 auto; padding:24px 16px; }}
-  header {{ margin-bottom:24px; }}
-  header h1 {{ font-size:1.5rem; font-weight:700; }}
-  header .sub {{ color:var(--muted); font-size:0.85rem; margin-top:4px; }}
-  .kpis {{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; margin:20px 0; }}
-  .kpi {{ background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px; }}
-  .kpi-label {{ font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px; }}
-  .kpi-value {{ font-size:1.3rem; font-weight:700; }}
-  .kpi-sub {{ font-size:0.72rem; color:var(--muted); margin-top:3px; }}
+  body {{
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    max-width:1120px; margin:0 auto; padding:40px 24px 60px;
+    font-feature-settings:'cv11','ss03';
+    -webkit-font-smoothing:antialiased;
+  }}
+  header {{ margin-bottom:36px; }}
+  header .eyebrow {{ font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; font-weight:600; margin-bottom:8px; }}
+  header h1 {{ font-size:1.75rem; font-weight:700; letter-spacing:-0.02em; }}
+  header .sub {{ color:var(--muted); font-size:0.88rem; margin-top:6px; }}
+  .kpis {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin:28px 0 36px; }}
+  .kpi {{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px; transition:border-color .15s; }}
+  .kpi:hover {{ border-color:#363c4d; }}
+  .kpi-label {{ font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:600; margin-bottom:8px; }}
+  .kpi-value {{ font-size:1.5rem; font-weight:700; letter-spacing:-0.015em; font-variant-numeric:tabular-nums; }}
+  .kpi-sub {{ font-size:0.75rem; color:var(--muted); margin-top:4px; }}
   .better {{ color:var(--good); }}
   .worse  {{ color:var(--bad); }}
   .neutral {{ color:var(--muted); }}
-  section {{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; }}
-  section h2 {{ font-size:0.95rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:.05em; margin-bottom:16px; }}
-  .chart-wrap {{ position:relative; height:320px; }}
-  .settings {{ display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end; margin-bottom:20px; }}
-  .setting-group {{ display:flex; flex-direction:column; gap:6px; }}
-  .setting-group label {{ font-size:0.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }}
-  .setting-group input[type=range] {{ width:180px; accent-color:var(--accent); }}
-  .setting-group input[type=number] {{ background:var(--card2); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:6px 10px; width:100px; font-size:0.9rem; }}
-  .setting-val {{ font-size:0.9rem; font-weight:600; color:var(--accent); }}
-  .bmi-bar {{ position:relative; height:18px; border-radius:9px; background:linear-gradient(to right, #63b3ed 0%,#63b3ed 18.5%,#48bb78 18.5%,#48bb78 25%,#ed8936 25%,#ed8936 30%,#fc8181 30%,#fc8181 100%); margin:10px 0; overflow:visible; max-width:400px; }}
-  .bmi-marker {{ position:absolute; top:-4px; width:2px; height:26px; background:#fff; border-radius:2px; transform:translateX(-50%); }}
-  .bmi-labels {{ display:flex; justify-content:space-between; font-size:0.68rem; color:var(--muted); max-width:400px; }}
-  table {{ width:100%; border-collapse:collapse; font-size:0.82rem; }}
-  th {{ text-align:left; padding:8px 10px; color:var(--muted); font-weight:600; font-size:0.72rem; text-transform:uppercase; border-bottom:1px solid var(--border); }}
-  td {{ padding:8px 10px; border-bottom:1px solid var(--border); }}
-  tr:hover td {{ background:var(--card2); }}
-  .progress-bar {{ background:var(--card2); border-radius:8px; height:14px; margin-top:8px; overflow:hidden; }}
-  .progress-fill {{ height:100%; border-radius:8px; background:linear-gradient(to right,var(--accent),var(--good)); transition:width .3s; }}
-  footer {{ color:var(--muted); font-size:0.75rem; text-align:center; margin-top:24px; padding-top:12px; border-top:1px solid var(--border); }}
-  @media(max-width:600px) {{ .settings {{ flex-direction:column; }} }}
+  section {{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:20px; }}
+  section h2 {{ font-size:0.78rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.12em; margin-bottom:20px; }}
+  .chart-wrap {{ position:relative; height:420px; }}
+  .settings {{ display:flex; flex-wrap:wrap; gap:28px; align-items:flex-end; margin-bottom:24px; }}
+  .setting-group {{ display:flex; flex-direction:column; gap:8px; }}
+  .setting-group label {{ font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:600; }}
+  .setting-group input[type=range] {{ width:200px; accent-color:var(--accent); }}
+  .setting-group input[type=number] {{ background:var(--card2); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:8px 12px; width:110px; font-size:0.92rem; font-family:inherit; font-variant-numeric:tabular-nums; }}
+  .setting-val {{ color:var(--accent); font-weight:600; font-variant-numeric:tabular-nums; }}
+  .bmi-bar {{ position:relative; height:14px; border-radius:7px; background:linear-gradient(to right, #63b3ed 0%,#63b3ed 18.5%,#4ade80 18.5%,#4ade80 25%,#fbbf24 25%,#fbbf24 30%,#f87171 30%,#f87171 100%); margin:10px 0; max-width:480px; }}
+  .bmi-marker {{ position:absolute; top:-5px; width:3px; height:24px; background:#fff; border-radius:2px; transform:translateX(-50%); box-shadow:0 0 0 2px rgba(0,0,0,0.4); }}
+  .bmi-labels {{ display:flex; justify-content:space-between; font-size:0.68rem; color:var(--muted); max-width:480px; }}
+  table {{ width:100%; border-collapse:collapse; font-size:0.86rem; font-variant-numeric:tabular-nums; }}
+  th {{ text-align:left; padding:12px 14px; color:var(--muted); font-weight:600; font-size:0.7rem; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid var(--border); }}
+  td {{ padding:11px 14px; border-bottom:1px solid rgba(255,255,255,0.04); }}
+  tr:hover td {{ background:rgba(255,255,255,0.025); }}
+  .progress-bar {{ background:var(--card2); border-radius:10px; height:10px; margin-top:10px; overflow:hidden; }}
+  .progress-fill {{ height:100%; border-radius:10px; background:linear-gradient(to right,var(--accent),var(--good)); transition:width .3s; }}
+  footer {{ color:var(--muted); font-size:0.75rem; text-align:center; margin-top:32px; padding-top:18px; border-top:1px solid var(--border); }}
+  @media(max-width:600px) {{ .settings {{ flex-direction:column; }} body {{ padding:24px 16px; }} .chart-wrap {{ height:340px; }} }}
 </style>
 </head>
 <body>
 
 <header>
+  <div class="eyebrow">Gesundheits-Tracking</div>
   <h1>⚖️ Gewichts-Dashboard</h1>
   <div class="sub">Björn · Stand: {current_date} · Aktualisiert: {now_str}</div>
 </header>
@@ -458,41 +474,45 @@ function updateDashboard() {{
       labels: allDates,
       datasets: [
         {{
-          label: 'Gemessenes Gewicht',
+          label: 'Messung',
           data: [...RAW_WEIGHTS, ...Array(PROJ_DATES.length).fill(null)],
           borderColor: '#5b8dee',
-          backgroundColor: 'rgba(91,141,238,0.08)',
-          borderWidth: 2,
-          pointRadius: RAW_WEIGHTS.length > 60 ? 0 : 3,
+          backgroundColor: 'rgba(91,141,238,0.06)',
+          borderWidth: 1.25,
+          pointRadius: 0,
           pointHoverRadius: 5,
-          tension: 0.3,
-          fill: false,
+          pointHoverBackgroundColor: '#5b8dee',
+          pointHoverBorderColor: '#fff',
+          pointHoverBorderWidth: 2,
+          tension: 0.32,
+          fill: true,
         }},
         {{
-          label: '7-Tage-Durchschnitt',
+          label: '7-Tage-Mittel',
           data: [...MA7, ...Array(PROJ_DATES.length).fill(null)],
-          borderColor: '#9f7aea',
-          borderWidth: 2,
+          borderColor: '#a78bfa',
+          borderWidth: 1.5,
           pointRadius: 0,
+          pointHoverRadius: 0,
           tension: 0.4,
           fill: false,
         }},
         showCreat ? {{
           label: `Ohne Kreatin (-${{creatine.toFixed(1)}} kg)`,
           data: [...withoutCreat, ...Array(PROJ_DATES.length).fill(null)],
-          borderColor: '#48bb78',
-          borderWidth: 1.5,
-          borderDash: [4, 4],
+          borderColor: '#4ade80',
+          borderWidth: 1,
+          borderDash: [3, 3],
           pointRadius: 0,
-          tension: 0.3,
+          tension: 0.32,
           fill: false,
         }} : null,
         {{
           label: 'Prognose (Trend)',
           data: [...Array(RAW_DATES.length).fill(null), ...PROJ_VALS],
-          borderColor: '#ed8936',
-          borderWidth: 1.5,
-          borderDash: [6, 3],
+          borderColor: '#fbbf24',
+          borderWidth: 1.25,
+          borderDash: [5, 3],
           pointRadius: 0,
           tension: 0.2,
           fill: false,
@@ -500,9 +520,9 @@ function updateDashboard() {{
         {{
           label: `Ziel (${{target}} kg)`,
           data: allDates.map(() => target),
-          borderColor: 'rgba(252,129,129,0.5)',
+          borderColor: 'rgba(126,134,153,0.5)',
           borderWidth: 1,
-          borderDash: [3, 3],
+          borderDash: [2, 4],
           pointRadius: 0,
           fill: false,
         }},
@@ -513,13 +533,24 @@ function updateDashboard() {{
       maintainAspectRatio: false,
       interaction: {{ mode: 'index', intersect: false }},
       plugins: {{
-        legend: {{ labels: {{ color: '#8892a4', font: {{ size: 11 }} }} }},
+        legend: {{
+          position: 'bottom',
+          labels: {{
+            color: '#7e8699',
+            font: {{ family: 'Inter', size: 11, weight: '500' }},
+            padding: 18, boxWidth: 14, boxHeight: 2, usePointStyle: false
+          }}
+        }},
         tooltip: {{
-          backgroundColor: '#1a1d27',
-          titleColor: '#e8eaf0',
-          bodyColor: '#8892a4',
-          borderColor: '#2d3148',
+          backgroundColor: '#161a23',
+          borderColor: '#252a38',
           borderWidth: 1,
+          titleColor: '#e6e8ef',
+          bodyColor: '#7e8699',
+          padding: 12,
+          cornerRadius: 8,
+          titleFont: {{ family: 'Inter', size: 12, weight: '600' }},
+          bodyFont: {{ family: 'Inter', size: 11 }},
           callbacks: {{
             label: ctx => ` ${{ctx.dataset.label}}: ${{ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + ' kg' : '–'}}`,
           }}
@@ -527,12 +558,12 @@ function updateDashboard() {{
       }},
       scales: {{
         x: {{
-          ticks: {{ color: '#8892a4', maxTicksLimit: 10, font: {{ size: 10 }} }},
-          grid: {{ color: '#2d3148' }},
+          ticks: {{ color: '#7e8699', maxTicksLimit: 10, font: {{ family: 'Inter', size: 10 }} }},
+          grid: {{ color: 'rgba(255,255,255,0.03)', drawBorder: false }},
         }},
         y: {{
-          ticks: {{ color: '#8892a4', callback: v => v + ' kg' }},
-          grid: {{ color: '#2d3148' }},
+          ticks: {{ color: '#7e8699', font: {{ family: 'Inter', size: 10 }}, callback: v => v + ' kg' }},
+          grid: {{ color: 'rgba(255,255,255,0.05)', drawBorder: false }},
         }}
       }}
     }}
@@ -600,3 +631,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
