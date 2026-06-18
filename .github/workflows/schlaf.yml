@@ -49,6 +49,9 @@ jobs:
           GITHUB_ACTIONS:  'true'
           DRIVE_DATA_PATH: /tmp/drive_data
           OUTPUT_DIR:      ${{ github.workspace }}
+          
+      - name: Aktivitäten für Polaris exportieren
+        run: python garmin_activities_to_json.py --input "/tmp/drive_data/Health Sync Aktivitäten" --output activities.json
 
       - name: Schlaf-Briefing generieren
         run: python schlaf_briefing.py
@@ -70,6 +73,7 @@ jobs:
           git config user.email "schlaf-bot@users.noreply.github.com"
           git add schlaf_dashboard.html latest.json index.html
           git add kpis.json 2>/dev/null || true
+          git add activities.json 2>/dev/null || true
           git add schlaf_briefing_*.html 2>/dev/null || true
           git add gewicht_dashboard.html 2>/dev/null || true
           git diff --staged --quiet && echo "Keine Änderungen." || \
