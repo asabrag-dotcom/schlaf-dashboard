@@ -1,26 +1,36 @@
 {
-  "stand": "2026-06-24 12:38",
+  "stand": "2026-06-25 12:39",
   "schlaf": {
-    "datum": "2026-06-23",
+    "datum": "2026-06-24",
     "bewertung": "Mittel",
-    "dauer_min": 426,
-    "effizienz_pct": 94.5,
-    "tief_min": 49,
-    "tief_pct": 11.5,
-    "rem_min": 74,
-    "rem_pct": 17.4,
-    "wach_episoden": 4,
-    "spo2_avg": 90.9,
-    "spo2_min": 80.0,
-    "ruhepuls": 52,
+    "dauer_min": 407,
+    "effizienz_pct": 96.0,
+    "tief_min": 78,
+    "tief_pct": 19.2,
+    "rem_min": 91,
+    "rem_pct": 22.4,
+    "wach_episoden": 3,
+    "spo2_avg": 91.8,
+    "spo2_min": 82.0,
+    "ruhepuls": 53,
     "naechte_14": [
+      {
+        "datum": "2026-06-24",
+        "dauer_min": 407,
+        "tief_pct": 19.2,
+        "rem_pct": 22.4,
+        "effizienz_pct": 96.0,
+        "spo2_avg": 91.8,
+        "spo2_min": 82.0,
+        "ruhepuls": 53
+      },
       {
         "datum": "2026-06-23",
         "dauer_min": 426,
         "tief_pct": 11.5,
         "rem_pct": 17.4,
         "effizienz_pct": 94.5,
-        "spo2_avg": 90.9,
+        "spo2_avg": 91.2,
         "spo2_min": 80.0,
         "ruhepuls": 52
       },
@@ -62,7 +72,7 @@
         "effizienz_pct": 92.6,
         "spo2_avg": 94.6,
         "spo2_min": 89.0,
-        "ruhepuls": 50
+        "ruhepuls": 51
       },
       {
         "datum": "2026-06-18",
@@ -110,7 +120,7 @@
         "tief_pct": 27.7,
         "rem_pct": 21.2,
         "effizienz_pct": 88.4,
-        "spo2_avg": 94.3,
+        "spo2_avg": 94.4,
         "spo2_min": 86.0,
         "ruhepuls": 52
       },
@@ -143,21 +153,11 @@
         "spo2_avg": 94.8,
         "spo2_min": 85.0,
         "ruhepuls": 51
-      },
-      {
-        "datum": "2026-06-10",
-        "dauer_min": 404,
-        "tief_pct": 17.3,
-        "rem_pct": 23.5,
-        "effizienz_pct": 96.0,
-        "spo2_avg": 93.4,
-        "spo2_min": 79.0,
-        "ruhepuls": 53
       }
     ],
     "gesamt": {
-      "naechte": 200,
-      "zeitraum": "2025-02-20 bis 2026-06-23",
+      "naechte": 201,
+      "zeitraum": "2025-02-20 bis 2026-06-24",
       "eff_avg_pct": 94.6,
       "tief_avg_min": 84,
       "rem_avg_min": 79,
