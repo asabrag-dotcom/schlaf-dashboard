@@ -1,28 +1,38 @@
 {
-  "stand": "2026-06-30 12:26",
+  "stand": "2026-07-01 12:55",
   "schlaf": {
-    "datum": "2026-06-30",
-    "bewertung": "Mittel",
-    "dauer_min": 430,
-    "effizienz_pct": 97.5,
-    "tief_min": 60,
-    "tief_pct": 14.0,
-    "rem_min": 59,
-    "rem_pct": 13.7,
+    "datum": "2026-07-01",
+    "bewertung": "Schlecht",
+    "dauer_min": 354,
+    "effizienz_pct": 93.9,
+    "tief_min": 45,
+    "tief_pct": 12.7,
+    "rem_min": 22,
+    "rem_pct": 6.2,
     "wach_episoden": 4,
-    "spo2_avg": 90.8,
-    "spo2_min": 80.0,
-    "ruhepuls": 51,
+    "spo2_avg": 92.2,
+    "spo2_min": 79.0,
+    "ruhepuls": 50,
     "naechte_14": [
+      {
+        "datum": "2026-07-01",
+        "dauer_min": 354,
+        "tief_pct": 12.7,
+        "rem_pct": 6.2,
+        "effizienz_pct": 93.9,
+        "spo2_avg": 92.2,
+        "spo2_min": 79.0,
+        "ruhepuls": 50
+      },
       {
         "datum": "2026-06-30",
         "dauer_min": 430,
         "tief_pct": 14.0,
         "rem_pct": 13.7,
         "effizienz_pct": 97.5,
-        "spo2_avg": 90.8,
+        "spo2_avg": 91.5,
         "spo2_min": 80.0,
-        "ruhepuls": 51
+        "ruhepuls": 52
       },
       {
         "datum": "2026-06-29",
@@ -143,21 +153,11 @@
         "spo2_avg": 94.4,
         "spo2_min": 86.0,
         "ruhepuls": 52
-      },
-      {
-        "datum": "2026-06-13",
-        "dauer_min": 470,
-        "tief_pct": 21.3,
-        "rem_pct": 29.4,
-        "effizienz_pct": 89.9,
-        "spo2_avg": 93.6,
-        "spo2_min": 85.0,
-        "ruhepuls": 52
       }
     ],
     "gesamt": {
-      "naechte": 203,
-      "zeitraum": "2025-02-20 bis 2026-06-30",
+      "naechte": 204,
+      "zeitraum": "2025-02-20 bis 2026-07-01",
       "eff_avg_pct": 94.6,
       "tief_avg_min": 84,
       "rem_avg_min": 79,
@@ -169,19 +169,33 @@
     }
   },
   "gewicht": {
-    "datum": "2026-06-19",
-    "kg": 86.9,
-    "bmi": 26.2,
+    "datum": "2026-07-01",
+    "kg": 87.6,
+    "bmi": 26.4,
     "bmi_klasse": "Übergewicht",
     "groesse_cm": 182,
     "ziel_kg": 85.0,
-    "rest_kg": 1.9,
+    "rest_kg": 2.6,
     "kreatin_abzug": 1.5,
-    "trend_30_kg": -2.71,
-    "vs_7t": -1.5,
+    "trend_30_kg": -2.6,
+    "vs_7t": 0.4,
     "vs_30t": -1.9,
     "vs_90t": -1.4,
     "messungen": [
+      {
+        "datum": "2026-07-01",
+        "kg": 87.6,
+        "bmi": 26.4,
+        "avg7": 87.4,
+        "ohne_kreatin": 86.1
+      },
+      {
+        "datum": "2026-06-25",
+        "kg": 87.2,
+        "bmi": 26.3,
+        "avg7": 87.4,
+        "ohne_kreatin": 85.7
+      },
       {
         "datum": "2026-06-19",
         "kg": 86.9,
@@ -193,28 +207,28 @@
         "datum": "2026-06-18",
         "kg": 87.6,
         "bmi": 26.4,
-        "avg7": 88.0,
+        "avg7": 87.9,
         "ohne_kreatin": 86.1
       },
       {
         "datum": "2026-06-16",
         "kg": 86.9,
         "bmi": 26.2,
-        "avg7": 88.3,
+        "avg7": 88.2,
         "ohne_kreatin": 85.4
       },
       {
         "datum": "2026-06-14",
         "kg": 86.9,
         "bmi": 26.2,
-        "avg7": 88.7,
+        "avg7": 88.5,
         "ohne_kreatin": 85.4
       },
       {
         "datum": "2026-06-12",
         "kg": 88.4,
         "bmi": 26.7,
-        "avg7": 89.0,
+        "avg7": 88.9,
         "ohne_kreatin": 86.9
       },
       {
@@ -230,6 +244,13 @@
         "bmi": 26.7,
         "avg7": 89.0,
         "ohne_kreatin": 87.1
+      },
+      {
+        "datum": "2026-06-09",
+        "kg": 88.5,
+        "bmi": 26.7,
+        "avg7": 89.0,
+        "ohne_kreatin": 87.0
       },
       {
         "datum": "2026-06-08",
@@ -300,27 +321,6 @@
         "bmi": 26.8,
         "avg7": 89.4,
         "ohne_kreatin": 87.2
-      },
-      {
-        "datum": "2026-04-09",
-        "kg": 89.2,
-        "bmi": 26.9,
-        "avg7": 89.5,
-        "ohne_kreatin": 87.7
-      },
-      {
-        "datum": "2026-04-07",
-        "kg": 90.2,
-        "bmi": 27.2,
-        "avg7": 89.6,
-        "ohne_kreatin": 88.7
-      },
-      {
-        "datum": "2026-04-03",
-        "kg": 89.8,
-        "bmi": 27.1,
-        "avg7": 89.4,
-        "ohne_kreatin": 88.3
       }
     ]
   }
