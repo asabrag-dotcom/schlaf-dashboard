@@ -1,28 +1,38 @@
 {
-  "stand": "2026-07-16 11:59",
+  "stand": "2026-07-17 11:40",
   "schlaf": {
-    "datum": "2026-07-16",
+    "datum": "2026-07-17",
     "bewertung": "Mittel",
-    "dauer_min": 402,
-    "effizienz_pct": 93.3,
-    "tief_min": 62,
-    "tief_pct": 15.4,
-    "rem_min": 69,
-    "rem_pct": 17.2,
-    "wach_episoden": 3,
-    "spo2_avg": 91.5,
+    "dauer_min": 353,
+    "effizienz_pct": 94.4,
+    "tief_min": 59,
+    "tief_pct": 16.7,
+    "rem_min": 57,
+    "rem_pct": 16.1,
+    "wach_episoden": 2,
+    "spo2_avg": 91.2,
     "spo2_min": 84.0,
-    "ruhepuls": 51,
+    "ruhepuls": 53,
     "naechte_14": [
+      {
+        "datum": "2026-07-17",
+        "dauer_min": 353,
+        "tief_pct": 16.7,
+        "rem_pct": 16.1,
+        "effizienz_pct": 94.4,
+        "spo2_avg": 91.2,
+        "spo2_min": 84.0,
+        "ruhepuls": 53
+      },
       {
         "datum": "2026-07-16",
         "dauer_min": 402,
         "tief_pct": 15.4,
         "rem_pct": 17.2,
         "effizienz_pct": 93.3,
-        "spo2_avg": 91.5,
+        "spo2_avg": 91.6,
         "spo2_min": 84.0,
-        "ruhepuls": 51
+        "ruhepuls": 52
       },
       {
         "datum": "2026-07-15",
@@ -143,28 +153,18 @@
         "spo2_avg": 94.0,
         "spo2_min": 86.0,
         "ruhepuls": 54
-      },
-      {
-        "datum": "2026-07-02",
-        "dauer_min": 322,
-        "tief_pct": 20.2,
-        "rem_pct": 11.8,
-        "effizienz_pct": 85.6,
-        "spo2_avg": 94.0,
-        "spo2_min": 82.0,
-        "ruhepuls": 50
       }
     ],
     "gesamt": {
-      "naechte": 218,
-      "zeitraum": "2025-02-20 bis 2026-07-16",
-      "eff_avg_pct": 94.4,
-      "tief_avg_min": 83,
-      "rem_avg_min": 77,
+      "naechte": 219,
+      "zeitraum": "2025-02-20 bis 2026-07-17",
+      "eff_avg_pct": 94.5,
+      "tief_avg_min": 84,
+      "rem_avg_min": 76,
       "ruhepuls_avg": 57.2,
       "spo2_avg": 92.9,
       "beste_rem_min": 164,
-      "laengste_min": 589,
+      "laengste_min": 565,
       "kuerzeste_min": 216
     }
   },
