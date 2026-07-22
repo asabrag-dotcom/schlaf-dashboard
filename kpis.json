@@ -1,5 +1,5 @@
 {
-  "stand": "2026-07-21 12:02",
+  "stand": "2026-07-22 12:07",
   "schlaf": {
     "datum": "2026-07-21",
     "bewertung": "Mittel",
@@ -10,9 +10,9 @@
     "rem_min": 126,
     "rem_pct": 27.1,
     "wach_episoden": 1,
-    "spo2_avg": 94.7,
+    "spo2_avg": 94.9,
     "spo2_min": 86.0,
-    "ruhepuls": 52,
+    "ruhepuls": 53,
     "naechte_14": [
       {
         "datum": "2026-07-21",
@@ -20,9 +20,9 @@
         "tief_pct": 25.2,
         "rem_pct": 27.1,
         "effizienz_pct": 98.3,
-        "spo2_avg": 94.7,
+        "spo2_avg": 94.9,
         "spo2_min": 86.0,
-        "ruhepuls": 52
+        "ruhepuls": 53
       },
       {
         "datum": "2026-07-17",
