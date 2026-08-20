@@ -1,5 +1,5 @@
 {
-  "stand": "2026-08-19 10:48",
+  "stand": "2026-08-20 10:50",
   "schlaf": {
     "datum": "2026-08-19",
     "bewertung": "Schlecht",
@@ -12,7 +12,7 @@
     "wach_episoden": 4,
     "spo2_avg": 90.6,
     "spo2_min": 76.0,
-    "ruhepuls": 57,
+    "ruhepuls": 58,
     "naechte_14": [
       {
         "datum": "2026-08-19",
@@ -22,7 +22,7 @@
         "effizienz_pct": 94.2,
         "spo2_avg": 90.6,
         "spo2_min": 76.0,
-        "ruhepuls": 57
+        "ruhepuls": 58
       },
       {
         "datum": "2026-08-18",
