@@ -1,5 +1,5 @@
 {
-  "stand": "2026-08-23 13:52",
+  "stand": "2026-08-24 10:55",
   "schlaf": {
     "datum": "2026-08-23",
     "bewertung": "Gut",
@@ -10,9 +10,9 @@
     "rem_min": 123,
     "rem_pct": 26.1,
     "wach_episoden": 4,
-    "spo2_avg": null,
-    "spo2_min": null,
-    "ruhepuls": 53,
+    "spo2_avg": 91.2,
+    "spo2_min": 81.0,
+    "ruhepuls": 51,
     "naechte_14": [
       {
         "datum": "2026-08-23",
@@ -20,9 +20,9 @@
         "tief_pct": 22.7,
         "rem_pct": 26.1,
         "effizienz_pct": 93.1,
-        "spo2_avg": null,
-        "spo2_min": null,
-        "ruhepuls": 53
+        "spo2_avg": 91.2,
+        "spo2_min": 81.0,
+        "ruhepuls": 51
       },
       {
         "datum": "2026-08-22",
@@ -161,7 +161,7 @@
       "eff_avg_pct": 94.5,
       "tief_avg_min": 84,
       "rem_avg_min": 76,
-      "ruhepuls_avg": 57.0,
+      "ruhepuls_avg": 56.9,
       "spo2_avg": 92.8,
       "beste_rem_min": 164,
       "laengste_min": 565,
@@ -169,19 +169,26 @@
     }
   },
   "gewicht": {
-    "datum": "2026-08-02",
-    "kg": 88.4,
-    "bmi": 26.7,
+    "datum": "2026-08-24",
+    "kg": 88.0,
+    "bmi": 26.6,
     "bmi_klasse": "Übergewicht",
     "groesse_cm": 182,
     "ziel_kg": 85.0,
-    "rest_kg": 3.4,
+    "rest_kg": 3.0,
     "kreatin_abzug": 1.5,
-    "trend_30_kg": 1.51,
-    "vs_7t": -0.1,
-    "vs_30t": 0.7,
-    "vs_90t": 0.0,
+    "trend_30_kg": -0.57,
+    "vs_7t": null,
+    "vs_30t": null,
+    "vs_90t": -1.6,
     "messungen": [
+      {
+        "datum": "2026-08-24",
+        "kg": 88.0,
+        "bmi": 26.6,
+        "avg7": 87.8,
+        "ohne_kreatin": 86.5
+      },
       {
         "datum": "2026-08-02",
         "kg": 88.4,
@@ -314,13 +321,6 @@
         "bmi": 26.7,
         "avg7": 89.0,
         "ohne_kreatin": 87.0
-      },
-      {
-        "datum": "2026-04-22",
-        "kg": 88.6,
-        "bmi": 26.7,
-        "avg7": 89.2,
-        "ohne_kreatin": 87.1
       }
     ]
   }
