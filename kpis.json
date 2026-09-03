@@ -1,28 +1,48 @@
 {
-  "stand": "2026-09-02 14:30",
+  "stand": "2026-09-03 14:34",
   "schlaf": {
-    "datum": "2026-09-02",
-    "bewertung": "Mittel",
-    "dauer_min": 506,
-    "effizienz_pct": 97.7,
-    "tief_min": 140,
-    "tief_pct": 27.7,
-    "rem_min": 136,
-    "rem_pct": 26.9,
-    "wach_episoden": 3,
-    "spo2_avg": 91.3,
-    "spo2_min": 83.0,
-    "ruhepuls": 49,
+    "datum": "2026-09-03",
+    "bewertung": "Schlecht",
+    "dauer_min": 175,
+    "effizienz_pct": 56.5,
+    "tief_min": 46,
+    "tief_pct": 26.3,
+    "rem_min": 0,
+    "rem_pct": 0.0,
+    "wach_episoden": 5,
+    "spo2_avg": 92.1,
+    "spo2_min": 86.0,
+    "ruhepuls": 68,
     "naechte_14": [
+      {
+        "datum": "2026-09-03",
+        "dauer_min": 175,
+        "tief_pct": 26.3,
+        "rem_pct": 0.0,
+        "effizienz_pct": 56.5,
+        "spo2_avg": 92.1,
+        "spo2_min": 86.0,
+        "ruhepuls": 68
+      },
       {
         "datum": "2026-09-02",
         "dauer_min": 506,
         "tief_pct": 27.7,
         "rem_pct": 26.9,
         "effizienz_pct": 97.7,
-        "spo2_avg": 91.3,
+        "spo2_avg": 91.6,
         "spo2_min": 83.0,
-        "ruhepuls": 49
+        "ruhepuls": 50
+      },
+      {
+        "datum": "2026-09-01",
+        "dauer_min": 506,
+        "tief_pct": 27.7,
+        "rem_pct": 26.9,
+        "effizienz_pct": 97.7,
+        "spo2_avg": 92.5,
+        "spo2_min": 92.0,
+        "ruhepuls": 56
       },
       {
         "datum": "2026-08-31",
@@ -133,39 +153,19 @@
         "spo2_avg": 91.8,
         "spo2_min": 81.0,
         "ruhepuls": 56
-      },
-      {
-        "datum": "2026-08-15",
-        "dauer_min": 440,
-        "tief_pct": 15.9,
-        "rem_pct": 21.8,
-        "effizienz_pct": 97.8,
-        "spo2_avg": 90.6,
-        "spo2_min": 82.0,
-        "ruhepuls": 54
-      },
-      {
-        "datum": "2026-08-14",
-        "dauer_min": 390,
-        "tief_pct": 14.4,
-        "rem_pct": 14.6,
-        "effizienz_pct": 96.3,
-        "spo2_avg": 91.0,
-        "spo2_min": 81.0,
-        "ruhepuls": 55
       }
     ],
     "gesamt": {
-      "naechte": 247,
-      "zeitraum": "2025-02-20 bis 2026-09-02",
-      "eff_avg_pct": 94.6,
+      "naechte": 249,
+      "zeitraum": "2025-02-20 bis 2026-09-03",
+      "eff_avg_pct": 94.4,
       "tief_avg_min": 84,
       "rem_avg_min": 76,
-      "ruhepuls_avg": 56.8,
+      "ruhepuls_avg": 56.9,
       "spo2_avg": 92.7,
       "beste_rem_min": 164,
       "laengste_min": 565,
-      "kuerzeste_min": 216
+      "kuerzeste_min": 175
     }
   },
   "gewicht": {
