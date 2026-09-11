@@ -1,19 +1,39 @@
 {
-  "stand": "2026-09-05 16:12",
+  "stand": "2026-09-11 14:29",
   "schlaf": {
-    "datum": "2026-09-04",
-    "bewertung": "Schlecht",
-    "dauer_min": 357,
-    "effizienz_pct": 80.6,
-    "tief_min": 30,
-    "tief_pct": 8.4,
-    "rem_min": 33,
-    "rem_pct": 9.2,
-    "wach_episoden": 5,
-    "spo2_avg": 90.4,
-    "spo2_min": 76.0,
-    "ruhepuls": 60,
+    "datum": "2026-09-11",
+    "bewertung": "Gut",
+    "dauer_min": 505,
+    "effizienz_pct": 95.1,
+    "tief_min": 97,
+    "tief_pct": 19.2,
+    "rem_min": 151,
+    "rem_pct": 29.9,
+    "wach_episoden": 2,
+    "spo2_avg": 89.8,
+    "spo2_min": 80.0,
+    "ruhepuls": 50,
     "naechte_14": [
+      {
+        "datum": "2026-09-11",
+        "dauer_min": 505,
+        "tief_pct": 19.2,
+        "rem_pct": 29.9,
+        "effizienz_pct": 95.1,
+        "spo2_avg": 89.8,
+        "spo2_min": 80.0,
+        "ruhepuls": 50
+      },
+      {
+        "datum": "2026-09-10",
+        "dauer_min": 479,
+        "tief_pct": 12.7,
+        "rem_pct": 15.2,
+        "effizienz_pct": 99.2,
+        "spo2_avg": 93.2,
+        "spo2_min": 83.0,
+        "ruhepuls": 56
+      },
       {
         "datum": "2026-09-04",
         "dauer_min": 357,
@@ -133,31 +153,11 @@
         "spo2_avg": 90.6,
         "spo2_min": 76.0,
         "ruhepuls": 58
-      },
-      {
-        "datum": "2026-08-18",
-        "dauer_min": 388,
-        "tief_pct": 23.7,
-        "rem_pct": 12.6,
-        "effizienz_pct": 94.2,
-        "spo2_avg": 92.2,
-        "spo2_min": 83.0,
-        "ruhepuls": 57
-      },
-      {
-        "datum": "2026-08-17",
-        "dauer_min": 429,
-        "tief_pct": 28.2,
-        "rem_pct": 7.5,
-        "effizienz_pct": 92.1,
-        "spo2_avg": 91.2,
-        "spo2_min": 80.0,
-        "ruhepuls": 56
       }
     ],
     "gesamt": {
-      "naechte": 250,
-      "zeitraum": "2025-02-20 bis 2026-09-04",
+      "naechte": 252,
+      "zeitraum": "2025-02-20 bis 2026-09-11",
       "eff_avg_pct": 94.4,
       "tief_avg_min": 84,
       "rem_avg_min": 76,
