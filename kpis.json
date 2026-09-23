@@ -1,28 +1,38 @@
 {
-  "stand": "2026-09-22 14:47",
+  "stand": "2026-09-23 15:10",
   "schlaf": {
-    "datum": "2026-09-22",
+    "datum": "2026-09-23",
     "bewertung": "Gut",
-    "dauer_min": 502,
-    "effizienz_pct": 92.6,
-    "tief_min": 69,
-    "tief_pct": 13.7,
-    "rem_min": 110,
-    "rem_pct": 21.9,
-    "wach_episoden": 3,
-    "spo2_avg": null,
-    "spo2_min": null,
-    "ruhepuls": 50,
+    "dauer_min": 467,
+    "effizienz_pct": 97.9,
+    "tief_min": 72,
+    "tief_pct": 15.4,
+    "rem_min": 124,
+    "rem_pct": 26.6,
+    "wach_episoden": 2,
+    "spo2_avg": 94.6,
+    "spo2_min": 88.0,
+    "ruhepuls": 53,
     "naechte_14": [
+      {
+        "datum": "2026-09-23",
+        "dauer_min": 467,
+        "tief_pct": 15.4,
+        "rem_pct": 26.6,
+        "effizienz_pct": 97.9,
+        "spo2_avg": 94.6,
+        "spo2_min": 88.0,
+        "ruhepuls": 53
+      },
       {
         "datum": "2026-09-22",
         "dauer_min": 502,
         "tief_pct": 13.7,
         "rem_pct": 21.9,
         "effizienz_pct": 92.6,
-        "spo2_avg": null,
-        "spo2_min": null,
-        "ruhepuls": 50
+        "spo2_avg": 92.2,
+        "spo2_min": 79.0,
+        "ruhepuls": 52
       },
       {
         "datum": "2026-09-20",
@@ -42,7 +52,7 @@
         "effizienz_pct": 90.5,
         "spo2_avg": 94.0,
         "spo2_min": 84.0,
-        "ruhepuls": 60
+        "ruhepuls": 62
       },
       {
         "datum": "2026-09-18",
@@ -143,24 +153,14 @@
         "spo2_avg": 89.6,
         "spo2_min": 81.0,
         "ruhepuls": 49
-      },
-      {
-        "datum": "2026-08-28",
-        "dauer_min": 403,
-        "tief_pct": 17.9,
-        "rem_pct": 19.6,
-        "effizienz_pct": 98.1,
-        "spo2_avg": 91.5,
-        "spo2_min": 81.0,
-        "ruhepuls": 54
       }
     ],
     "gesamt": {
-      "naechte": 258,
-      "zeitraum": "2025-02-20 bis 2026-09-22",
+      "naechte": 259,
+      "zeitraum": "2025-02-20 bis 2026-09-23",
       "eff_avg_pct": 94.4,
       "tief_avg_min": 83,
-      "rem_avg_min": 76,
+      "rem_avg_min": 77,
       "ruhepuls_avg": 56.8,
       "spo2_avg": 92.8,
       "beste_rem_min": 164,
