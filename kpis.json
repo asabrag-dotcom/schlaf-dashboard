@@ -1,19 +1,39 @@
 {
-  "stand": "2026-10-02 16:33",
+  "stand": "2026-10-04 17:43",
   "schlaf": {
-    "datum": "2026-10-02",
-    "bewertung": "Schlecht",
-    "dauer_min": 342,
-    "effizienz_pct": 94.7,
-    "tief_min": 90,
-    "tief_pct": 26.3,
-    "rem_min": 60,
-    "rem_pct": 17.5,
+    "datum": "2026-10-04",
+    "bewertung": "Mittel",
+    "dauer_min": 463,
+    "effizienz_pct": 95.1,
+    "tief_min": 106,
+    "tief_pct": 22.9,
+    "rem_min": 57,
+    "rem_pct": 12.3,
     "wach_episoden": 3,
-    "spo2_avg": 93.8,
+    "spo2_avg": 91.6,
     "spo2_min": 81.0,
-    "ruhepuls": 54,
+    "ruhepuls": 62,
     "naechte_14": [
+      {
+        "datum": "2026-10-04",
+        "dauer_min": 463,
+        "tief_pct": 22.9,
+        "rem_pct": 12.3,
+        "effizienz_pct": 95.1,
+        "spo2_avg": 91.6,
+        "spo2_min": 81.0,
+        "ruhepuls": 62
+      },
+      {
+        "datum": "2026-10-03",
+        "dauer_min": 408,
+        "tief_pct": 15.4,
+        "rem_pct": 17.6,
+        "effizienz_pct": 91.9,
+        "spo2_avg": 92.2,
+        "spo2_min": 82.0,
+        "ruhepuls": 63
+      },
       {
         "datum": "2026-10-02",
         "dauer_min": 342,
@@ -22,7 +42,7 @@
         "effizienz_pct": 94.7,
         "spo2_avg": 93.8,
         "spo2_min": 81.0,
-        "ruhepuls": 54
+        "ruhepuls": 55
       },
       {
         "datum": "2026-10-01",
@@ -133,34 +153,14 @@
         "spo2_avg": 94.2,
         "spo2_min": 91.0,
         "ruhepuls": 66
-      },
-      {
-        "datum": "2026-09-19",
-        "dauer_min": 400,
-        "tief_pct": 24.0,
-        "rem_pct": 12.2,
-        "effizienz_pct": 90.5,
-        "spo2_avg": 94.0,
-        "spo2_min": 84.0,
-        "ruhepuls": 63
-      },
-      {
-        "datum": "2026-09-18",
-        "dauer_min": 404,
-        "tief_pct": 10.6,
-        "rem_pct": 21.8,
-        "effizienz_pct": 98.1,
-        "spo2_avg": 94.4,
-        "spo2_min": 83.0,
-        "ruhepuls": 56
       }
     ],
     "gesamt": {
-      "naechte": 268,
-      "zeitraum": "2025-02-20 bis 2026-10-02",
+      "naechte": 270,
+      "zeitraum": "2025-02-20 bis 2026-10-04",
       "eff_avg_pct": 94.5,
       "tief_avg_min": 83,
-      "rem_avg_min": 77,
+      "rem_avg_min": 76,
       "ruhepuls_avg": 56.8,
       "spo2_avg": 92.8,
       "beste_rem_min": 164,
