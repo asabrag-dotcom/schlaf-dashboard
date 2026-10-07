@@ -1,5 +1,5 @@
 {
-  "stand": "2026-10-06 16:55",
+  "stand": "2026-10-07 17:41",
   "schlaf": {
     "datum": "2026-10-06",
     "bewertung": "Gut",
@@ -10,9 +10,9 @@
     "rem_min": 119,
     "rem_pct": 24.2,
     "wach_episoden": 1,
-    "spo2_avg": null,
-    "spo2_min": null,
-    "ruhepuls": null,
+    "spo2_avg": 95.1,
+    "spo2_min": 89.0,
+    "ruhepuls": 51,
     "naechte_14": [
       {
         "datum": "2026-10-06",
@@ -20,9 +20,9 @@
         "tief_pct": 20.2,
         "rem_pct": 24.2,
         "effizienz_pct": 98.0,
-        "spo2_avg": null,
-        "spo2_min": null,
-        "ruhepuls": null
+        "spo2_avg": 95.1,
+        "spo2_min": 89.0,
+        "ruhepuls": 51
       },
       {
         "datum": "2026-10-05",
