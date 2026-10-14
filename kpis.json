@@ -1,28 +1,38 @@
 {
-  "stand": "2026-10-13 17:51",
+  "stand": "2026-10-14 15:23",
   "schlaf": {
-    "datum": "2026-10-13",
-    "bewertung": "Gut",
-    "dauer_min": 491,
-    "effizienz_pct": 91.3,
-    "tief_min": 83,
-    "tief_pct": 16.9,
-    "rem_min": 102,
-    "rem_pct": 20.8,
-    "wach_episoden": 4,
-    "spo2_avg": 91.5,
-    "spo2_min": 85.0,
-    "ruhepuls": 49,
+    "datum": "2026-10-14",
+    "bewertung": "Mittel",
+    "dauer_min": 415,
+    "effizienz_pct": 95.2,
+    "tief_min": 79,
+    "tief_pct": 19.0,
+    "rem_min": 106,
+    "rem_pct": 25.5,
+    "wach_episoden": 3,
+    "spo2_avg": 93.5,
+    "spo2_min": 86.0,
+    "ruhepuls": 51,
     "naechte_14": [
+      {
+        "datum": "2026-10-14",
+        "dauer_min": 415,
+        "tief_pct": 19.0,
+        "rem_pct": 25.5,
+        "effizienz_pct": 95.2,
+        "spo2_avg": 93.5,
+        "spo2_min": 86.0,
+        "ruhepuls": 51
+      },
       {
         "datum": "2026-10-13",
         "dauer_min": 491,
         "tief_pct": 16.9,
         "rem_pct": 20.8,
         "effizienz_pct": 91.3,
-        "spo2_avg": 91.5,
+        "spo2_avg": 91.8,
         "spo2_min": 85.0,
-        "ruhepuls": 49
+        "ruhepuls": 50
       },
       {
         "datum": "2026-10-12",
@@ -52,7 +62,7 @@
         "effizienz_pct": 94.7,
         "spo2_avg": 87.9,
         "spo2_min": 78.0,
-        "ruhepuls": 75
+        "ruhepuls": 76
       },
       {
         "datum": "2026-10-09",
@@ -143,21 +153,11 @@
         "spo2_avg": 92.1,
         "spo2_min": 85.0,
         "ruhepuls": 54
-      },
-      {
-        "datum": "2026-09-30",
-        "dauer_min": 378,
-        "tief_pct": 19.6,
-        "rem_pct": 27.8,
-        "effizienz_pct": 98.4,
-        "spo2_avg": 92.0,
-        "spo2_min": 81.0,
-        "ruhepuls": 54
       }
     ],
     "gesamt": {
-      "naechte": 279,
-      "zeitraum": "2025-02-20 bis 2026-10-13",
+      "naechte": 280,
+      "zeitraum": "2025-02-20 bis 2026-10-14",
       "eff_avg_pct": 94.5,
       "tief_avg_min": 83,
       "rem_avg_min": 77,
