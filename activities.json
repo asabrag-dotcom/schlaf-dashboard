@@ -1,4 +1,2785 @@
 {
   "stand": "2026-10-19",
-  "aktivitaeten": []
+  "aktivitaeten": [
+    {
+      "datum": "2026-10-19",
+      "zeit": "18:12",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2132,
+      "dauer_aktiv_s": 2132,
+      "distanz_km": 0.85
+    },
+    {
+      "datum": "2026-10-19",
+      "zeit": "09:45",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 868,
+      "dauer_aktiv_s": 868,
+      "distanz_km": 1.613
+    },
+    {
+      "datum": "2026-10-18",
+      "zeit": "16:00",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4425,
+      "dauer_aktiv_s": 3883,
+      "distanz_km": 9.353
+    },
+    {
+      "datum": "2026-10-18",
+      "zeit": "16:00",
+      "typ": "HIKING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4506,
+      "dauer_aktiv_s": 4506,
+      "distanz_km": 9.284
+    },
+    {
+      "datum": "2026-10-15",
+      "zeit": "18:05",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3423,
+      "dauer_aktiv_s": 2573,
+      "distanz_km": 1.152
+    },
+    {
+      "datum": "2026-10-14",
+      "zeit": "17:38",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 5086,
+      "dauer_aktiv_s": 4799,
+      "distanz_km": 3.971
+    },
+    {
+      "datum": "2026-10-13",
+      "zeit": "18:29",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 5928,
+      "dauer_aktiv_s": 4925,
+      "distanz_km": 2.06
+    },
+    {
+      "datum": "2026-10-09",
+      "zeit": "16:07",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3747,
+      "dauer_aktiv_s": 2624,
+      "distanz_km": 1.433
+    },
+    {
+      "datum": "2026-10-09",
+      "zeit": "12:51",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 853,
+      "dauer_aktiv_s": 853,
+      "distanz_km": 2.088
+    },
+    {
+      "datum": "2026-10-09",
+      "zeit": "08:39",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1378,
+      "dauer_aktiv_s": 1303,
+      "distanz_km": 1.77
+    },
+    {
+      "datum": "2026-10-06",
+      "zeit": "18:29",
+      "typ": "CYCLING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 665,
+      "dauer_aktiv_s": 665,
+      "distanz_km": 0.085
+    },
+    {
+      "datum": "2026-10-05",
+      "zeit": "09:33",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1801,
+      "dauer_aktiv_s": 1561,
+      "distanz_km": 2.123
+    },
+    {
+      "datum": "2026-10-04",
+      "zeit": "16:44",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3377,
+      "dauer_aktiv_s": 3325,
+      "distanz_km": 5.749
+    },
+    {
+      "datum": "2026-10-04",
+      "zeit": "15:58",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1287,
+      "dauer_aktiv_s": 1287,
+      "distanz_km": 1.528
+    },
+    {
+      "datum": "2026-10-03",
+      "zeit": "14:15",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1708,
+      "dauer_aktiv_s": 1332,
+      "distanz_km": 1.157
+    },
+    {
+      "datum": "2026-10-02",
+      "zeit": "19:49",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3469,
+      "dauer_aktiv_s": 3172,
+      "distanz_km": 2.305
+    },
+    {
+      "datum": "2026-10-01",
+      "zeit": "19:39",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3308,
+      "dauer_aktiv_s": 1916,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-09-30",
+      "zeit": "18:18",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1247,
+      "dauer_aktiv_s": 1247,
+      "distanz_km": 1.211
+    },
+    {
+      "datum": "2026-09-29",
+      "zeit": "19:28",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3065,
+      "dauer_aktiv_s": 1367,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-09-28",
+      "zeit": "19:12",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2369,
+      "dauer_aktiv_s": 2369,
+      "distanz_km": 1.001
+    },
+    {
+      "datum": "2026-09-27",
+      "zeit": "18:33",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2649,
+      "dauer_aktiv_s": 2649,
+      "distanz_km": 0.833
+    },
+    {
+      "datum": "2026-09-24",
+      "zeit": "19:42",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3103,
+      "dauer_aktiv_s": 939,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-09-23",
+      "zeit": "15:24",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2415,
+      "dauer_aktiv_s": 2415,
+      "distanz_km": 0.479
+    },
+    {
+      "datum": "2026-09-22",
+      "zeit": "19:32",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3344,
+      "dauer_aktiv_s": 1413,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-09-21",
+      "zeit": "17:35",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2271,
+      "dauer_aktiv_s": 2271,
+      "distanz_km": 0.404
+    },
+    {
+      "datum": "2026-09-21",
+      "zeit": "16:33",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3252,
+      "dauer_aktiv_s": 2600,
+      "distanz_km": 1.455
+    },
+    {
+      "datum": "2026-09-21",
+      "zeit": "08:27",
+      "typ": "CYCLING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1493,
+      "dauer_aktiv_s": 1493,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-09-19",
+      "zeit": "13:53",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1580,
+      "dauer_aktiv_s": 1580,
+      "distanz_km": 1.996
+    },
+    {
+      "datum": "2026-09-19",
+      "zeit": "09:46",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4319,
+      "dauer_aktiv_s": 3744,
+      "distanz_km": 2.843
+    },
+    {
+      "datum": "2026-09-16",
+      "zeit": "19:16",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3575,
+      "dauer_aktiv_s": 1019,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-09-14",
+      "zeit": "18:26",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2194,
+      "dauer_aktiv_s": 2194,
+      "distanz_km": 0.936
+    },
+    {
+      "datum": "2026-09-13",
+      "zeit": "01:23",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 5487,
+      "dauer_aktiv_s": 5332,
+      "distanz_km": 1.384
+    },
+    {
+      "datum": "2026-09-12",
+      "zeit": "21:38",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 7227,
+      "dauer_aktiv_s": 6654,
+      "distanz_km": 1.581
+    },
+    {
+      "datum": "2026-09-11",
+      "zeit": "17:28",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 5768,
+      "dauer_aktiv_s": 5768,
+      "distanz_km": 1.968
+    },
+    {
+      "datum": "2026-09-09",
+      "zeit": "22:17",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1920,
+      "dauer_aktiv_s": 1920,
+      "distanz_km": 0.783
+    },
+    {
+      "datum": "2026-09-09",
+      "zeit": "13:14",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2055,
+      "dauer_aktiv_s": 2055,
+      "distanz_km": 0.785
+    },
+    {
+      "datum": "2026-09-08",
+      "zeit": "19:43",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2935,
+      "dauer_aktiv_s": 2935,
+      "distanz_km": 1.147
+    },
+    {
+      "datum": "2026-09-08",
+      "zeit": "13:36",
+      "typ": "HIKING",
+      "name": "Matosinhos Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 13462,
+      "dauer_aktiv_s": 11524,
+      "distanz_km": 10.754
+    },
+    {
+      "datum": "2026-09-07",
+      "zeit": "15:16",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2731,
+      "dauer_aktiv_s": 2731,
+      "distanz_km": 2.968
+    },
+    {
+      "datum": "2026-09-07",
+      "zeit": "14:20",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1046,
+      "dauer_aktiv_s": 1046,
+      "distanz_km": 0.661
+    },
+    {
+      "datum": "2026-09-05",
+      "zeit": "22:51",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2720,
+      "dauer_aktiv_s": 2185,
+      "distanz_km": 1.643
+    },
+    {
+      "datum": "2026-09-05",
+      "zeit": "14:08",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1440,
+      "dauer_aktiv_s": 1329,
+      "distanz_km": 1.566
+    },
+    {
+      "datum": "2026-09-05",
+      "zeit": "01:32",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2726,
+      "dauer_aktiv_s": 2726,
+      "distanz_km": 1.742
+    },
+    {
+      "datum": "2026-09-04",
+      "zeit": "12:57",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3030,
+      "dauer_aktiv_s": 3030,
+      "distanz_km": 0.356
+    },
+    {
+      "datum": "2026-09-03",
+      "zeit": "12:55",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4162,
+      "dauer_aktiv_s": 4162,
+      "distanz_km": 5.499
+    },
+    {
+      "datum": "2026-09-02",
+      "zeit": "23:16",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2266,
+      "dauer_aktiv_s": 2138,
+      "distanz_km": 2.072
+    },
+    {
+      "datum": "2026-09-02",
+      "zeit": "20:41",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2112,
+      "dauer_aktiv_s": 2112,
+      "distanz_km": 1.594
+    },
+    {
+      "datum": "2026-09-02",
+      "zeit": "18:32",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3928,
+      "dauer_aktiv_s": 3928,
+      "distanz_km": 0.79
+    },
+    {
+      "datum": "2026-09-02",
+      "zeit": "17:23",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2864,
+      "dauer_aktiv_s": 2310,
+      "distanz_km": 1.271
+    },
+    {
+      "datum": "2026-09-02",
+      "zeit": "13:31",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3854,
+      "dauer_aktiv_s": 2808,
+      "distanz_km": 0.846
+    },
+    {
+      "datum": "2026-09-02",
+      "zeit": "11:38",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1672,
+      "dauer_aktiv_s": 904,
+      "distanz_km": 0.877
+    },
+    {
+      "datum": "2026-08-31",
+      "zeit": "17:38",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1295,
+      "dauer_aktiv_s": 814,
+      "distanz_km": 0.754
+    },
+    {
+      "datum": "2026-08-31",
+      "zeit": "15:51",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1289,
+      "dauer_aktiv_s": 1289,
+      "distanz_km": 0.547
+    },
+    {
+      "datum": "2026-08-31",
+      "zeit": "10:01",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1055,
+      "dauer_aktiv_s": 1055,
+      "distanz_km": 0.952
+    },
+    {
+      "datum": "2026-08-30",
+      "zeit": "12:50",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 7639,
+      "dauer_aktiv_s": 7239,
+      "distanz_km": 11.181
+    },
+    {
+      "datum": "2026-08-30",
+      "zeit": "10:34",
+      "typ": "HIKING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 13504,
+      "dauer_aktiv_s": 13504,
+      "distanz_km": 30.963
+    },
+    {
+      "datum": "2026-08-30",
+      "zeit": "10:05",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 8356,
+      "dauer_aktiv_s": 7697,
+      "distanz_km": 25.055
+    },
+    {
+      "datum": "2026-08-30",
+      "zeit": "03:07",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1040,
+      "dauer_aktiv_s": 1040,
+      "distanz_km": 0.688
+    },
+    {
+      "datum": "2026-08-27",
+      "zeit": "19:39",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3277,
+      "dauer_aktiv_s": 1729,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-08-26",
+      "zeit": "20:41",
+      "typ": "ROWING",
+      "name": "Indoor-Rudern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3709,
+      "dauer_aktiv_s": 3705,
+      "distanz_km": 10.835
+    },
+    {
+      "datum": "2026-08-25",
+      "zeit": "19:12",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4072,
+      "dauer_aktiv_s": 4058,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-08-22",
+      "zeit": "19:39",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1685,
+      "dauer_aktiv_s": 1685,
+      "distanz_km": 0.896
+    },
+    {
+      "datum": "2026-08-22",
+      "zeit": "17:12",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1758,
+      "dauer_aktiv_s": 986,
+      "distanz_km": 1.034
+    },
+    {
+      "datum": "2026-08-22",
+      "zeit": "16:14",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1293,
+      "dauer_aktiv_s": 1293,
+      "distanz_km": 1.371
+    },
+    {
+      "datum": "2026-08-22",
+      "zeit": "14:34",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4406,
+      "dauer_aktiv_s": 3558,
+      "distanz_km": 2.746
+    },
+    {
+      "datum": "2026-08-20",
+      "zeit": "11:04",
+      "typ": "CYCLING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 112,
+      "dauer_aktiv_s": 112,
+      "distanz_km": 0.81
+    },
+    {
+      "datum": "2026-08-20",
+      "zeit": "10:39",
+      "typ": "CYCLING",
+      "name": "Rust Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 242,
+      "dauer_aktiv_s": 242,
+      "distanz_km": 0.542
+    },
+    {
+      "datum": "2026-08-19",
+      "zeit": "19:55",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1000,
+      "dauer_aktiv_s": 1000,
+      "distanz_km": 0.65
+    },
+    {
+      "datum": "2026-08-18",
+      "zeit": "16:51",
+      "typ": "HIKING",
+      "name": "Vigo di Fassa Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1057,
+      "dauer_aktiv_s": 1057,
+      "distanz_km": 0.877
+    },
+    {
+      "datum": "2026-08-18",
+      "zeit": "10:12",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2219,
+      "dauer_aktiv_s": 2219,
+      "distanz_km": 2.926
+    },
+    {
+      "datum": "2026-08-17",
+      "zeit": "14:19",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 6229,
+      "dauer_aktiv_s": 5653,
+      "distanz_km": 1.958
+    },
+    {
+      "datum": "2026-08-17",
+      "zeit": "12:53",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3141,
+      "dauer_aktiv_s": 2620,
+      "distanz_km": 1.493
+    },
+    {
+      "datum": "2026-08-16",
+      "zeit": "13:38",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 5705,
+      "dauer_aktiv_s": 5504,
+      "distanz_km": 6.282
+    },
+    {
+      "datum": "2026-08-16",
+      "zeit": "11:33",
+      "typ": "HIKING",
+      "name": "Tires Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 12811,
+      "dauer_aktiv_s": 9228,
+      "distanz_km": 8.197
+    },
+    {
+      "datum": "2026-08-16",
+      "zeit": "11:33",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4705,
+      "dauer_aktiv_s": 4705,
+      "distanz_km": 5.007
+    },
+    {
+      "datum": "2026-08-15",
+      "zeit": "12:16",
+      "typ": "HIKING",
+      "name": "Tires Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 12087,
+      "dauer_aktiv_s": 8472,
+      "distanz_km": 7.239
+    },
+    {
+      "datum": "2026-08-14",
+      "zeit": "15:30",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1745,
+      "dauer_aktiv_s": 1745,
+      "distanz_km": 0.483
+    },
+    {
+      "datum": "2026-08-14",
+      "zeit": "14:17",
+      "typ": "HIKING",
+      "name": "Fiè allo Sciliar Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2591,
+      "dauer_aktiv_s": 2591,
+      "distanz_km": 1.692
+    },
+    {
+      "datum": "2026-08-12",
+      "zeit": "14:37",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2218,
+      "dauer_aktiv_s": 2218,
+      "distanz_km": 1.12
+    },
+    {
+      "datum": "2026-07-30",
+      "zeit": "20:22",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2668,
+      "dauer_aktiv_s": 762,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-07-29",
+      "zeit": "13:43",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3164,
+      "dauer_aktiv_s": 3138,
+      "distanz_km": 1.203
+    },
+    {
+      "datum": "2026-07-28",
+      "zeit": "19:21",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3554,
+      "dauer_aktiv_s": 1171,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-07-28",
+      "zeit": "18:55",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1639,
+      "dauer_aktiv_s": 1144,
+      "distanz_km": 0.518
+    },
+    {
+      "datum": "2026-07-25",
+      "zeit": "23:33",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2712,
+      "dauer_aktiv_s": 2025,
+      "distanz_km": 3.281
+    },
+    {
+      "datum": "2026-07-25",
+      "zeit": "16:33",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2822,
+      "dauer_aktiv_s": 1661,
+      "distanz_km": 0.609
+    },
+    {
+      "datum": "2026-07-25",
+      "zeit": "15:19",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 928,
+      "dauer_aktiv_s": 754,
+      "distanz_km": 0.871
+    },
+    {
+      "datum": "2026-07-13",
+      "zeit": "08:29",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1075,
+      "dauer_aktiv_s": 1075,
+      "distanz_km": 0.897
+    },
+    {
+      "datum": "2026-07-11",
+      "zeit": "03:11",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1189,
+      "dauer_aktiv_s": 1189,
+      "distanz_km": 0.872
+    },
+    {
+      "datum": "2026-07-10",
+      "zeit": "18:23",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 761,
+      "dauer_aktiv_s": 761,
+      "distanz_km": 0.796
+    },
+    {
+      "datum": "2026-07-09",
+      "zeit": "20:08",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3216,
+      "dauer_aktiv_s": 3216,
+      "distanz_km": 0.065
+    },
+    {
+      "datum": "2026-07-08",
+      "zeit": "19:31",
+      "typ": "ROWING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3269,
+      "dauer_aktiv_s": 3269,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-07-06",
+      "zeit": "10:43",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 912,
+      "dauer_aktiv_s": 912,
+      "distanz_km": 0.81
+    },
+    {
+      "datum": "2026-07-05",
+      "zeit": "19:09",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1403,
+      "dauer_aktiv_s": 1403,
+      "distanz_km": 1.151
+    },
+    {
+      "datum": "2026-07-05",
+      "zeit": "11:43",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2753,
+      "dauer_aktiv_s": 2753,
+      "distanz_km": 1.601
+    },
+    {
+      "datum": "2026-07-05",
+      "zeit": "10:17",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2256,
+      "dauer_aktiv_s": 2215,
+      "distanz_km": 0.954
+    },
+    {
+      "datum": "2026-07-04",
+      "zeit": "16:15",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 936,
+      "dauer_aktiv_s": 936,
+      "distanz_km": 0.625
+    },
+    {
+      "datum": "2026-07-03",
+      "zeit": "19:58",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2168,
+      "dauer_aktiv_s": 2168,
+      "distanz_km": 0.585
+    },
+    {
+      "datum": "2026-07-03",
+      "zeit": "18:02",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1829,
+      "dauer_aktiv_s": 1829,
+      "distanz_km": 0.616
+    },
+    {
+      "datum": "2026-07-02",
+      "zeit": "20:03",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3519,
+      "dauer_aktiv_s": 1203,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-06-30",
+      "zeit": "20:20",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2470,
+      "dauer_aktiv_s": 1253,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-06-27",
+      "zeit": "20:20",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 476,
+      "dauer_aktiv_s": 476,
+      "distanz_km": 0.467
+    },
+    {
+      "datum": "2026-06-24",
+      "zeit": "21:04",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1677,
+      "dauer_aktiv_s": 6711,
+      "distanz_km": 0.743
+    },
+    {
+      "datum": "2026-06-24",
+      "zeit": "20:05",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3375,
+      "dauer_aktiv_s": 3375,
+      "distanz_km": 0.019
+    },
+    {
+      "datum": "2026-06-18",
+      "zeit": "19:06",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 964,
+      "dauer_aktiv_s": 2892,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-06-15",
+      "zeit": "20:13",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3477,
+      "dauer_aktiv_s": 1410,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-06-13",
+      "zeit": "19:43",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3054,
+      "dauer_aktiv_s": 1462,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-06-08",
+      "zeit": "20:21",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3649,
+      "dauer_aktiv_s": 3649,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-05-25",
+      "zeit": "13:16",
+      "typ": "CYCLING",
+      "name": "Witten Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 19992,
+      "dauer_aktiv_s": 19678,
+      "distanz_km": 91.37
+    },
+    {
+      "datum": "2026-05-21",
+      "zeit": "20:20",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4488,
+      "dauer_aktiv_s": 4486,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-05-19",
+      "zeit": "20:17",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3516,
+      "dauer_aktiv_s": 3516,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-05-16",
+      "zeit": "17:09",
+      "typ": "FITNESS_EQUIPMENT",
+      "name": "Pilates",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2901,
+      "dauer_aktiv_s": 2901,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-05-16",
+      "zeit": "17:09",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2901,
+      "dauer_aktiv_s": 2901,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-05-13",
+      "zeit": "20:24",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3468,
+      "dauer_aktiv_s": 1606,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-05-11",
+      "zeit": "20:22",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2557,
+      "dauer_aktiv_s": 817,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-05-10",
+      "zeit": "17:46",
+      "typ": "GENERIC",
+      "name": "Krefeld Trampolin",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1342,
+      "dauer_aktiv_s": 1342,
+      "distanz_km": 0.202
+    },
+    {
+      "datum": "2026-05-10",
+      "zeit": "17:46",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1342,
+      "dauer_aktiv_s": 1342,
+      "distanz_km": 0.202
+    },
+    {
+      "datum": "2026-05-08",
+      "zeit": "20:13",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4409,
+      "dauer_aktiv_s": 4409,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-05-05",
+      "zeit": "20:11",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2813,
+      "dauer_aktiv_s": 2813,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-04-28",
+      "zeit": "20:11",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2993,
+      "dauer_aktiv_s": 1321,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-04-21",
+      "zeit": "19:12",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3764,
+      "dauer_aktiv_s": 3764,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-04-19",
+      "zeit": "19:47",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2406,
+      "dauer_aktiv_s": 2406,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-04-19",
+      "zeit": "14:09",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3499,
+      "dauer_aktiv_s": 3499,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-04-18",
+      "zeit": "14:21",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2714,
+      "dauer_aktiv_s": 2714,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-04-16",
+      "zeit": "19:47",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3858,
+      "dauer_aktiv_s": 3858,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-04-08",
+      "zeit": "13:04",
+      "typ": "CYCLING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 756,
+      "dauer_aktiv_s": 756,
+      "distanz_km": 3.205
+    },
+    {
+      "datum": "2026-04-07",
+      "zeit": "19:47",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2905,
+      "dauer_aktiv_s": 2905,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-04-02",
+      "zeit": "20:04",
+      "typ": "ROWING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3768,
+      "dauer_aktiv_s": 3768,
+      "distanz_km": 10.646
+    },
+    {
+      "datum": "2026-03-31",
+      "zeit": "19:01",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3841,
+      "dauer_aktiv_s": 3841,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-03-27",
+      "zeit": "13:45",
+      "typ": "ROWING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1862,
+      "dauer_aktiv_s": 1862,
+      "distanz_km": 5.275
+    },
+    {
+      "datum": "2026-03-27",
+      "zeit": "13:09",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2072,
+      "dauer_aktiv_s": 2072,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-03-24",
+      "zeit": "20:02",
+      "typ": "ROWING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 965,
+      "dauer_aktiv_s": 965,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-03-24",
+      "zeit": "19:13",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2913,
+      "dauer_aktiv_s": 2913,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-03-22",
+      "zeit": "16:31",
+      "typ": "CYCLING",
+      "name": "Krefeld Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 5307,
+      "dauer_aktiv_s": 5030,
+      "distanz_km": 26.48
+    },
+    {
+      "datum": "2026-03-19",
+      "zeit": "20:23",
+      "typ": "ROWING",
+      "name": null,
+      "quelle": "unknown-com.concept2.ergdata",
+      "dauer_gesamt_s": 1928,
+      "dauer_aktiv_s": 1928,
+      "distanz_km": 5.597
+    },
+    {
+      "datum": "2026-03-19",
+      "zeit": "20:22",
+      "typ": "ROWING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1978,
+      "dauer_aktiv_s": 1978,
+      "distanz_km": 5.023
+    },
+    {
+      "datum": "2026-03-19",
+      "zeit": "19:30",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3031,
+      "dauer_aktiv_s": 3031,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-03-18",
+      "zeit": "21:50",
+      "typ": "HIKING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 272,
+      "dauer_aktiv_s": 272,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-03-06",
+      "zeit": "19:27",
+      "typ": "ROWING",
+      "name": "Rudermaschine",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3686,
+      "dauer_aktiv_s": 3660,
+      "distanz_km": 13.103
+    },
+    {
+      "datum": "2026-03-05",
+      "zeit": "20:00",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3275,
+      "dauer_aktiv_s": 3275,
+      "distanz_km": 0.206
+    },
+    {
+      "datum": "2026-03-01",
+      "zeit": "18:45",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1736,
+      "dauer_aktiv_s": 1736,
+      "distanz_km": 0.285
+    },
+    {
+      "datum": "2026-03-01",
+      "zeit": "18:10",
+      "typ": "ROWING",
+      "name": null,
+      "quelle": "unknown-com.concept2.ergdata",
+      "dauer_gesamt_s": 1807,
+      "dauer_aktiv_s": 1807,
+      "distanz_km": 11.389
+    },
+    {
+      "datum": "2026-02-22",
+      "zeit": "18:00",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2832,
+      "dauer_aktiv_s": 848,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-02-22",
+      "zeit": "17:37",
+      "typ": "ROWING",
+      "name": "Krefeld Rudern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 959,
+      "dauer_aktiv_s": 959,
+      "distanz_km": 1.296
+    },
+    {
+      "datum": "2026-02-21",
+      "zeit": "20:00",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1792,
+      "dauer_aktiv_s": 1176,
+      "distanz_km": 3.641
+    },
+    {
+      "datum": "2026-02-21",
+      "zeit": "19:47",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 763,
+      "dauer_aktiv_s": 383,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-02-21",
+      "zeit": "19:15",
+      "typ": "ROWING",
+      "name": "Krefeld Rudern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1575,
+      "dauer_aktiv_s": 1303,
+      "distanz_km": 1.517
+    },
+    {
+      "datum": "2026-02-18",
+      "zeit": "19:37",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3791,
+      "dauer_aktiv_s": 3784,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-02-13",
+      "zeit": "19:15",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4267,
+      "dauer_aktiv_s": 1967,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-02-03",
+      "zeit": "19:06",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3507,
+      "dauer_aktiv_s": 1414,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-02-01",
+      "zeit": "12:33",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2863,
+      "dauer_aktiv_s": 1174,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-01-27",
+      "zeit": "20:09",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3269,
+      "dauer_aktiv_s": 1223,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-01-25",
+      "zeit": "15:51",
+      "typ": "HIKING",
+      "name": "Meerbusch Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4478,
+      "dauer_aktiv_s": 4016,
+      "distanz_km": 5.038
+    },
+    {
+      "datum": "2026-01-17",
+      "zeit": "14:57",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4619,
+      "dauer_aktiv_s": 1655,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-01-14",
+      "zeit": "19:33",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3114,
+      "dauer_aktiv_s": 1881,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-01-10",
+      "zeit": "18:02",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4234,
+      "dauer_aktiv_s": 2043,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-01-09",
+      "zeit": "19:34",
+      "typ": "SWIMMING",
+      "name": "Schwimmbad",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 553,
+      "dauer_aktiv_s": 544,
+      "distanz_km": 0.3
+    },
+    {
+      "datum": "2026-01-09",
+      "zeit": "18:56",
+      "typ": "SWIMMING",
+      "name": "Schwimmbad",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2204,
+      "dauer_aktiv_s": 1837,
+      "distanz_km": 0.275
+    },
+    {
+      "datum": "2026-01-06",
+      "zeit": "18:41",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4533,
+      "dauer_aktiv_s": 1223,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-12-26",
+      "zeit": "11:24",
+      "typ": "HIKING",
+      "name": "Grainau Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 7411,
+      "dauer_aktiv_s": 6377,
+      "distanz_km": 7.633
+    },
+    {
+      "datum": "2025-12-25",
+      "zeit": "12:42",
+      "typ": "HIKING",
+      "name": "Grainau Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 6192,
+      "dauer_aktiv_s": 5723,
+      "distanz_km": 7.318
+    },
+    {
+      "datum": "2025-12-24",
+      "zeit": "12:01",
+      "typ": "HIKING",
+      "name": "Grainau Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 7031,
+      "dauer_aktiv_s": 6200,
+      "distanz_km": 7.212
+    },
+    {
+      "datum": "2025-12-23",
+      "zeit": "10:59",
+      "typ": "HIKING",
+      "name": "Grainau Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4640,
+      "dauer_aktiv_s": 4381,
+      "distanz_km": 7.046
+    },
+    {
+      "datum": "2025-12-21",
+      "zeit": "14:10",
+      "typ": "HIKING",
+      "name": "Halblech Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2549,
+      "dauer_aktiv_s": 2370,
+      "distanz_km": 3.066
+    },
+    {
+      "datum": "2025-12-21",
+      "zeit": "12:00",
+      "typ": "HIKING",
+      "name": "Halblech Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2714,
+      "dauer_aktiv_s": 2596,
+      "distanz_km": 2.772
+    },
+    {
+      "datum": "2025-12-17",
+      "zeit": "20:10",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2287,
+      "dauer_aktiv_s": 1137,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-12-13",
+      "zeit": "14:41",
+      "typ": "RUNNING",
+      "name": "Krefeld Laufen",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3832,
+      "dauer_aktiv_s": 3832,
+      "distanz_km": 5.1
+    },
+    {
+      "datum": "2025-12-13",
+      "zeit": "13:20",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4723,
+      "dauer_aktiv_s": 1844,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-12-09",
+      "zeit": "20:11",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2727,
+      "dauer_aktiv_s": 1636,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-12-03",
+      "zeit": "19:56",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3720,
+      "dauer_aktiv_s": 1121,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-11-30",
+      "zeit": "08:25",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 11920,
+      "dauer_aktiv_s": 11911,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-11-25",
+      "zeit": "23:25",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 794,
+      "dauer_aktiv_s": 191,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-11-22",
+      "zeit": "13:25",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2200,
+      "dauer_aktiv_s": 1077,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-11-22",
+      "zeit": "12:42",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2351,
+      "dauer_aktiv_s": 2348,
+      "distanz_km": 6.037
+    },
+    {
+      "datum": "2025-11-15",
+      "zeit": "16:11",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3262,
+      "dauer_aktiv_s": 3257,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-11-06",
+      "zeit": "22:13",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1356,
+      "dauer_aktiv_s": 235,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-11-04",
+      "zeit": "21:28",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1518,
+      "dauer_aktiv_s": 200,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-10-09",
+      "zeit": "23:52",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1050,
+      "dauer_aktiv_s": 273,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-10-09",
+      "zeit": "00:24",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1190,
+      "dauer_aktiv_s": 258,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-10-07",
+      "zeit": "23:56",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1074,
+      "dauer_aktiv_s": 1068,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-10-06",
+      "zeit": "23:11",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 897,
+      "dauer_aktiv_s": 212,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-10-04",
+      "zeit": "14:19",
+      "typ": "HIKING",
+      "name": "Bad Honnef Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 8477,
+      "dauer_aktiv_s": 8477,
+      "distanz_km": 8.774
+    },
+    {
+      "datum": "2025-09-27",
+      "zeit": "10:06",
+      "typ": "HIKING",
+      "name": "Neroth Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 27233,
+      "dauer_aktiv_s": 24663,
+      "distanz_km": 23.082
+    },
+    {
+      "datum": "2025-09-10",
+      "zeit": "16:29",
+      "typ": "HIKING",
+      "name": "Aljezur Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 486,
+      "dauer_aktiv_s": 486,
+      "distanz_km": 0.519
+    },
+    {
+      "datum": "2025-09-06",
+      "zeit": "11:33",
+      "typ": "HIKING",
+      "name": "Münstermaifeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 16828,
+      "dauer_aktiv_s": 12965,
+      "distanz_km": 10.592
+    },
+    {
+      "datum": "2025-08-30",
+      "zeit": "13:29",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1389,
+      "dauer_aktiv_s": 745,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-08-29",
+      "zeit": "17:50",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1578,
+      "dauer_aktiv_s": 743,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-08-28",
+      "zeit": "21:51",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3272,
+      "dauer_aktiv_s": 1654,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-08-28",
+      "zeit": "21:08",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2314,
+      "dauer_aktiv_s": 2314,
+      "distanz_km": 5.195
+    },
+    {
+      "datum": "2025-08-22",
+      "zeit": "00:06",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1041,
+      "dauer_aktiv_s": 219,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-08-20",
+      "zeit": "14:44",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2432,
+      "dauer_aktiv_s": 2071,
+      "distanz_km": 2.88
+    },
+    {
+      "datum": "2025-08-14",
+      "zeit": "20:57",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4134,
+      "dauer_aktiv_s": 1892,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-08-10",
+      "zeit": "13:06",
+      "typ": "HIKING",
+      "name": "Schleiden Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 7988,
+      "dauer_aktiv_s": 7963,
+      "distanz_km": 6.418
+    },
+    {
+      "datum": "2025-08-10",
+      "zeit": "10:34",
+      "typ": "HIKING",
+      "name": "Schleiden Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 6760,
+      "dauer_aktiv_s": 6760,
+      "distanz_km": 6.414
+    },
+    {
+      "datum": "2025-08-09",
+      "zeit": "09:22",
+      "typ": "HIKING",
+      "name": "Stolberg (Rheinland) Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 20368,
+      "dauer_aktiv_s": 11135,
+      "distanz_km": 9.025
+    },
+    {
+      "datum": "2025-08-08",
+      "zeit": "16:21",
+      "typ": "HIKING",
+      "name": "Stolberg (Rheinland) Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 19906,
+      "dauer_aktiv_s": 9906,
+      "distanz_km": 8.465
+    },
+    {
+      "datum": "2025-08-07",
+      "zeit": "21:44",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3076,
+      "dauer_aktiv_s": 1315,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-08-03",
+      "zeit": "16:14",
+      "typ": "HIKING",
+      "name": "Meerbusch Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3862,
+      "dauer_aktiv_s": 3581,
+      "distanz_km": 4.434
+    },
+    {
+      "datum": "2025-08-01",
+      "zeit": "18:35",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2346,
+      "dauer_aktiv_s": 1137,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-07-31",
+      "zeit": "23:14",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 842,
+      "dauer_aktiv_s": 185,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-07-30",
+      "zeit": "22:27",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 523,
+      "dauer_aktiv_s": 159,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-07-29",
+      "zeit": "14:20",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2360,
+      "dauer_aktiv_s": 1082,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-07-27",
+      "zeit": "16:40",
+      "typ": "HIKING",
+      "name": "Meerbusch Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2918,
+      "dauer_aktiv_s": 2648,
+      "distanz_km": 3.08
+    },
+    {
+      "datum": "2025-07-23",
+      "zeit": "20:12",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2303,
+      "dauer_aktiv_s": 1004,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-07-23",
+      "zeit": "13:13",
+      "typ": "CYCLING",
+      "name": "Bramberg am Wildkogel Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2857,
+      "dauer_aktiv_s": 1270,
+      "distanz_km": 5.466
+    },
+    {
+      "datum": "2025-07-23",
+      "zeit": "12:39",
+      "typ": "HIKING",
+      "name": "Neukirchen am Großvenediger Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1882,
+      "dauer_aktiv_s": 1882,
+      "distanz_km": 1.378
+    },
+    {
+      "datum": "2025-07-22",
+      "zeit": "12:11",
+      "typ": "HIKING",
+      "name": "Uttendorf Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 13340,
+      "dauer_aktiv_s": 10186,
+      "distanz_km": 5.326
+    },
+    {
+      "datum": "2025-07-20",
+      "zeit": "11:50",
+      "typ": "HIKING",
+      "name": "Neukirchen am Großvenediger Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 18782,
+      "dauer_aktiv_s": 11652,
+      "distanz_km": 8.686
+    },
+    {
+      "datum": "2025-07-19",
+      "zeit": "12:05",
+      "typ": "HIKING",
+      "name": "Krimml Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 21055,
+      "dauer_aktiv_s": 15746,
+      "distanz_km": 14.158
+    },
+    {
+      "datum": "2025-07-18",
+      "zeit": "11:25",
+      "typ": "HIKING",
+      "name": "Bramberg am Wildkogel Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 20430,
+      "dauer_aktiv_s": 13308,
+      "distanz_km": 7.658
+    },
+    {
+      "datum": "2025-07-17",
+      "zeit": "12:07",
+      "typ": "HIKING",
+      "name": "Neukirchen am Großvenediger Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 13382,
+      "dauer_aktiv_s": 6087,
+      "distanz_km": 6.045
+    },
+    {
+      "datum": "2025-07-16",
+      "zeit": "11:10",
+      "typ": "HIKING",
+      "name": "Neukirchen am Großvenediger Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 12742,
+      "dauer_aktiv_s": 12257,
+      "distanz_km": 7.08
+    },
+    {
+      "datum": "2025-07-15",
+      "zeit": "11:47",
+      "typ": "HIKING",
+      "name": "Neukirchen am Großvenediger Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 14654,
+      "dauer_aktiv_s": 10241,
+      "distanz_km": 8.277
+    },
+    {
+      "datum": "2025-07-12",
+      "zeit": "09:41",
+      "typ": "HIKING",
+      "name": "Ellmau Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 25418,
+      "dauer_aktiv_s": 15297,
+      "distanz_km": 13.687
+    },
+    {
+      "datum": "2025-07-10",
+      "zeit": "00:10",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 870,
+      "dauer_aktiv_s": 211,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-07-03",
+      "zeit": "23:05",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 966,
+      "dauer_aktiv_s": 234,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-06-20",
+      "zeit": "19:56",
+      "typ": "HIKING",
+      "name": "Zandvoort Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1856,
+      "dauer_aktiv_s": 1856,
+      "distanz_km": 1.866
+    },
+    {
+      "datum": "2025-06-11",
+      "zeit": "22:17",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1811,
+      "dauer_aktiv_s": 1046,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-06-11",
+      "zeit": "21:50",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1218,
+      "dauer_aktiv_s": 1218,
+      "distanz_km": 1.605
+    },
+    {
+      "datum": "2025-06-11",
+      "zeit": "21:34",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 922,
+      "dauer_aktiv_s": 922,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-06-09",
+      "zeit": "16:26",
+      "typ": "HIKING",
+      "name": "Meerbusch Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3342,
+      "dauer_aktiv_s": 2708,
+      "distanz_km": 3.678
+    },
+    {
+      "datum": "2025-06-03",
+      "zeit": "18:29",
+      "typ": "RUNNING",
+      "name": "Krefeld Laufen",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2143,
+      "dauer_aktiv_s": 2059,
+      "distanz_km": 5.011
+    },
+    {
+      "datum": "2025-05-25",
+      "zeit": "15:34",
+      "typ": "HIKING",
+      "name": "Meerbusch Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4815,
+      "dauer_aktiv_s": 4260,
+      "distanz_km": 5.396
+    },
+    {
+      "datum": "2025-05-23",
+      "zeit": "18:25",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 312,
+      "dauer_aktiv_s": 279,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-05-23",
+      "zeit": "17:14",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4025,
+      "dauer_aktiv_s": 4017,
+      "distanz_km": 11.264
+    },
+    {
+      "datum": "2025-05-21",
+      "zeit": "22:21",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1050,
+      "dauer_aktiv_s": 578,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-05-21",
+      "zeit": "21:42",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1927,
+      "dauer_aktiv_s": 1872,
+      "distanz_km": 5.482
+    },
+    {
+      "datum": "2025-05-19",
+      "zeit": "22:33",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 419,
+      "dauer_aktiv_s": 237,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-05-19",
+      "zeit": "21:55",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1991,
+      "dauer_aktiv_s": 1973,
+      "distanz_km": 5.289
+    },
+    {
+      "datum": "2025-05-17",
+      "zeit": "16:49",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 10762,
+      "dauer_aktiv_s": 10235,
+      "distanz_km": 9.399
+    },
+    {
+      "datum": "2025-05-15",
+      "zeit": "22:25",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1895,
+      "dauer_aktiv_s": 979,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-05-15",
+      "zeit": "21:39",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2348,
+      "dauer_aktiv_s": 2299,
+      "distanz_km": 5.402
+    },
+    {
+      "datum": "2025-05-13",
+      "zeit": "20:02",
+      "typ": "RUNNING",
+      "name": "Krefeld - Basis",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2524,
+      "dauer_aktiv_s": 2449,
+      "distanz_km": 5.51
+    },
+    {
+      "datum": "2025-05-12",
+      "zeit": "19:34",
+      "typ": "RUNNING",
+      "name": "Krefeld Laufen",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2090,
+      "dauer_aktiv_s": 2041,
+      "distanz_km": 5.021
+    },
+    {
+      "datum": "2025-05-08",
+      "zeit": "22:20",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2086,
+      "dauer_aktiv_s": 836,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-05-07",
+      "zeit": "17:28",
+      "typ": "CYCLING",
+      "name": "Krefeld Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 698,
+      "dauer_aktiv_s": 654,
+      "distanz_km": 3.097
+    },
+    {
+      "datum": "2025-05-07",
+      "zeit": "10:52",
+      "typ": "CYCLING",
+      "name": "Krefeld Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 636,
+      "dauer_aktiv_s": 621,
+      "distanz_km": 3.178
+    },
+    {
+      "datum": "2025-05-05",
+      "zeit": "13:26",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1210,
+      "dauer_aktiv_s": 1175,
+      "distanz_km": 1.397
+    },
+    {
+      "datum": "2025-04-30",
+      "zeit": "23:13",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1513,
+      "dauer_aktiv_s": 706,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-30",
+      "zeit": "22:35",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2130,
+      "dauer_aktiv_s": 1998,
+      "distanz_km": 4.636
+    },
+    {
+      "datum": "2025-04-28",
+      "zeit": "19:49",
+      "typ": "RUNNING",
+      "name": "Krefeld Laufen",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2075,
+      "dauer_aktiv_s": 2059,
+      "distanz_km": 5.007
+    },
+    {
+      "datum": "2025-04-25",
+      "zeit": "18:54",
+      "typ": "RUNNING",
+      "name": "Krefeld Laufen",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2162,
+      "dauer_aktiv_s": 1966,
+      "distanz_km": 5.003
+    },
+    {
+      "datum": "2025-04-23",
+      "zeit": "22:01",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1850,
+      "dauer_aktiv_s": 862,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-23",
+      "zeit": "21:14",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2471,
+      "dauer_aktiv_s": 2447,
+      "distanz_km": 5.706
+    },
+    {
+      "datum": "2025-04-23",
+      "zeit": "17:45",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2935,
+      "dauer_aktiv_s": 2935,
+      "distanz_km": 3.099
+    },
+    {
+      "datum": "2025-04-23",
+      "zeit": "09:01",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2133,
+      "dauer_aktiv_s": 2077,
+      "distanz_km": 2.984
+    },
+    {
+      "datum": "2025-04-22",
+      "zeit": "21:58",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 781,
+      "dauer_aktiv_s": 186,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-18",
+      "zeit": "15:11",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 723,
+      "dauer_aktiv_s": 723,
+      "distanz_km": 0.836
+    },
+    {
+      "datum": "2025-04-17",
+      "zeit": "23:08",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1011,
+      "dauer_aktiv_s": 254,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-17",
+      "zeit": "22:22",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2392,
+      "dauer_aktiv_s": 2201,
+      "distanz_km": 5.843
+    },
+    {
+      "datum": "2025-04-16",
+      "zeit": "23:03",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 636,
+      "dauer_aktiv_s": 145,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-14",
+      "zeit": "19:22",
+      "typ": "SWIMMING",
+      "name": "Schwimmbad",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3715,
+      "dauer_aktiv_s": 3369,
+      "distanz_km": 1.95
+    },
+    {
+      "datum": "2025-04-11",
+      "zeit": "15:14",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1914,
+      "dauer_aktiv_s": 900,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-11",
+      "zeit": "14:32",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2165,
+      "dauer_aktiv_s": 2148,
+      "distanz_km": 5.415
+    },
+    {
+      "datum": "2025-04-09",
+      "zeit": "13:58",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2815,
+      "dauer_aktiv_s": 2815,
+      "distanz_km": 2.902
+    },
+    {
+      "datum": "2025-04-08",
+      "zeit": "22:35",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 832,
+      "dauer_aktiv_s": 359,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-08",
+      "zeit": "21:36",
+      "typ": "RUNNING",
+      "name": "Laufbandtraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3108,
+      "dauer_aktiv_s": 3000,
+      "distanz_km": 7.303
+    },
+    {
+      "datum": "2025-04-07",
+      "zeit": "22:54",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1123,
+      "dauer_aktiv_s": 194,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-02",
+      "zeit": "23:26",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 511,
+      "dauer_aktiv_s": 119,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-04-02",
+      "zeit": "15:34",
+      "typ": "CYCLING",
+      "name": "Krefeld Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 781,
+      "dauer_aktiv_s": 781,
+      "distanz_km": 3.075
+    },
+    {
+      "datum": "2025-04-02",
+      "zeit": "09:42",
+      "typ": "CYCLING",
+      "name": "Krefeld Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 572,
+      "dauer_aktiv_s": 564,
+      "distanz_km": 3.034
+    },
+    {
+      "datum": "2025-03-30",
+      "zeit": "16:10",
+      "typ": "HIKING",
+      "name": "Meerbusch Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3903,
+      "dauer_aktiv_s": 3903,
+      "distanz_km": 3.877
+    },
+    {
+      "datum": "2025-03-25",
+      "zeit": "23:29",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 649,
+      "dauer_aktiv_s": 126,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-03-23",
+      "zeit": "15:44",
+      "typ": "HIKING",
+      "name": "Meerbusch Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4679,
+      "dauer_aktiv_s": 4679,
+      "distanz_km": 4.498
+    },
+    {
+      "datum": "2025-03-21",
+      "zeit": "14:01",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1625,
+      "dauer_aktiv_s": 1625,
+      "distanz_km": 1.699
+    },
+    {
+      "datum": "2025-03-21",
+      "zeit": "13:28",
+      "typ": "CYCLING",
+      "name": "Krefeld Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1772,
+      "dauer_aktiv_s": 1344,
+      "distanz_km": 5.31
+    },
+    {
+      "datum": "2025-03-20",
+      "zeit": "23:13",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 731,
+      "dauer_aktiv_s": 186,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-03-20",
+      "zeit": "16:59",
+      "typ": "CYCLING",
+      "name": "Krefeld Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 721,
+      "dauer_aktiv_s": 633,
+      "distanz_km": 3.115
+    },
+    {
+      "datum": "2025-03-19",
+      "zeit": "23:19",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 476,
+      "dauer_aktiv_s": 138,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-03-19",
+      "zeit": "09:21",
+      "typ": "CYCLING",
+      "name": "Krefeld Radfahren",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1311,
+      "dauer_aktiv_s": 731,
+      "distanz_km": 1.953
+    },
+    {
+      "datum": "2025-03-09",
+      "zeit": "15:01",
+      "typ": "HIKING",
+      "name": "Meerbusch Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 9497,
+      "dauer_aktiv_s": 9497,
+      "distanz_km": 8.355
+    },
+    {
+      "datum": "2025-03-07",
+      "zeit": "14:40",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3224,
+      "dauer_aktiv_s": 3224,
+      "distanz_km": 3.336
+    },
+    {
+      "datum": "2025-03-05",
+      "zeit": "17:20",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2517,
+      "dauer_aktiv_s": 2517,
+      "distanz_km": 3.066
+    },
+    {
+      "datum": "2025-03-05",
+      "zeit": "07:44",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2477,
+      "dauer_aktiv_s": 2237,
+      "distanz_km": 3.052
+    },
+    {
+      "datum": "2025-03-04",
+      "zeit": "17:32",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 8682,
+      "dauer_aktiv_s": 4182,
+      "distanz_km": 4.937
+    },
+    {
+      "datum": "2025-03-04",
+      "zeit": "08:43",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2565,
+      "dauer_aktiv_s": 2565,
+      "distanz_km": 2.848
+    },
+    {
+      "datum": "2025-02-27",
+      "zeit": "21:32",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3852,
+      "dauer_aktiv_s": 3736,
+      "distanz_km": 5.732
+    },
+    {
+      "datum": "2025-02-26",
+      "zeit": "20:44",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3083,
+      "dauer_aktiv_s": 1356,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2025-02-26",
+      "zeit": "17:26",
+      "typ": "HIKING",
+      "name": "Krefeld Wandern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 1725,
+      "dauer_aktiv_s": 1689,
+      "distanz_km": 2.796
+    }
+  ]
 }
