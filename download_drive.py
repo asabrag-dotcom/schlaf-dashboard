@@ -120,6 +120,7 @@ FOLDERS = {
     'Health Sync Sauerstoffsättigung': os.environ['DRIVE_SPO2_ID'],
     'Health Sync Puls':               os.environ['DRIVE_PULS_ID'],
     'Health Sync Gewicht':            os.environ.get('DRIVE_GEWICHT_ID', ''),
+    'Health Sync Aktivitäten':        os.environ.get('DRIVE_AKTIVITAETEN_ID', ''),
 }
 # Leere Folder-IDs überspringen (optionale Ordner)
 FOLDERS = {k: v for k, v in FOLDERS.items() if v}
