@@ -1,5 +1,5 @@
 {
-  "stand": "2026-10-19 19:36",
+  "stand": "2026-10-20 15:14",
   "schlaf": {
     "datum": "2026-10-19",
     "bewertung": "Gut",
@@ -164,7 +164,7 @@
       "ruhepuls_avg": 56.6,
       "spo2_avg": 92.8,
       "beste_rem_min": 164,
-      "laengste_min": 589,
+      "laengste_min": 565,
       "kuerzeste_min": 175
     }
   },
