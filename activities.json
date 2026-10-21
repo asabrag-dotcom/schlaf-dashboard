@@ -1,6 +1,16 @@
 {
-  "stand": "2026-10-20",
+  "stand": "2026-10-21",
   "aktivitaeten": [
+    {
+      "datum": "2026-10-21",
+      "zeit": "14:13",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4005,
+      "dauer_aktiv_s": 2983,
+      "distanz_km": 1.036
+    },
     {
       "datum": "2026-10-19",
       "zeit": "18:12",
