@@ -1,6 +1,16 @@
 {
-  "stand": "2026-10-21",
+  "stand": "2026-10-22",
   "aktivitaeten": [
+    {
+      "datum": "2026-10-21",
+      "zeit": "19:48",
+      "typ": "TRAINING",
+      "name": "Krafttraining",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2942,
+      "dauer_aktiv_s": 1053,
+      "distanz_km": 0.0
+    },
     {
       "datum": "2026-10-21",
       "zeit": "14:13",
@@ -34,22 +44,22 @@
     {
       "datum": "2026-10-18",
       "zeit": "16:00",
-      "typ": "HIKING",
-      "name": null,
-      "quelle": "garmin",
-      "dauer_gesamt_s": 4506,
-      "dauer_aktiv_s": 4506,
-      "distanz_km": 9.284
-    },
-    {
-      "datum": "2026-10-18",
-      "zeit": "16:00",
       "typ": "WALKING",
       "name": null,
       "quelle": "google_fit",
       "dauer_gesamt_s": 4425,
       "dauer_aktiv_s": 3883,
       "distanz_km": 9.353
+    },
+    {
+      "datum": "2026-10-18",
+      "zeit": "16:00",
+      "typ": "HIKING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 4506,
+      "dauer_aktiv_s": 4506,
+      "distanz_km": 9.284
     },
     {
       "datum": "2026-10-15",
@@ -744,22 +754,22 @@
     {
       "datum": "2026-08-16",
       "zeit": "11:33",
-      "typ": "WALKING",
-      "name": null,
-      "quelle": "google_fit",
-      "dauer_gesamt_s": 4705,
-      "dauer_aktiv_s": 4705,
-      "distanz_km": 5.007
-    },
-    {
-      "datum": "2026-08-16",
-      "zeit": "11:33",
       "typ": "HIKING",
       "name": "Tires Wandern",
       "quelle": "garmin",
       "dauer_gesamt_s": 12811,
       "dauer_aktiv_s": 9228,
       "distanz_km": 8.197
+    },
+    {
+      "datum": "2026-08-16",
+      "zeit": "11:33",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4705,
+      "dauer_aktiv_s": 4705,
+      "distanz_km": 5.007
     },
     {
       "datum": "2026-08-15",
@@ -1114,8 +1124,8 @@
     {
       "datum": "2026-05-16",
       "zeit": "17:09",
-      "typ": "TRAINING",
-      "name": null,
+      "typ": "FITNESS_EQUIPMENT",
+      "name": "Pilates",
       "quelle": "garmin",
       "dauer_gesamt_s": 2901,
       "dauer_aktiv_s": 2901,
@@ -1124,8 +1134,8 @@
     {
       "datum": "2026-05-16",
       "zeit": "17:09",
-      "typ": "FITNESS_EQUIPMENT",
-      "name": "Pilates",
+      "typ": "TRAINING",
+      "name": null,
       "quelle": "garmin",
       "dauer_gesamt_s": 2901,
       "dauer_aktiv_s": 2901,
