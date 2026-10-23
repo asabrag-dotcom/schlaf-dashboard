@@ -1,6 +1,26 @@
 {
-  "stand": "2026-10-22",
+  "stand": "2026-10-23",
   "aktivitaeten": [
+    {
+      "datum": "2026-10-23",
+      "zeit": "08:32",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1972,
+      "dauer_aktiv_s": 688,
+      "distanz_km": 1.389
+    },
+    {
+      "datum": "2026-10-22",
+      "zeit": "17:53",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1150,
+      "dauer_aktiv_s": 1150,
+      "distanz_km": 1.207
+    },
     {
       "datum": "2026-10-21",
       "zeit": "19:48",
@@ -2673,16 +2693,6 @@
     },
     {
       "datum": "2025-03-20",
-      "zeit": "23:13",
-      "typ": "TRAINING",
-      "name": "Krafttraining",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 731,
-      "dauer_aktiv_s": 186,
-      "distanz_km": 0.0
-    },
-    {
-      "datum": "2025-03-20",
       "zeit": "16:59",
       "typ": "CYCLING",
       "name": "Krefeld Radfahren",
@@ -2710,16 +2720,6 @@
       "dauer_gesamt_s": 1311,
       "dauer_aktiv_s": 731,
       "distanz_km": 1.953
-    },
-    {
-      "datum": "2025-03-09",
-      "zeit": "15:01",
-      "typ": "HIKING",
-      "name": "Meerbusch Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 9497,
-      "dauer_aktiv_s": 9497,
-      "distanz_km": 8.355
     },
     {
       "datum": "2025-03-07",
@@ -2790,16 +2790,6 @@
       "dauer_gesamt_s": 3083,
       "dauer_aktiv_s": 1356,
       "distanz_km": 0.0
-    },
-    {
-      "datum": "2025-02-26",
-      "zeit": "17:26",
-      "typ": "HIKING",
-      "name": "Krefeld Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 1725,
-      "dauer_aktiv_s": 1689,
-      "distanz_km": 2.796
     }
   ]
 }
