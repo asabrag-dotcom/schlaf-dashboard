@@ -1,6 +1,16 @@
 {
-  "stand": "2026-10-26",
+  "stand": "2026-10-27",
   "aktivitaeten": [
+    {
+      "datum": "2026-10-27",
+      "zeit": "09:22",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1846,
+      "dauer_aktiv_s": 1180,
+      "distanz_km": 1.763
+    },
     {
       "datum": "2026-10-23",
       "zeit": "08:32",
@@ -1184,8 +1194,8 @@
     {
       "datum": "2026-05-10",
       "zeit": "17:46",
-      "typ": "GENERIC",
-      "name": "Krefeld Trampolin",
+      "typ": "TRAINING",
+      "name": null,
       "quelle": "garmin",
       "dauer_gesamt_s": 1342,
       "dauer_aktiv_s": 1342,
@@ -1194,8 +1204,8 @@
     {
       "datum": "2026-05-10",
       "zeit": "17:46",
-      "typ": "TRAINING",
-      "name": null,
+      "typ": "GENERIC",
+      "name": "Krefeld Trampolin",
       "quelle": "garmin",
       "dauer_gesamt_s": 1342,
       "dauer_aktiv_s": 1342,
@@ -2580,16 +2590,6 @@
       "dauer_gesamt_s": 2815,
       "dauer_aktiv_s": 2815,
       "distanz_km": 2.902
-    },
-    {
-      "datum": "2025-04-08",
-      "zeit": "22:35",
-      "typ": "TRAINING",
-      "name": "Krafttraining",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 832,
-      "dauer_aktiv_s": 359,
-      "distanz_km": 0.0
     },
     {
       "datum": "2025-04-08",
