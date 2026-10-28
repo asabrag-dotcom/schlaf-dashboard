@@ -1,6 +1,16 @@
 {
-  "stand": "2026-10-27",
+  "stand": "2026-10-28",
   "aktivitaeten": [
+    {
+      "datum": "2026-10-27",
+      "zeit": "18:54",
+      "typ": "ROWING",
+      "name": "Indoor-Rudern",
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3759,
+      "dauer_aktiv_s": 3722,
+      "distanz_km": 13.875
+    },
     {
       "datum": "2026-10-27",
       "zeit": "09:22",
