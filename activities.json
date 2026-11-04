@@ -1,6 +1,56 @@
 {
-  "stand": "2026-10-29",
+  "stand": "2026-11-04",
   "aktivitaeten": [
+    {
+      "datum": "2026-11-01",
+      "zeit": "15:42",
+      "typ": "HIKING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 3018,
+      "dauer_aktiv_s": 3018,
+      "distanz_km": 12.57
+    },
+    {
+      "datum": "2026-11-01",
+      "zeit": "15:26",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4155,
+      "dauer_aktiv_s": 4155,
+      "distanz_km": 13.509
+    },
+    {
+      "datum": "2026-10-31",
+      "zeit": "12:13",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2662,
+      "dauer_aktiv_s": 2632,
+      "distanz_km": 3.811
+    },
+    {
+      "datum": "2026-10-30",
+      "zeit": "17:47",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2449,
+      "dauer_aktiv_s": 1795,
+      "distanz_km": 1.356
+    },
+    {
+      "datum": "2026-10-29",
+      "zeit": "19:24",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1953,
+      "dauer_aktiv_s": 1387,
+      "distanz_km": 1.182
+    },
     {
       "datum": "2026-10-27",
       "zeit": "18:54",
@@ -1462,16 +1512,6 @@
       "distanz_km": 0.285
     },
     {
-      "datum": "2026-03-01",
-      "zeit": "18:10",
-      "typ": "ROWING",
-      "name": null,
-      "quelle": "unknown-com.concept2.ergdata",
-      "dauer_gesamt_s": 1807,
-      "dauer_aktiv_s": 1807,
-      "distanz_km": 11.389
-    },
-    {
       "datum": "2026-02-22",
       "zeit": "18:00",
       "typ": "TRAINING",
@@ -2573,16 +2613,6 @@
     },
     {
       "datum": "2025-04-11",
-      "zeit": "15:14",
-      "typ": "TRAINING",
-      "name": "Krafttraining",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 1914,
-      "dauer_aktiv_s": 900,
-      "distanz_km": 0.0
-    },
-    {
-      "datum": "2025-04-11",
       "zeit": "14:32",
       "typ": "RUNNING",
       "name": "Laufbandtraining",
@@ -2590,16 +2620,6 @@
       "dauer_gesamt_s": 2165,
       "dauer_aktiv_s": 2148,
       "distanz_km": 5.415
-    },
-    {
-      "datum": "2025-04-09",
-      "zeit": "13:58",
-      "typ": "HIKING",
-      "name": "Krefeld Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 2815,
-      "dauer_aktiv_s": 2815,
-      "distanz_km": 2.902
     },
     {
       "datum": "2025-04-08",
@@ -2610,16 +2630,6 @@
       "dauer_gesamt_s": 3108,
       "dauer_aktiv_s": 3000,
       "distanz_km": 7.303
-    },
-    {
-      "datum": "2025-04-07",
-      "zeit": "22:54",
-      "typ": "TRAINING",
-      "name": "Krafttraining",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 1123,
-      "dauer_aktiv_s": 194,
-      "distanz_km": 0.0
     },
     {
       "datum": "2025-04-02",
@@ -2642,16 +2652,6 @@
       "distanz_km": 3.075
     },
     {
-      "datum": "2025-04-02",
-      "zeit": "09:42",
-      "typ": "CYCLING",
-      "name": "Krefeld Radfahren",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 572,
-      "dauer_aktiv_s": 564,
-      "distanz_km": 3.034
-    },
-    {
       "datum": "2025-03-30",
       "zeit": "16:10",
       "typ": "HIKING",
@@ -2662,16 +2662,6 @@
       "distanz_km": 3.877
     },
     {
-      "datum": "2025-03-25",
-      "zeit": "23:29",
-      "typ": "TRAINING",
-      "name": "Krafttraining",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 649,
-      "dauer_aktiv_s": 126,
-      "distanz_km": 0.0
-    },
-    {
       "datum": "2025-03-23",
       "zeit": "15:44",
       "typ": "HIKING",
@@ -2680,16 +2670,6 @@
       "dauer_gesamt_s": 4679,
       "dauer_aktiv_s": 4679,
       "distanz_km": 4.498
-    },
-    {
-      "datum": "2025-03-21",
-      "zeit": "14:01",
-      "typ": "HIKING",
-      "name": "Krefeld Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 1625,
-      "dauer_aktiv_s": 1625,
-      "distanz_km": 1.699
     },
     {
       "datum": "2025-03-21",
@@ -2763,16 +2743,6 @@
     },
     {
       "datum": "2025-03-04",
-      "zeit": "17:32",
-      "typ": "HIKING",
-      "name": "Krefeld Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 8682,
-      "dauer_aktiv_s": 4182,
-      "distanz_km": 4.937
-    },
-    {
-      "datum": "2025-03-04",
       "zeit": "08:43",
       "typ": "HIKING",
       "name": "Krefeld Wandern",
@@ -2790,16 +2760,6 @@
       "dauer_gesamt_s": 3852,
       "dauer_aktiv_s": 3736,
       "distanz_km": 5.732
-    },
-    {
-      "datum": "2025-02-26",
-      "zeit": "20:44",
-      "typ": "TRAINING",
-      "name": "Krafttraining",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 3083,
-      "dauer_aktiv_s": 1356,
-      "distanz_km": 0.0
     }
   ]
 }
