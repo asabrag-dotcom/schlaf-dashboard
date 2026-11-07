@@ -1,6 +1,46 @@
 {
-  "stand": "2026-11-06",
+  "stand": "2026-11-07",
   "aktivitaeten": [
+    {
+      "datum": "2026-11-07",
+      "zeit": "15:26",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1963,
+      "dauer_aktiv_s": 790,
+      "distanz_km": 1.284
+    },
+    {
+      "datum": "2026-11-07",
+      "zeit": "14:22",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3391,
+      "dauer_aktiv_s": 2712,
+      "distanz_km": 3.441
+    },
+    {
+      "datum": "2026-11-06",
+      "zeit": "17:42",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2951,
+      "dauer_aktiv_s": 2384,
+      "distanz_km": 1.289
+    },
+    {
+      "datum": "2026-11-06",
+      "zeit": "17:10",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1266,
+      "dauer_aktiv_s": 982,
+      "distanz_km": 0.897
+    },
     {
       "datum": "2026-11-03",
       "zeit": "17:53",
@@ -1492,16 +1532,6 @@
       "distanz_km": 0.0
     },
     {
-      "datum": "2026-03-06",
-      "zeit": "19:27",
-      "typ": "ROWING",
-      "name": "Rudermaschine",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 3686,
-      "dauer_aktiv_s": 3660,
-      "distanz_km": 13.103
-    },
-    {
       "datum": "2026-03-05",
       "zeit": "20:00",
       "typ": "TRAINING",
@@ -2750,16 +2780,6 @@
       "dauer_gesamt_s": 2477,
       "dauer_aktiv_s": 2237,
       "distanz_km": 3.052
-    },
-    {
-      "datum": "2025-03-04",
-      "zeit": "08:43",
-      "typ": "HIKING",
-      "name": "Krefeld Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 2565,
-      "dauer_aktiv_s": 2565,
-      "distanz_km": 2.848
     },
     {
       "datum": "2025-02-27",

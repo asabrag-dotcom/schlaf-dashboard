@@ -1,28 +1,38 @@
 {
-  "stand": "2026-11-06 17:37",
+  "stand": "2026-11-07 18:24",
   "schlaf": {
-    "datum": "2026-11-06",
-    "bewertung": "Schlecht",
-    "dauer_min": 392,
-    "effizienz_pct": 94.9,
-    "tief_min": 51,
-    "tief_pct": 13.0,
-    "rem_min": 62,
-    "rem_pct": 15.8,
-    "wach_episoden": 2,
-    "spo2_avg": 95.2,
-    "spo2_min": 88.0,
-    "ruhepuls": 53,
+    "datum": "2026-11-07",
+    "bewertung": "Mittel",
+    "dauer_min": 412,
+    "effizienz_pct": 86.2,
+    "tief_min": 95,
+    "tief_pct": 23.1,
+    "rem_min": 66,
+    "rem_pct": 16.0,
+    "wach_episoden": 3,
+    "spo2_avg": 91.5,
+    "spo2_min": 78.0,
+    "ruhepuls": 62,
     "naechte_14": [
+      {
+        "datum": "2026-11-07",
+        "dauer_min": 412,
+        "tief_pct": 23.1,
+        "rem_pct": 16.0,
+        "effizienz_pct": 86.2,
+        "spo2_avg": 91.5,
+        "spo2_min": 78.0,
+        "ruhepuls": 62
+      },
       {
         "datum": "2026-11-06",
         "dauer_min": 392,
         "tief_pct": 13.0,
         "rem_pct": 15.8,
         "effizienz_pct": 94.9,
-        "spo2_avg": 95.2,
+        "spo2_avg": 95.5,
         "spo2_min": 88.0,
-        "ruhepuls": 53
+        "ruhepuls": 54
       },
       {
         "datum": "2026-11-05",
@@ -143,25 +153,15 @@
         "spo2_avg": 92.2,
         "spo2_min": 83.0,
         "ruhepuls": 51
-      },
-      {
-        "datum": "2026-10-18",
-        "dauer_min": 423,
-        "tief_pct": 19.4,
-        "rem_pct": 23.9,
-        "effizienz_pct": 96.4,
-        "spo2_avg": 93.3,
-        "spo2_min": 85.0,
-        "ruhepuls": 52
       }
     ],
     "gesamt": {
-      "naechte": 297,
-      "zeitraum": "2025-02-20 bis 2026-11-06",
+      "naechte": 298,
+      "zeitraum": "2025-02-20 bis 2026-11-07",
       "eff_avg_pct": 94.4,
       "tief_avg_min": 82,
       "rem_avg_min": 78,
-      "ruhepuls_avg": 56.5,
+      "ruhepuls_avg": 56.6,
       "spo2_avg": 92.8,
       "beste_rem_min": 164,
       "laengste_min": 589,
