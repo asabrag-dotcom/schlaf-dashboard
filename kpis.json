@@ -1,5 +1,5 @@
 {
-  "stand": "2026-11-11 18:10",
+  "stand": "2026-11-12 18:28",
   "schlaf": {
     "datum": "2026-11-11",
     "bewertung": "Mittel",
@@ -12,7 +12,7 @@
     "wach_episoden": 1,
     "spo2_avg": 96.6,
     "spo2_min": 91.0,
-    "ruhepuls": 53,
+    "ruhepuls": 54,
     "naechte_14": [
       {
         "datum": "2026-11-11",
@@ -22,7 +22,7 @@
         "effizienz_pct": 99.6,
         "spo2_avg": 96.6,
         "spo2_min": 91.0,
-        "ruhepuls": 53
+        "ruhepuls": 54
       },
       {
         "datum": "2026-11-10",
