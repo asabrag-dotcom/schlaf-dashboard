@@ -1,19 +1,39 @@
 {
-  "stand": "2026-11-12 18:28",
+  "stand": "2026-11-13 17:58",
   "schlaf": {
-    "datum": "2026-11-11",
-    "bewertung": "Mittel",
-    "dauer_min": 262,
-    "effizienz_pct": 99.6,
+    "datum": "2026-11-13",
+    "bewertung": "Schlecht",
+    "dauer_min": 270,
+    "effizienz_pct": 93.4,
     "tief_min": 75,
-    "tief_pct": 28.6,
-    "rem_min": 38,
-    "rem_pct": 14.5,
+    "tief_pct": 27.8,
+    "rem_min": 34,
+    "rem_pct": 12.6,
     "wach_episoden": 1,
-    "spo2_avg": 96.6,
-    "spo2_min": 91.0,
-    "ruhepuls": 54,
+    "spo2_avg": 92.9,
+    "spo2_min": 82.0,
+    "ruhepuls": 53,
     "naechte_14": [
+      {
+        "datum": "2026-11-13",
+        "dauer_min": 270,
+        "tief_pct": 27.8,
+        "rem_pct": 12.6,
+        "effizienz_pct": 93.4,
+        "spo2_avg": 92.9,
+        "spo2_min": 82.0,
+        "ruhepuls": 53
+      },
+      {
+        "datum": "2026-11-12",
+        "dauer_min": 476,
+        "tief_pct": 12.8,
+        "rem_pct": 25.8,
+        "effizienz_pct": 94.8,
+        "spo2_avg": 92.4,
+        "spo2_min": 73.0,
+        "ruhepuls": 56
+      },
       {
         "datum": "2026-11-11",
         "dauer_min": 262,
@@ -133,34 +153,14 @@
         "spo2_avg": 93.0,
         "spo2_min": 85.0,
         "ruhepuls": 54
-      },
-      {
-        "datum": "2026-10-22",
-        "dauer_min": 395,
-        "tief_pct": 24.6,
-        "rem_pct": 21.3,
-        "effizienz_pct": 93.8,
-        "spo2_avg": 95.1,
-        "spo2_min": 83.0,
-        "ruhepuls": 53
-      },
-      {
-        "datum": "2026-10-21",
-        "dauer_min": 355,
-        "tief_pct": 23.7,
-        "rem_pct": 17.5,
-        "effizienz_pct": 93.2,
-        "spo2_avg": 92.5,
-        "spo2_min": 85.0,
-        "ruhepuls": 57
       }
     ],
     "gesamt": {
-      "naechte": 300,
-      "zeitraum": "2025-02-20 bis 2026-11-11",
+      "naechte": 302,
+      "zeitraum": "2025-02-20 bis 2026-11-13",
       "eff_avg_pct": 94.4,
       "tief_avg_min": 82,
-      "rem_avg_min": 77,
+      "rem_avg_min": 78,
       "ruhepuls_avg": 56.5,
       "spo2_avg": 92.8,
       "beste_rem_min": 164,
@@ -169,19 +169,26 @@
     }
   },
   "gewicht": {
-    "datum": "2026-11-10",
-    "kg": 88.2,
-    "bmi": 26.6,
+    "datum": "2026-11-13",
+    "kg": 88.6,
+    "bmi": 26.7,
     "bmi_klasse": "Übergewicht",
     "groesse_cm": 182,
     "ziel_kg": 85.0,
-    "rest_kg": 3.2,
+    "rest_kg": 3.6,
     "kreatin_abzug": 1.5,
-    "trend_30_kg": 0.58,
-    "vs_7t": -0.2,
-    "vs_30t": 0.0,
+    "trend_30_kg": 0.83,
+    "vs_7t": 1.3,
+    "vs_30t": 0.9,
     "vs_90t": null,
     "messungen": [
+      {
+        "datum": "2026-11-13",
+        "kg": 88.6,
+        "bmi": 26.7,
+        "avg7": 88.1,
+        "ohne_kreatin": 87.1
+      },
       {
         "datum": "2026-11-10",
         "kg": 88.2,
@@ -314,13 +321,6 @@
         "bmi": 26.4,
         "avg7": 87.3,
         "ohne_kreatin": 85.8
-      },
-      {
-        "datum": "2026-07-02",
-        "kg": 87.7,
-        "bmi": 26.5,
-        "avg7": 87.3,
-        "ohne_kreatin": 86.2
       }
     ]
   }

@@ -1,6 +1,26 @@
 {
-  "stand": "2026-11-12",
+  "stand": "2026-11-13",
   "aktivitaeten": [
+    {
+      "datum": "2026-11-13",
+      "zeit": "09:22",
+      "typ": "CYCLING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1317,
+      "dauer_aktiv_s": 1317,
+      "distanz_km": 0.0
+    },
+    {
+      "datum": "2026-11-12",
+      "zeit": "14:36",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2546,
+      "dauer_aktiv_s": 2161,
+      "distanz_km": 1.423
+    },
     {
       "datum": "2026-11-10",
       "zeit": "18:20",
@@ -1560,16 +1580,6 @@
       "dauer_gesamt_s": 3275,
       "dauer_aktiv_s": 3275,
       "distanz_km": 0.206
-    },
-    {
-      "datum": "2026-03-01",
-      "zeit": "18:45",
-      "typ": "TRAINING",
-      "name": null,
-      "quelle": "garmin",
-      "dauer_gesamt_s": 1736,
-      "dauer_aktiv_s": 1736,
-      "distanz_km": 0.285
     },
     {
       "datum": "2026-02-22",
