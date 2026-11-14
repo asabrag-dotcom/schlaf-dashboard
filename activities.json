@@ -1,6 +1,16 @@
 {
-  "stand": "2026-11-13",
+  "stand": "2026-11-14",
   "aktivitaeten": [
+    {
+      "datum": "2026-11-13",
+      "zeit": "17:46",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3237,
+      "dauer_aktiv_s": 2278,
+      "distanz_km": 2.623
+    },
     {
       "datum": "2026-11-13",
       "zeit": "09:22",
@@ -2710,16 +2720,6 @@
       "dauer_gesamt_s": 781,
       "dauer_aktiv_s": 781,
       "distanz_km": 3.075
-    },
-    {
-      "datum": "2025-03-30",
-      "zeit": "16:10",
-      "typ": "HIKING",
-      "name": "Meerbusch Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 3903,
-      "dauer_aktiv_s": 3903,
-      "distanz_km": 3.877
     },
     {
       "datum": "2025-03-21",

@@ -1,5 +1,5 @@
 {
-  "stand": "2026-11-13 17:58",
+  "stand": "2026-11-14 19:05",
   "schlaf": {
     "datum": "2026-11-13",
     "bewertung": "Schlecht",
@@ -10,9 +10,9 @@
     "rem_min": 34,
     "rem_pct": 12.6,
     "wach_episoden": 1,
-    "spo2_avg": 92.9,
+    "spo2_avg": 93.2,
     "spo2_min": 82.0,
-    "ruhepuls": 53,
+    "ruhepuls": 54,
     "naechte_14": [
       {
         "datum": "2026-11-13",
@@ -20,9 +20,9 @@
         "tief_pct": 27.8,
         "rem_pct": 12.6,
         "effizienz_pct": 93.4,
-        "spo2_avg": 92.9,
+        "spo2_avg": 93.2,
         "spo2_min": 82.0,
-        "ruhepuls": 53
+        "ruhepuls": 54
       },
       {
         "datum": "2026-11-12",
