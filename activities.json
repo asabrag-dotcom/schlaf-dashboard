@@ -1,6 +1,36 @@
 {
-  "stand": "2026-11-14",
+  "stand": "2026-11-15",
   "aktivitaeten": [
+    {
+      "datum": "2026-11-15",
+      "zeit": "15:59",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 483,
+      "dauer_aktiv_s": 483,
+      "distanz_km": 1.351
+    },
+    {
+      "datum": "2026-11-14",
+      "zeit": "16:43",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4444,
+      "dauer_aktiv_s": 2829,
+      "distanz_km": 2.346
+    },
+    {
+      "datum": "2026-11-14",
+      "zeit": "11:15",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 3812,
+      "dauer_aktiv_s": 3013,
+      "distanz_km": 2.941
+    },
     {
       "datum": "2026-11-13",
       "zeit": "17:46",
@@ -1582,16 +1612,6 @@
       "distanz_km": 0.0
     },
     {
-      "datum": "2026-03-05",
-      "zeit": "20:00",
-      "typ": "TRAINING",
-      "name": null,
-      "quelle": "garmin",
-      "dauer_gesamt_s": 3275,
-      "dauer_aktiv_s": 3275,
-      "distanz_km": 0.206
-    },
-    {
       "datum": "2026-02-22",
       "zeit": "18:00",
       "typ": "TRAINING",
@@ -2770,16 +2790,6 @@
       "dauer_gesamt_s": 2477,
       "dauer_aktiv_s": 2237,
       "distanz_km": 3.052
-    },
-    {
-      "datum": "2025-02-27",
-      "zeit": "21:32",
-      "typ": "HIKING",
-      "name": "Krefeld Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 3852,
-      "dauer_aktiv_s": 3736,
-      "distanz_km": 5.732
     }
   ]
 }
