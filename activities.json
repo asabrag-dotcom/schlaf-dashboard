@@ -1,6 +1,16 @@
 {
-  "stand": "2026-11-15",
+  "stand": "2026-11-16",
   "aktivitaeten": [
+    {
+      "datum": "2026-11-16",
+      "zeit": "09:37",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 1580,
+      "dauer_aktiv_s": 1580,
+      "distanz_km": 2.001
+    },
     {
       "datum": "2026-11-15",
       "zeit": "15:59",
@@ -974,22 +984,22 @@
     {
       "datum": "2026-08-16",
       "zeit": "11:33",
-      "typ": "WALKING",
-      "name": null,
-      "quelle": "google_fit",
-      "dauer_gesamt_s": 4705,
-      "dauer_aktiv_s": 4705,
-      "distanz_km": 5.007
-    },
-    {
-      "datum": "2026-08-16",
-      "zeit": "11:33",
       "typ": "HIKING",
       "name": "Tires Wandern",
       "quelle": "garmin",
       "dauer_gesamt_s": 12811,
       "dauer_aktiv_s": 9228,
       "distanz_km": 8.197
+    },
+    {
+      "datum": "2026-08-16",
+      "zeit": "11:33",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 4705,
+      "dauer_aktiv_s": 4705,
+      "distanz_km": 5.007
     },
     {
       "datum": "2026-08-15",
@@ -1344,8 +1354,8 @@
     {
       "datum": "2026-05-16",
       "zeit": "17:09",
-      "typ": "TRAINING",
-      "name": null,
+      "typ": "FITNESS_EQUIPMENT",
+      "name": "Pilates",
       "quelle": "garmin",
       "dauer_gesamt_s": 2901,
       "dauer_aktiv_s": 2901,
@@ -1354,8 +1364,8 @@
     {
       "datum": "2026-05-16",
       "zeit": "17:09",
-      "typ": "FITNESS_EQUIPMENT",
-      "name": "Pilates",
+      "typ": "TRAINING",
+      "name": null,
       "quelle": "garmin",
       "dauer_gesamt_s": 2901,
       "dauer_aktiv_s": 2901,
@@ -2690,16 +2700,6 @@
       "dauer_gesamt_s": 2392,
       "dauer_aktiv_s": 2201,
       "distanz_km": 5.843
-    },
-    {
-      "datum": "2025-04-16",
-      "zeit": "23:03",
-      "typ": "TRAINING",
-      "name": "Krafttraining",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 636,
-      "dauer_aktiv_s": 145,
-      "distanz_km": 0.0
     },
     {
       "datum": "2025-04-14",
