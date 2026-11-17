@@ -1,5 +1,5 @@
 {
-  "stand": "2026-11-16 20:28",
+  "stand": "2026-11-17 19:25",
   "schlaf": {
     "datum": "2026-11-16",
     "bewertung": "Gut",
@@ -160,7 +160,7 @@
       "zeitraum": "2025-02-20 bis 2026-11-16",
       "eff_avg_pct": 94.4,
       "tief_avg_min": 82,
-      "rem_avg_min": 77,
+      "rem_avg_min": 78,
       "ruhepuls_avg": 56.5,
       "spo2_avg": 92.8,
       "beste_rem_min": 164,
