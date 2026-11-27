@@ -1,6 +1,26 @@
 {
-  "stand": "2026-11-26",
+  "stand": "2026-11-27",
   "aktivitaeten": [
+    {
+      "datum": "2026-11-27",
+      "zeit": "18:26",
+      "typ": "WALKING",
+      "name": null,
+      "quelle": "google_fit",
+      "dauer_gesamt_s": 2434,
+      "dauer_aktiv_s": 2136,
+      "distanz_km": 1.886
+    },
+    {
+      "datum": "2026-11-26",
+      "zeit": "20:22",
+      "typ": "TRAINING",
+      "name": null,
+      "quelle": "garmin",
+      "dauer_gesamt_s": 2803,
+      "dauer_aktiv_s": 2803,
+      "distanz_km": 0.0
+    },
     {
       "datum": "2026-11-25",
       "zeit": "08:58",
@@ -2790,16 +2810,6 @@
       "dauer_gesamt_s": 476,
       "dauer_aktiv_s": 138,
       "distanz_km": 0.0
-    },
-    {
-      "datum": "2025-03-05",
-      "zeit": "17:20",
-      "typ": "HIKING",
-      "name": "Krefeld Wandern",
-      "quelle": "garmin",
-      "dauer_gesamt_s": 2517,
-      "dauer_aktiv_s": 2517,
-      "distanz_km": 3.066
     }
   ]
 }
